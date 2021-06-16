@@ -1,6 +1,6 @@
 {
   "role": {
-    "name": "hmpps-template-kotlin"
+    "name": "court-hearing-event-receiver"
   },
   "customDimensions": {
     "service.version": "${BUILD_NUMBER}"
