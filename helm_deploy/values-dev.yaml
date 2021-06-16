@@ -1,0 +1,18 @@
+---
+# Per environment values which override defaults in hmpps-template-kotlin/values.yaml
+
+generic-service:
+  replicaCount: 2
+
+  ingress:
+    host: hmpps-template-kotlin-dev.hmpps.service.justice.gov.uk
+
+  env:
+    APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.dev.json
+
+generic-prometheus-alerts:
+  alertSeverity: digital-prison-service-dev
+
+# CloudPlatform AlertManager receiver to route promethues alerts to slack
+generic-prometheus-alerts:
+  alertSeverity: hmpps_tech_non_prod
