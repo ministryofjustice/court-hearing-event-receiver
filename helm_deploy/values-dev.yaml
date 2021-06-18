@@ -1,5 +1,4 @@
----
-# Per environment values which override defaults in court-hearing-event-receiver/values.yaml
+#Per environment values which override defaults in court-hearing-event-receiver/values.yaml
 
 generic-service:
 
