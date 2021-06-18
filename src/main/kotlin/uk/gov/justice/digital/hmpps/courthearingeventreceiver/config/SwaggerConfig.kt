@@ -28,7 +28,7 @@ class SwaggerConfig {
   private lateinit var applicationContext: ApplicationContext
 
   @Bean
-  fun courtCaseServiceSwagger(): Docket {
+  fun courtHearingEventReceiverSwagger(): Docket {
     val docket = Docket(DocumentationType.SWAGGER_2)
       .useDefaultResponseMessages(false)
       .apiInfo(apiInfo())
@@ -71,8 +71,8 @@ class SwaggerConfig {
     val vendorExtensions: MutableCollection<VendorExtension<*>> = ArrayList()
     vendorExtensions.add(vendorExtension)
     return ApiInfo(
-      "Court Case Service API Documentation",
-      "REST service for accessing court case information",
+      "Court Hearing Event Receiver API Documentation",
+      "REST service for receiving updates to court hearing information",
       getVersion().version,
       "https://gateway.nomis-api.service.justice.gov.uk/auth/terms",
       contactInfo(),
