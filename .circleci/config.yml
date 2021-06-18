@@ -72,9 +72,6 @@ jobs:
             - build/libs
             - build.gradle.kts
             - app_version.txt
-      - jira/notify:
-          token_name: JIRA_CIRCLE_TOKEN
-          job_type: build            -
 
   deploy_dev:
     executor: deployer
