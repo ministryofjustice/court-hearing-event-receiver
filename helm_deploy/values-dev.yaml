@@ -1,6 +1,9 @@
 minReplicaCount: 1
 maxReplicaCount: 2
 
+env:
+  JAVA_OPTS: "-Xmx512m"
+
 image:
   repository: quay.io/hmpps/court-hearing-event-receiver
   tag: latest
