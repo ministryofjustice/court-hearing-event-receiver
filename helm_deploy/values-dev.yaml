@@ -1,17 +1,12 @@
 generic-service:
-
-  ingress:
-    host: court-hearing-event-receiver-dev.hmpps.service.justice.gov.uk
-
   env:
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.dev.json
 
-#generic-prometheus-alerts:
-#  alertSeverity: digital-prison-service-dev
-#
-##CloudPlatform AlertManager receiver to route prometheus alerts to slack
-#generic-prometheus-alerts:
-#  alertSeverity: hmpps_tech_non_prod
+generic-prometheus-alerts:
+  alertSeverity: digital-prison-service-dev
+
+generic-prometheus-alerts:
+  alertSeverity: hmpps_tech_non_prod
 
 minReplicaCount: 1
 maxReplicaCount: 2
