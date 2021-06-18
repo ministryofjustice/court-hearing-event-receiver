@@ -1,0 +1,21 @@
+
+minReplicaCount: 2
+maxReplicaCount: 4
+
+springProfiles: ""
+
+ingress:
+  enabled: true
+  enable_whitelist: true
+  hosts:
+    - host: court-hearing-event-receiver.hmpps.service.justice.gov.uk
+      cert_secret: court-probation-cert-secret
+  path: /
+
+resources:
+  cpu:
+    limit: 1000m
+    request: 50m
+  memory:
+    limit: 1000Mi
+    request: 500Mi

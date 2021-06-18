@@ -1,4 +1,4 @@
----
+  ---
 generic-service:
   nameOverride: court-hearing-event-receiver
 
