@@ -1,6 +1,11 @@
 minReplicaCount: 1
 maxReplicaCount: 2
 
+image:
+  repository: quay.io/hmpps/court-hearing-event-receiver
+  tag: latest
+  port: 8080
+
 ingress:
   enabled: true
   enable_whitelist: true

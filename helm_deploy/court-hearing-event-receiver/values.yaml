@@ -1,11 +1,6 @@
 generic-service:
   nameOverride: court-hearing-event-receiver
 
-  image:
-    repository: quay.io/hmpps/court-hearing-event-receiver
-    tag: app_version    # override at deployment time
-    port: 8080
-
   ingress:
     enabled: true
     host: app-hostname.local    # override per environment
