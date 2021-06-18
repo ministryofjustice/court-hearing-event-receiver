@@ -2,6 +2,17 @@ version: 2.1
 
 orbs:
   hmpps: ministryofjustice/hmpps@3.2
+  jira: circleci/jira@1.2.2
+
+executors:
+  deployer:
+    docker:
+      - image: circleci/python:3
+    working_directory: ~/app
+  builder:
+    docker:
+      - image: circleci/openjdk:16-jdk-buster-browsers
+    working_directory: ~/app
 
 jobs:
   validate:
@@ -25,11 +36,79 @@ jobs:
       - store_artifacts:
           path: build/reports/tests
 
+  build:
+    executor: builder
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - gradle-{{ checksum "build.gradle.kts" }}
+            - gradle-
+      - run: ./gradlew build
+      - run:
+          name: Record the Application Version
+          command: |
+            jar xvf build/libs/court-list-splitter-*.jar BOOT-INF/classes/META-INF/build-info.properties
+            APP_VERSION=$(grep 'build.version=' BOOT-INF/classes/META-INF/build-info.properties | awk -F= '{print $2}')
+            rm BOOT-INF/classes/META-INF/build-info.properties
+            # make up a good version name
+            SHORT_HASH=$(git rev-parse --short HEAD)
+            TAG=${APP_VERSION}.${SHORT_HASH}
+            if [[ "${CIRCLE_BRANCH}" == "main" ]]; then
+              TAG=${APP_VERSION}
+            fi
+            echo $TAG > ./app_version.txt
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: gradle-{{ checksum "build.gradle.kts" }}
+      - store_test_results:
+          path: build/test-results
+      - store_artifacts:
+          path: build/reports/tests
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build/libs
+            - build.gradle.kts
+            - app_version.txt
+
+  deploy_dev:
+    executor: deployer
+    steps:
+      - deploy_to_env:
+          env: "dev"
+      - jira/notify:
+          environment: dev
+          environment_type: development
+          token_name: JIRA_CIRCLE_TOKEN
+          job_type: deployment
+  deploy_preprod:
+    executor: deployer
+    steps:
+      - deploy_to_env:
+          env: "preprod"
+      - jira/notify:
+          environment: preprod
+          environment_type: testing
+          token_name: JIRA_CIRCLE_TOKEN
+          job_type: deployment
+  deploy_prod:
+    executor: deployer
+    steps:
+      - deploy_to_env:
+          env: "prod"
+      - jira/notify:
+          environment: prod
+          environment_type: production
+          token_name: JIRA_CIRCLE_TOKEN
+          job_type: deployment
+
 workflows:
   version: 2
   build-test-and-deploy:
     jobs:
-      - validate:
+      - build:
           filters:
             tags:
               ignore: /.*/
@@ -50,34 +129,35 @@ workflows:
               only:
                 - main
           requires:
-            - validate
+            - build
             - build_docker
             - helm_lint
-#      - request-preprod-approval:
-#          type: approval
-#          requires:
-#            - deploy_dev
-#      - hmpps/deploy_env:
-#          name: deploy_preprod
-#          env: "preprod"
-#          context:
-#            - hmpps-common-vars
-#            - court-hearing-event-receiver-preprod
-#          requires:
-#            - request-preprod-approval
-#      - request-prod-approval:
-#          type: approval
-#          requires:
-#            - deploy_preprod
-#      - hmpps/deploy_env:
-#          name: deploy_prod
-#          env: "prod"
-#          slack_notification: true
-#          context:
-#            - hmpps-common-vars
-#            - court-hearing-event-receiver-prod
-#          requires:
-#            - request-prod-approval
+      - request-preprod-approval:
+          type: approval
+          requires:
+            - deploy_dev
+      - hmpps/deploy_env:
+          name: deploy_preprod
+          env: "preprod"
+          context:
+            - hmpps-common-vars
+            - court-probation-preprod
+          requires:
+            - request-preprod-approval
+      - request-prod-approval:
+          type: approval
+          requires:
+            - deploy_preprod
+      - hmpps/deploy_env:
+          name: deploy_prod
+          env: "prod"
+          slack_channel_name: probation_in_court_dev
+          slack_notification: true
+          context:
+            - hmpps-common-vars
+            - court-probation-prod
+          requires:
+            - request-prod-approval
 
   security:
     triggers:

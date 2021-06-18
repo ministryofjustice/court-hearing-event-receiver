@@ -10,7 +10,6 @@ image:
   port: 8080
 
 ingress:
-  enabled: true
   enable_whitelist: true
   hosts:
     - host: court-hearing-event-receiver-dev.hmpps.service.justice.gov.uk
