@@ -15,3 +15,6 @@ ingress:
     - host: court-hearing-event-receiver-dev.hmpps.service.justice.gov.uk
       cert_secret: court-probation-dev-cert-secret
   path: /
+
+generic-prometheus-alerts:
+  - alertSeverity: prepare-a-case

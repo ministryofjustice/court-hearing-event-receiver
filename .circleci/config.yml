@@ -5,10 +5,6 @@ orbs:
   jira: circleci/jira@1.2.2
 
 executors:
-  deployer:
-    docker:
-      - image: circleci/python:3
-    working_directory: ~/app
   builder:
     docker:
       - image: circleci/openjdk:16-jdk-buster-browsers
@@ -72,37 +68,6 @@ jobs:
             - build/libs
             - build.gradle.kts
             - app_version.txt
-
-  deploy_dev:
-    executor: deployer
-    steps:
-      - deploy_to_env:
-          env: "dev"
-      - jira/notify:
-          environment: dev
-          environment_type: development
-          token_name: JIRA_CIRCLE_TOKEN
-          job_type: deployment
-  deploy_preprod:
-    executor: deployer
-    steps:
-      - deploy_to_env:
-          env: "preprod"
-      - jira/notify:
-          environment: preprod
-          environment_type: testing
-          token_name: JIRA_CIRCLE_TOKEN
-          job_type: deployment
-  deploy_prod:
-    executor: deployer
-    steps:
-      - deploy_to_env:
-          env: "prod"
-      - jira/notify:
-          environment: prod
-          environment_type: production
-          token_name: JIRA_CIRCLE_TOKEN
-          job_type: deployment
 
 workflows:
   version: 2
