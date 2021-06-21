@@ -1,5 +1,7 @@
-ingress:
-  hosts:
-    - host: court-hearing-event-receiver-dev.hmpps.service.justice.gov.uk
-      cert_secret: court-probation-dev-cert-secret
-  path: /
+---
+generic-service:
+  replicaCount: 2
+  ingress:
+    hosts:
+      - host: court-hearing-event-receiver-dev.hmpps.service.justice.gov.uk
+    tlsSecretName: court-probation-dev-cert-secret
