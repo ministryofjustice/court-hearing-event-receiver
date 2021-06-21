@@ -1,14 +1,22 @@
+---
 generic-service:
-  nameOverride: court-hearing-event-receiver
+  nameOverride: hmpps-template-kotlin
+
+  replicaCount: 4
+
+  image:
+    repository: quay.io/hmpps/hmpps-template-kotlin
+    tag: app_version    # override at deployment time
+    port: 8080
 
   ingress:
-    enabled: true
     host: app-hostname.local    # override per environment
-    tlsSecretName: court-hearing-event-receiver-cert
+    tlsSecretName: hmpps-template-kotlin-cert
     path: /
 
   # Environment variables to load into the deployment
   env:
+    JAVA_OPTS: "-Xmx512m"
     SERVER_PORT: "8080"
     SPRING_PROFILES_ACTIVE: "logstash"
     APPLICATIONINSIGHTS_CONNECTION_STRING: "InstrumentationKey=$(APPINSIGHTS_INSTRUMENTATIONKEY)"
@@ -20,7 +28,7 @@ generic-service:
   #     [name of environment variable as seen by app]: [key of kubernetes secret to load]
 
   namespace_secrets:
-    court-hearing-event-receiver:
+    hmpps-template-kotlin:
       APPINSIGHTS_INSTRUMENTATIONKEY: "APPINSIGHTS_INSTRUMENTATIONKEY"
 
   allowlist:
@@ -32,4 +40,4 @@ generic-service:
     cloudplatform-live1-3: "35.177.252.54/32"
 
 generic-prometheus-alerts:
-  targetApplication: court-hearing-event-receiver
+  targetApplication: hmpps-template-kotlin
