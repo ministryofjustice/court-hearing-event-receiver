@@ -41,6 +41,12 @@ jobs:
           path: build/test-results
       - store_artifacts:
           path: build/reports/tests
+          slack_notification: true
+          slack_channel_name: probation_in_court_dev
+          context:
+            - hmpps-common-vars
+          requires:
+            - store_test_results
       - persist_to_workspace:
           root: .
           paths:
