@@ -16,7 +16,6 @@ import springfox.documentation.service.VendorExtension
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
-import java.util.List
 import java.util.Optional
 import java.util.Properties
 
@@ -36,7 +35,7 @@ class SwaggerConfig {
       .apis(RequestHandlerSelectors.any())
       .paths(
         Predicates.or(
-          List.of(
+          mutableListOf(
             PathSelectors.regex("(\\/ping)"),
             PathSelectors.regex("(\\/info)"),
             PathSelectors.regex("(\\/health)")
