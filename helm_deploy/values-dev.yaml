@@ -1,6 +1,3 @@
-minReplicaCount: 1
-maxReplicaCount: 2
-
 ingress:
   hosts:
     - host: court-hearing-event-receiver-dev.hmpps.service.justice.gov.uk
