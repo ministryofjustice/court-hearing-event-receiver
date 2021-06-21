@@ -1,18 +1,7 @@
-minReplicaCount: 1
-maxReplicaCount: 2
-
-env:
-  JAVA_OPTS: "-Xmx512m"
-
-image:
-  repository: quay.io/hmpps/court-hearing-event-receiver
-  tag: latest
-  port: 8080
-
-ingress:
-  enabled: true
-  enable_whitelist: true
-  hosts:
-    - host: court-hearing-event-receiver-dev.hmpps.service.justice.gov.uk
-      cert_secret: court-probation-dev-cert-secret
-  path: /
+---
+generic-service:
+  replicaCount: 2
+  ingress:
+    hosts:
+      - host: court-hearing-event-receiver-dev.hmpps.service.justice.gov.uk
+    tlsSecretName: court-probation-dev-cert-secret

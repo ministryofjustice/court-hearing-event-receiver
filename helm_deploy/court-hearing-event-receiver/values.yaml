@@ -1,14 +1,21 @@
+---
 generic-service:
   nameOverride: court-hearing-event-receiver
 
+  replicaCount: 4
+
+  image:
+    repository: quay.io/hmpps/court-hearing-event-receiver
+    tag: app_version    # override at deployment time
+    port: 8080
+
   ingress:
-    enabled: true
     host: app-hostname.local    # override per environment
-    tlsSecretName: court-hearing-event-receiver-cert
     path: /
 
   # Environment variables to load into the deployment
   env:
+    JAVA_OPTS: "-Xmx512m"
     SERVER_PORT: "8080"
     SPRING_PROFILES_ACTIVE: "logstash"
     APPLICATIONINSIGHTS_CONNECTION_STRING: "InstrumentationKey=$(APPINSIGHTS_INSTRUMENTATIONKEY)"
@@ -33,3 +40,4 @@ generic-service:
 
 generic-prometheus-alerts:
   targetApplication: court-hearing-event-receiver
+  alertSeverity: slack-hmpps-user-preferences
