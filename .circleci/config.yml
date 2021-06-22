@@ -55,6 +55,9 @@ jobs:
             - build/libs
             - build.gradle.kts
             - app_version.txt
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
 workflows:
   version: 2
