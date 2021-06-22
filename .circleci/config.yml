@@ -80,6 +80,7 @@ workflows:
           requires:
             - build
             - build_docker
+            - helm_lint
       - request-preprod-approval:
           type: approval
           requires:
