@@ -76,8 +76,6 @@ workflows:
               only:
                 - main
                 - helm_lint
-          slack_notification: true
-          slack_channel_name: probation_in_court_dev                -
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
