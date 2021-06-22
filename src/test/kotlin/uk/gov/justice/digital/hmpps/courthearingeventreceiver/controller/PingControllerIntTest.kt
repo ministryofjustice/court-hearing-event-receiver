@@ -17,6 +17,6 @@ class PingControllerIntTest : IntegrationTestBase() {
         .returnResult()
         .responseBodyContent
     )
-    assertThat(str).isEqualTo("pxng")
+    assertThat(str).isEqualTo("pong")
   }
 }
