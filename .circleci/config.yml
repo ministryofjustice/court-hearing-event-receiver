@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   hmpps: ministryofjustice/hmpps@3.2
   jira: circleci/jira@1.2.2
+  slack: circleci/slack@4.4.2
 
 executors:
   builder:
@@ -33,6 +34,13 @@ jobs:
               TAG=${APP_VERSION}
             fi
             echo $TAG > ./app_version.txt
+#      - slack/notify:
+#          color: "#42e2f4"
+#          mentions: "yemiwebby,"
+#          message: A custom message to notify the channel about the latest build
+#      - slack/status:
+#          fail_only: true
+#          mentions: "yemiwebby"
       - save_cache:
           paths:
             - ~/.gradle
