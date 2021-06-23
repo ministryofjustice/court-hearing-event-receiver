@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   hmpps: ministryofjustice/hmpps@3.2
   jira: circleci/jira@1.2.2
+  slack: circleci/slack@4.4.2
 
 executors:
   builder:
@@ -47,6 +48,9 @@ jobs:
             - build/libs
             - build.gradle.kts
             - app_version.txt
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
 workflows:
   version: 2
@@ -64,6 +68,7 @@ workflows:
             branches:
               only:
                 - main
+                - helm_lint
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
