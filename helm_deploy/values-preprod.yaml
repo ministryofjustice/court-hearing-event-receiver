@@ -1,6 +1,10 @@
 ---
 generic-service:
-  replicaCount: 2
   ingress:
     host: court-hearing-event-receiver-preprod.hmpps.service.justice.gov.uk
     tlsSecretName: court-probation-preprod-cert-secret
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 100
