@@ -2,6 +2,5 @@
 generic-service:
   replicaCount: 2
   ingress:
-    hosts:
-      - host: court-hearing-event-receiver.hmpps.service.justice.gov.uk
+    host: court-hearing-event-receiver.hmpps.service.justice.gov.uk
     tlsSecretName: court-probation-cert-secret

@@ -10,6 +10,7 @@ generic-service:
     port: 8080
 
   ingress:
+    enabled: true
     host: app-hostname.local    # override per environment
     path: /
 
