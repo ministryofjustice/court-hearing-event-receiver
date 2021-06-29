@@ -4,3 +4,21 @@ server:
 management.endpoint:
   health.cache.time-to-live: 0
   info.cache.time-to-live: 0
+
+# Localstack settings
+aws:
+  sns_endpoint_url: "http://localhost:4566"
+  sqs_endpoint_url: "http://localhost:4566"
+  access_key_id: foobar
+  secret_access_key: foobar
+  region_name: eu-west-2
+  sns:
+    topic_arn: "arn:aws:sns:eu-west-2:754256621582:topic_name"
+  sqs:
+    queue_name: "test-queue"
+
+aws_access_key_id: foobar
+aws_secret_access_key: foobar
+aws_sns_access_key_id: foobar
+aws_sns_secret_access_key: foobar
+aws_sns_topic_arn: "arn:aws:sns:eu-west-2:000000000000:court-case-events-topic"

@@ -12,6 +12,8 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+  implementation("com.amazonaws:aws-java-sdk-sns:1.11.1024")
+  implementation("com.amazonaws:aws-java-sdk-sqs:1.11.1024")
 
   implementation("io.springfox:springfox-swagger2:2.9.2")
   implementation("io.springfox:springfox-swagger-ui:2.9.2")
