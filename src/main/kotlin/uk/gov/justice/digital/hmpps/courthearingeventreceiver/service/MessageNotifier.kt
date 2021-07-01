@@ -14,7 +14,7 @@ private const val MESSAGE_TYPE = "CP_TEST_COURT_CASE"
 class MessageNotifier(
   @Autowired
   private val amazonSNSClient: AmazonSNS,
-  @Value("\${aws_sns_topic_arn}")
+  @Value("\${aws.sns.topic_arn}")
   private val topicArn: String
 ) {
   fun send(message: String) {

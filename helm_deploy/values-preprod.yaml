@@ -8,3 +8,6 @@ generic-service:
     minReplicas: 2
     maxReplicas: 4
     targetCPUUtilizationPercentage: 100
+
+env:
+  HMPPS_AUTH_BASE_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk/auth"

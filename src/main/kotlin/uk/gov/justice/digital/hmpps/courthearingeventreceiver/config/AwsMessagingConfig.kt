@@ -16,8 +16,8 @@ class AwsMessagingConfig {
   @Bean
   fun amazonSNSClient(
     @Value("\${aws.region-name}") regionName: String,
-    @Value("\${aws_sns_access_key_id}") awsAccessKeyId: String,
-    @Value("\${aws_sns_secret_access_key}") awsSecretAccessKey: String
+    @Value("\${aws.sns.access_key_id}") awsAccessKeyId: String,
+    @Value("\${aws.sns.secret_access_key}") awsSecretAccessKey: String
   ): AmazonSNS {
     return AmazonSNSClientBuilder
       .standard()

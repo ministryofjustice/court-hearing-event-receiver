@@ -33,11 +33,11 @@ abstract class IntegrationTestBase {
 
   @TestConfiguration
   class AwsTestConfig(
-    @Value("\${aws.sqs_endpoint_url}")
+    @Value("\${aws.sqs.endpoint_url}")
     private val sqsEndpointUrl: String,
-    @Value("\${aws.access_key_id}")
+    @Value("\${aws.sqs.access_key_id}")
     private val accessKeyId: String,
-    @Value("\${aws.secret_access_key}")
+    @Value("\${aws.sqs.secret_access_key}")
     private val secretAccessKey: String,
     @Value("\${aws.region_name}")
     private val regionName: String,
@@ -58,8 +58,8 @@ abstract class IntegrationTestBase {
     @Bean
     fun amazonSNSClient(
       @Value("\${aws.region-name}") regionName: String,
-      @Value("\${aws_sns_access_key_id}") awsAccessKeyId: String,
-      @Value("\${aws_sns_secret_access_key}") awsSecretAccessKey: String
+      @Value("\${aws.sns.access_key_id}") awsAccessKeyId: String,
+      @Value("\${aws.sns.secret_access_key}") awsSecretAccessKey: String
     ): AmazonSNS {
       return AmazonSNSClientBuilder
         .standard()

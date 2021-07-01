@@ -9,3 +9,5 @@ generic-service:
     maxReplicas: 2
     targetCPUUtilizationPercentage: 100
 
+env:
+  HMPPS_AUTH_BASE_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
