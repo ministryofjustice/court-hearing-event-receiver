@@ -15,3 +15,6 @@ generic-service:
     memory:
       limit: 1200Mi
       request: 700Mi
+
+env:
+  HMPPS_AUTH_BASE_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk/auth"

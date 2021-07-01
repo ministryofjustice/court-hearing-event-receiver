@@ -17,6 +17,12 @@ spring:
     group:
       test:
         - "stdout"
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${hmpps-auth.base-url}/issuer
+          jwk-set-uri: ${hmpps-auth.base-url}/.well-known/jwks.json
 
 server:
   port: 8080

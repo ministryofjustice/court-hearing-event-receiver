@@ -19,6 +19,7 @@ generic-service:
     SPRING_PROFILES_ACTIVE: "logstash"
     APPLICATIONINSIGHTS_CONNECTION_STRING: "InstrumentationKey=$(APPINSIGHTS_INSTRUMENTATIONKEY)"
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.json
+    AWS_REGION_NAME: "eu-west-2"
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
@@ -28,6 +29,11 @@ generic-service:
   namespace_secrets:
     court-hearing-event-receiver:
       APPINSIGHTS_INSTRUMENTATIONKEY: "APPINSIGHTS_INSTRUMENTATIONKEY"
+    court-case-events-topic:
+      aws_sns_access_key_id: access_key_id
+      aws_sns_secret_access_key: secret_access_key
+      aws_sns_topic_arn: topic_arn
+
 
   allowlist:
     office: "217.33.148.210/32"
