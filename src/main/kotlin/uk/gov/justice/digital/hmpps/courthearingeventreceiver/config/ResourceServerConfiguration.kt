@@ -31,9 +31,7 @@ class ResourceServerConfiguration : WebSecurityConfigurerAdapter() {
           "/webjars/springfox-swagger-ui/**"
         ).permitAll()
         it.anyRequest()
-          .authenticated()
-        // TODO: apply this once we have appropriate roles set up
-//          .hasRole("COURT_HEARING_EVENT_WRITE")
+          .hasRole("COURT_HEARING_EVENT_WRITE")
       }
       .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
   }
