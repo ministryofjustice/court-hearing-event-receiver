@@ -8,6 +8,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import reactor.core.publisher.Mono
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.integration.IntegrationTestBase
+import java.util.concurrent.TimeUnit
 
 @ActiveProfiles("test")
 class EventControllerIntTest : IntegrationTestBase() {
@@ -25,7 +26,8 @@ class EventControllerIntTest : IntegrationTestBase() {
       .expectStatus().isAccepted
 
     // Verify new thing received at topic
-    val messages = sqs.receiveMessage("http://localhost:4566/000000000000/test-queue")
+    val messages = sqs.receiveMessageAsync("http://localhost:4566/000000000000/test-queue")
+      .get(5, TimeUnit.SECONDS)
     assertThat(messages.messages.size).isEqualTo(1)
     assertThat(messages.messages.get(0).body).contains("foo")
   }
