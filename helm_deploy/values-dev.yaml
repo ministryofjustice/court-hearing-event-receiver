@@ -8,6 +8,13 @@ generic-service:
     minReplicas: 1
     maxReplicas: 2
     targetCPUUtilizationPercentage: 100
+  resources:
+    cpu:
+      limit: 5000m
+      request: 250m
+    memory:
+      limit: 1200Mi
+      request: 350Mi
 
 env:
   HMPPS_AUTH_BASE_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
