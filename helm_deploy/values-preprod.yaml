@@ -3,18 +3,20 @@ generic-service:
   ingress:
     host: court-hearing-event-receiver-preprod.hmpps.service.justice.gov.uk
     tlsSecretName: court-probation-preprod-cert-secret
+
   autoscaling:
     enabled: true
     minReplicas: 2
     maxReplicas: 4
     targetCPUUtilizationPercentage: 100
+    
   resources:
-    cpu:
-      limit: 5000m
-      request: 500m
-    memory:
-      limit: 1200Mi
-      request: 700Mi
+    limits:
+      cpu: 5000m
+      memory: 1200Mi
+    requests:
+      cpu: 500m
+      memory: 700Mi
 
 env:
   HMPPS_AUTH_BASE_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk/auth"
