@@ -3,15 +3,18 @@ generic-service:
   ingress:
     host: court-hearing-event-receiver-dev.hmpps.service.justice.gov.uk
     tlsSecretName: court-probation-dev-cert-secret
+
   autoscaling:
     enabled: true
     minReplicas: 1
     maxReplicas: 2
     targetCPUUtilizationPercentage: 100
+
   resources:
-    cpu:
-      limit: 5000m
-      request: 250m
-    memory:
-      limit: 1200Mi
-      request: 350Mi
+    limits:
+       cpu: 5000m
+       memory: 1200Mi
+    requests:
+       cpu: 250m
+       memory: 350Mi
+
