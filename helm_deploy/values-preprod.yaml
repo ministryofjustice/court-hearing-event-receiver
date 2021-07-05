@@ -9,7 +9,7 @@ generic-service:
     minReplicas: 2
     maxReplicas: 4
     targetCPUUtilizationPercentage: 100
-
+    
   resources:
     limits:
       cpu: 5000m
@@ -18,3 +18,5 @@ generic-service:
       cpu: 500m
       memory: 700Mi
 
+env:
+  HMPPS_AUTH_BASE_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk/auth"

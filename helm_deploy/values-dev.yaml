@@ -12,9 +12,11 @@ generic-service:
 
   resources:
     limits:
-       cpu: 5000m
-       memory: 1200Mi
+      cpu: 5000m
+      memory: 1200Mi
     requests:
-       cpu: 250m
-       memory: 350Mi
+      cpu: 250m
+      memory: 350Mi
 
+env:
+  HMPPS_AUTH_BASE_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"

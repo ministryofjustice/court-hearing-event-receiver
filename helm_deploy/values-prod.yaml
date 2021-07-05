@@ -17,4 +17,6 @@ generic-service:
     requests:
       cpu: 500m
       memory: 700Mi
-
+      
+env:
+  HMPPS_AUTH_BASE_URL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
