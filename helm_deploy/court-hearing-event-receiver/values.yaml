@@ -12,6 +12,10 @@ generic-service:
     host: app-hostname.local    # override per environment
     path: /
 
+  autoscaling:
+    enabled: true
+    targetCPUUtilizationPercentage: 100
+
   # Environment variables to load into the deployment
   env:
     JAVA_OPTS: "-Xmx512m"
