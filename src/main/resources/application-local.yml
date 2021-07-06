@@ -1,0 +1,15 @@
+hmpps-auth:
+  baseurl: https://sign-in-dev.hmpps.service.justice.gov.uk/auth
+
+# Localstack settings
+aws:
+  region_name: eu-west-2
+  sns:
+    topic_arn: "arn:aws:sns:eu-west-2:000000000000:court-case-events-topic"
+    access_key_id: foobar
+    secret_access_key: foobar
+  sqs:
+    endpoint_url: "http://localhost:4566"
+    queue_name: "test-queue"
+    access_key_id: foobar
+    secret_access_key: foobar
