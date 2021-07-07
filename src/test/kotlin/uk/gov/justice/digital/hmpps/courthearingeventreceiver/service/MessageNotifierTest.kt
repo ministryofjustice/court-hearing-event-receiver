@@ -3,6 +3,8 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.service
 import com.amazonaws.services.sns.AmazonSNS
 import com.amazonaws.services.sns.model.PublishRequest
 import com.amazonaws.services.sns.model.PublishResult
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -18,6 +20,10 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.CourtCentre
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.Hearing
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingDay
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
 @Import(MessageNotifierTest.TestNotifierConfig::class)
@@ -35,14 +41,21 @@ internal class MessageNotifierTest {
   @Test
   fun `when get message then publish to SNS`() {
 
+    val hearingEvent = HearingEvent(
+      hearing = Hearing(
+        id = "hearing-id",
+        courtCentre = CourtCentre(code = "B10JQ"),
+        hearingDays = mutableListOf(HearingDay(listingSequence = 1))
+      )
+    )
     val result = PublishResult().withMessageId("messageId")
     whenever(amazonSNSClient.publish(any()))
       .thenReturn(result)
 
-    messageNotifier.send("foo")
+    messageNotifier.send(hearingEvent)
 
     verify(amazonSNSClient).publish(publishRequest.capture())
-    assertThat(publishRequest.value.message).contains("foo")
+    assertThat(publishRequest.value.message).contains("hearing-id")
     assertThat(publishRequest.value.messageAttributes["messageType"]?.dataType).isEqualTo("String")
     assertThat(publishRequest.value.messageAttributes["messageType"]?.stringValue).isEqualTo("CP_TEST_COURT_CASE")
   }
@@ -54,6 +67,9 @@ internal class MessageNotifierTest {
     private lateinit var amazonSNSClient: AmazonSNS
 
     @Bean
-    fun messageNotifier() = MessageNotifier(amazonSNSClient, "topic")
+    fun objectMapper(): ObjectMapper = ObjectMapper().registerModule(KotlinModule())
+
+    @Bean
+    fun messageNotifier() = MessageNotifier(objectMapper(), amazonSNSClient, "topic")
   }
 }
