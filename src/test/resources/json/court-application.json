@@ -1,0 +1,347 @@
+{
+  "hearing": {
+    "applicantCounsels": [],
+    "applicationPartyCounsels": [],
+    "approvalsRequested": [],
+    "companyRepresentatives": [],
+    "courtApplicationPartyAttendance": [],
+    "courtApplications": [
+      {
+        "applicant": {
+          "id": "25d3a492-0bf0-4bb2-8aa7-2f084d70a9b2",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "598a9519-9a0f-4fd0-80de-a2c72a662739",
+                "caseReference": "90GD1000052",
+                "defendantId": "1c052ea0-03a4-4c37-bcce-bd4110508e77"
+              }
+            ],
+            "masterDefendantId": "1c052ea0-03a4-4c37-bcce-bd4110508e77",
+            "personDefendant": {
+              "arrestSummonsNumber": "TFL1",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "personDetails": {
+                "address": {
+                  "address1": "1234",
+                  "address2": "StreetDescription",
+                  "address3": "Locality2O"
+                },
+                "dateOfBirth": "1990-01-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Darius",
+                "gender": "MALE",
+                "lastName": "ProhaskaOndricka",
+                "title": "Mr"
+              }
+            }
+          },
+          "organisationPersons": []
+        },
+        "applicationParticulars": "Test",
+        "applicationReceivedDate": "2021-06-24",
+        "applicationReference": "90GD1000052",
+        "applicationStatus": "UN_ALLOCATED",
+        "courtApplicationCases": [
+          {
+            "caseStatus": "ACTIVE",
+            "isSJP": false,
+            "offences": [],
+            "prosecutionCaseId": "598a9519-9a0f-4fd0-80de-a2c72a662739",
+            "prosecutionCaseIdentifier": {
+              "prosecutionAuthorityCode": "DERPF",
+              "prosecutionAuthorityId": "bdc190e7-c939-37ca-be4b-9f615d6ef40e",
+              "prosecutionAuthorityName": "Derbyshire Police",
+              "caseURN": "90GD1000052"
+            }
+          }
+        ],
+        "id": "af8b3c0d-8dc7-4ac6-aaf3-5f997996f4b6",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "category": "FINAL",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "judicialResultId": "6c6b18e5-2277-4e45-9a43-473301a497bd",
+            "judicialResultPrompts": [],
+            "label": "Granted",
+            "lastSharedDateTime": "2021-06-25",
+            "lifeDuration": false,
+            "orderedDate": "2021-06-25",
+            "orderedHearingId": "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2",
+            "publishedAsAPrompt": false,
+            "rank": 84300,
+            "resultText": "Granted\n",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "respondents": [
+          {
+            "id": "fee2b7db-c2d0-4723-9813-10833a855534",
+            "organisationPersons": [],
+            "prosecutingAuthority": {
+              "address": {
+                "address1": "Criminal Justice Department",
+                "address2": "Derbyshire Constabulary",
+                "address3": "Butterley Hall",
+                "postcode": "DE5 3RS"
+              },
+              "contact": {
+                "primaryEmail": "CCSU@derbyshire.pnn.police.uk"
+              },
+              "name": "Derbyshire Police",
+              "prosecutionAuthorityCode": "DERPF",
+              "prosecutionAuthorityId": "bdc190e7-c939-37ca-be4b-9f615d6ef40e"
+            }
+          }
+        ],
+        "subject": {
+          "id": "25d3a492-0bf0-4bb2-8aa7-2f084d70a9b2",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "598a9519-9a0f-4fd0-80de-a2c72a662739",
+                "caseReference": "90GD1000052",
+                "defendantId": "1c052ea0-03a4-4c37-bcce-bd4110508e77"
+              }
+            ],
+            "masterDefendantId": "1c052ea0-03a4-4c37-bcce-bd4110508e77",
+            "personDefendant": {
+              "arrestSummonsNumber": "TFL1",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "personDetails": {
+                "address": {
+                  "address1": "1234",
+                  "address2": "StreetDescription",
+                  "address3": "Locality2O"
+                },
+                "dateOfBirth": "1990-01-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Darius",
+                "gender": "MALE",
+                "lastName": "ProhaskaOndricka",
+                "title": "Mr"
+              }
+            }
+          },
+          "organisationPersons": []
+        },
+        "thirdParties": [],
+        "type": {
+          "appealFlag": false,
+          "applicantAppellantFlag": false,
+          "breachType": "NOT_APPLICABLE",
+          "categoryCode": "CO",
+          "code": "BA76504",
+          "commrOfOathFlag": false,
+          "courtExtractAvlFlag": true,
+          "courtOfAppealFlag": false,
+          "id": "26c7e337-5697-3448-9b9b-f71a6a6e6b1f",
+          "jurisdiction": "EITHER",
+          "legislation": "In accordance with section 3(8) of the Bail Act 1976.",
+          "linkType": "LINKED",
+          "offenceActiveOrder": "OFFENCE",
+          "pleaApplicableFlag": false,
+          "prosecutorThirdPartyFlag": false,
+          "spiOutApplicableFlag": true,
+          "summonsTemplateType": "NOT_APPLICABLE",
+          "type": "Application to vary conditions of bail"
+        }
+      }
+    ],
+    "courtCentre": {
+      "address": {
+        "address1": "The Law Courts",
+        "address2": "Alexandra Road",
+        "address3": "Wimbledon",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW19 7JP"
+      },
+      "code": "B01OK00",
+      "id": "d9bff7d8-6168-4163-ad77-3b98d61de174",
+      "name": "Wimbledon Magistrates' Court",
+      "roomId": "1414ea28-8b0e-3ba7-8f97-f2bb6d5dd38c",
+      "roomName": "Courtroom 05"
+    },
+    "defenceCounsels": [],
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "IN_PERSON",
+            "day": "2021-06-25"
+          }
+        ],
+        "defendantId": "1c052ea0-03a4-4c37-bcce-bd4110508e77"
+      }
+    ],
+    "defendantHearingYouthMarkers": [],
+    "defendantJudicialResults": [],
+    "defendantReferralReasons": [],
+    "hasSharedResults": true,
+    "hearingCaseNotes": [],
+    "hearingDays": [
+      {
+        "listedDurationMinutes": 1,
+        "listingSequence": 0,
+        "sittingDay": "2021-06-25T09:00:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2",
+    "judiciary": [],
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases": [
+      {
+        "caseMarkers": [],
+        "caseStatus": "ACTIVE",
+        "defendants": [
+          {
+            "aliases": [],
+            "associatedDefenceOrganisation": {
+              "applicationReference": "LAA-20191601",
+              "associationEndDate": "2019-12-12",
+              "associationStartDate": "2019-09-12",
+              "fundingType": "REPRESENTATION_ORDER",
+              "isAssociatedByLAA": true,
+              "organisation": {
+                "address": {
+                  "address1": "a",
+                  "address2": "a",
+                  "address3": "a",
+                  "address4": "a",
+                  "address5": "a",
+                  "postcode": "GIR0AA"
+                },
+                "contact": {
+                  "fax": "a",
+                  "home": " ",
+                  "mobile": " ",
+                  "primaryEmail": "!.!@00.00",
+                  "secondaryEmail": "!.!@00.00",
+                  "work": "a"
+                },
+                "incorporationNumber": "a",
+                "name": "a",
+                "registeredCharityNumber": "a"
+              }
+            },
+            "associatedPersons": [],
+            "id": "1c052ea0-03a4-4c37-bcce-bd4110508e77",
+            "isYouth": false,
+            "judicialResults": [],
+            "masterDefendantId": "1c052ea0-03a4-4c37-bcce-bd4110508e77",
+            "offences": [
+              {
+                "arrestDate": "2020-02-09",
+                "chargeDate": "2020-02-09",
+                "count": 0,
+                "id": "f6259017-b2d1-400d-ae45-d9a610dfaeea",
+                "judicialResults": [],
+                "laaApplnReference": {
+                  "applicationReference": "LAA-20191601",
+                  "effectiveEndDate": "2019-12-12",
+                  "effectiveStartDate": "2019-09-12",
+                  "statusCode": "G2",
+                  "statusDate": "2019-12-16",
+                  "statusDescription": "Granted for Two Advocates",
+                  "statusId": "58ebf081-2b7d-3b1d-8c47-149fe7dbd672"
+                },
+                "modeOfTrial": "Summary",
+                "offenceCode": "CA03012",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "51ed3322-499a-4430-94cc-d52964f108db",
+                "offenceLegislation": "Contrary to section 363(3)(b) and (4) of the    Communications Act 2003.",
+                "offenceTitle": "Possess /    control TV set with intent another use install without a licence",
+                "orderIndex": 1,
+                "proceedingsConcluded": false,
+                "reportingRestrictions": [],
+                "startDate": "2020-02-09",
+                "victims": [],
+                "wording": "Has a violent past and fear that he will commit further offences and interfere with witnesse"
+              },
+              {
+                "arrestDate": "2020-02-09",
+                "chargeDate": "2020-02-09",
+                "count": 0,
+                "id": "f99e2c87-00d3-490a-98e1-f7d111147381",
+                "judicialResults": [],
+                "modeOfTrial": "Summary",
+                "offenceCode": "CA03013",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "062cedf4-b495-3a6c-9148-cec6bef362ef",
+                "offenceLegislation": "Contrary to section 366(8)(a) and (9) of the Communications Act 2003.",
+                "offenceTitle": "Obstruct person executing search warrant for TV receiver",
+                "orderIndex": 2,
+                "proceedingsConcluded": false,
+                "reportingRestrictions": [],
+                "startDate": "2020-02-09",
+                "victims": [],
+                "wording": "Has a violent past and fear that he will commit further offences and interfere with witnesse"
+              }
+            ],
+            "personDefendant": {
+              "arrestSummonsNumber": "TFL1",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "personDetails": {
+                "address": {
+                  "address1": "1234",
+                  "address2": "StreetDescription",
+                  "address3": "Locality2O"
+                },
+                "dateOfBirth": "1990-01-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Darius",
+                "gender": "MALE",
+                "lastName": "ProhaskaOndricka",
+                "title": "Mr"
+              }
+            },
+            "proceedingsConcluded": false,
+            "prosecutionAuthorityReference": "TFL1",
+            "prosecutionCaseId": "598a9519-9a0f-4fd0-80de-a2c72a662739"
+          }
+        ],
+        "id": "598a9519-9a0f-4fd0-80de-a2c72a662739",
+        "initiationCode": "C",
+        "originatingOrganisation": "0300000",
+        "prosecutionCaseIdentifier": {
+          "prosecutionAuthorityCode": "DERPF",
+          "prosecutionAuthorityId": "bdc190e7-c939-37ca-be4b-9f615d6ef40e",
+          "prosecutionAuthorityName": "Derbyshire Police",
+          "caseURN": "90GD1000052"
+        }
+      }
+    ],
+    "prosecutionCounsels": [],
+    "respondentCounsels": [],
+    "type": {
+      "description": "Bail Variation Application",
+      "id": "3b5fdf13-7033-4ce0-857d-b7ea463da91d"
+    }
+  },
+  "sharedTime": "2021-06-25T09:38:02.191Z[UTC]"
+}
