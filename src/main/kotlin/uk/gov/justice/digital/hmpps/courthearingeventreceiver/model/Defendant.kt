@@ -21,6 +21,7 @@ data class Defendant(
   @JsonProperty("prosecutionCaseId")
   val prosecutionCaseId: String,
 
+  // We are told, but it is not confirmed in the schema, that there will be a personDefendant OR legalEntityDefendant
   @JsonProperty("personDefendant")
   val personDefendant: PersonDefendant?,
 

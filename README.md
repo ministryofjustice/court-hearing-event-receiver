@@ -14,5 +14,6 @@ Outstanding Questions
 5. What do we need to understand the case lifecycle ? For example, are any of these useful ?
    `caseStatus` - seen as READY_FOR_REVIEW, ACTIVE but it's just a string so difficult to know
 6. In `defendant`, there's a `prosecutionCaseId` - that seems to just duplicate the id in the parent `prosecutionCase` object. Is that always the case ?
+7. It would be good to get confirmation, possibly enforced in JSON schema, that there will always be a `legalEntityDefendant` or `personDefendant` in the `Defendant` object.
 
 
