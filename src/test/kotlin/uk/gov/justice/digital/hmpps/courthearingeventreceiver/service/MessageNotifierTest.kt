@@ -22,8 +22,8 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.CourtCentre
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.Hearing
-import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingDay
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingType
 
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
 @Import(MessageNotifierTest.TestNotifierConfig::class)
@@ -44,8 +44,8 @@ internal class MessageNotifierTest {
     val hearingEvent = HearingEvent(
       hearing = Hearing(
         id = "hearing-id",
-        courtCentre = CourtCentre(code = "B10JQ"),
-        hearingDays = mutableListOf(HearingDay(listingSequence = 1))
+        courtCentre = CourtCentre(code = "B10JQ", roomId = "abc", roomName = "Crown Court 3-1", id = "abc"),
+        type = HearingType(id = "abc", description = "Sentence")
       )
     )
     val result = PublishResult().withMessageId("messageId")

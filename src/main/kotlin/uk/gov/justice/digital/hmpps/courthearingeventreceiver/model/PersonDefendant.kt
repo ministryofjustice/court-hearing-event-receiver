@@ -5,15 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import javax.validation.constraints.NotNull
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class CourtCentre(
-  @NotNull
-  @JsonProperty("id")
-  val id: String,
+data class PersonDefendant(
 
-  @JsonProperty("code")
-  val code: String?,
-  @JsonProperty("roomId")
-  val roomId: String?,
-  @JsonProperty("roomName")
-  val roomName: String?
+  @NotNull
+  @JsonProperty("personDetails")
+  val personDetails: PersonDetails
 )

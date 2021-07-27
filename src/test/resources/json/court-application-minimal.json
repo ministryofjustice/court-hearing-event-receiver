@@ -12,7 +12,8 @@
       "code": "B10JQ00",
       "name": "Wimbledon Magistrates' Court",
       "roomId": "1414ea28-8b0e-3ba7-8f97-f2bb6d5dd38c",
-      "roomName": "Courtroom 05"
+      "roomName": "Courtroom 05",
+      "id": "59cb14a6-e8de-4615-9b9e-94bf5ef81ad2"
     },
     "hearingDays": [
       {
@@ -21,6 +22,11 @@
         "sittingDay": "2021-06-25T09:00:00.000Z"
       }
     ],
-    "id": "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2"
+    "id": "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2",
+    "jurisdictionType": "MAGISTRATES",
+    "type": {
+      "description": "Sentence",
+      "id": "5ae4c090-0f70-4694-b4fc-707633d2b430"
+    }
   }
 }
