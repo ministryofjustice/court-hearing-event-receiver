@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank
 data class ProsecutionCaseIdentifier(
   @NotBlank
   @JsonProperty("prosecutionAuthorityCode")
-  val prosecutionAuthorityCode:  String,
+  val prosecutionAuthorityCode: String,
 
   @NotBlank
   @JsonProperty("prosecutionAuthorityId")

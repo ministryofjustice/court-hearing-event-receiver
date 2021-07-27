@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import javax.validation.constraints.NotBlank
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Organisation (
+data class Organisation(
   @NotBlank
   @JsonProperty("name")
   val name: String,

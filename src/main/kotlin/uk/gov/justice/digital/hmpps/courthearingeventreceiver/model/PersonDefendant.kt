@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import javax.validation.constraints.NotNull
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class PersonDefendant (
+data class PersonDefendant(
 
   @NotNull
   @JsonProperty("personDetails")

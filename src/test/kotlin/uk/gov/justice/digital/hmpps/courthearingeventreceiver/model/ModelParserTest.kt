@@ -60,5 +60,4 @@ internal class ModelParserTest {
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.gender).isSameAs(Gender.MALE)
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.dateOfBirth).isEqualTo(LocalDate.of(1983, Month.FEBRUARY, 28))
   }
-
 }

@@ -11,7 +11,7 @@ data class Offence(
 
   @NotBlank
   @JsonProperty("offenceDefinitionId")
-  val offenceDefinitionId:String,
+  val offenceDefinitionId: String,
 
   @NotBlank
   @JsonProperty("offenceCode")
