@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -26,10 +27,10 @@ class EventController(
 ) {
 
   @ApiOperation(value = "Endpoint to receive events")
-  @RequestMapping(value = ["/event"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+  @RequestMapping(value = ["/hearing/{id}"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun postEvent(@RequestBody hearingEvent: HearingEvent) {
-    log.info("Received hearing event payload id: %s".format(hearingEvent.hearing.id))
+  fun postEvent(@PathVariable(required = false) id: String, @RequestBody hearingEvent: HearingEvent) {
+    log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
     val hearing = hearingEvent.hearing
     telemetryService.trackEvent(
       TelemetryEventType.COURT_HEARING_EVENT_RECEIVED,
