@@ -77,7 +77,7 @@ class EventControllerIntTest : IntegrationTestBase() {
   private fun postEvent(hearingEvent: HearingEvent, token: String) =
     webTestClient
       .post()
-      .uri("/event")
+      .uri("/hearing/" + hearingEvent.hearing.id)
       .contentType(MediaType.APPLICATION_JSON)
       .header("Authorization", "Bearer $token")
       .body(Mono.just(hearingEvent), HearingEvent::class.java)
