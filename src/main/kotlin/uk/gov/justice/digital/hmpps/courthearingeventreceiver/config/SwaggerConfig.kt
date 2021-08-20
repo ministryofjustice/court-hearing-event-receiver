@@ -36,7 +36,7 @@ class SwaggerConfig {
       .paths(
         Predicates.or(
           mutableListOf(
-            PathSelectors.regex("(\\/hearing)"),
+            PathSelectors.regex("(\\/hearing/.*)"),
             PathSelectors.regex("(\\/ping)"),
             PathSelectors.regex("(\\/info)"),
             PathSelectors.regex("(\\/health)")

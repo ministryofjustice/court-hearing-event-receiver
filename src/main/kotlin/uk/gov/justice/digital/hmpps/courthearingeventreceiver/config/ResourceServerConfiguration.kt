@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.config.security.AuthAwareTokenConverter
 
 @Configuration
 @EnableWebSecurity
@@ -33,18 +34,7 @@ class ResourceServerConfiguration : WebSecurityConfigurerAdapter() {
         it.anyRequest()
           .hasRole("COURT_HEARING_EVENT_WRITE")
       }
-      .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
+      .oauth2ResourceServer().jwt().jwtAuthenticationConverter(AuthAwareTokenConverter())
   }
 
-  fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
-    // hmpps auth tokens have roles in a custom `authorities` claim.
-    // the authorities are already prefixed with `ROLE_`.
-    val grantedAuthoritiesConverter = JwtGrantedAuthoritiesConverter()
-    grantedAuthoritiesConverter.setAuthoritiesClaimName("authorities")
-    grantedAuthoritiesConverter.setAuthorityPrefix("")
-
-    val jwtAuthenticationConverter = JwtAuthenticationConverter()
-    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter)
-    return jwtAuthenticationConverter
-  }
 }
