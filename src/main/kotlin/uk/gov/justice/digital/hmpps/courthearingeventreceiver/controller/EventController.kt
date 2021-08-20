@@ -17,7 +17,7 @@ import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.MessageNot
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
 
-@Api(value = "Event")
+@Api(value = "Hearing Event")
 @RestController
 class EventController(
   @Autowired
@@ -26,7 +26,7 @@ class EventController(
   private val telemetryService: TelemetryService
 ) {
 
-  @ApiOperation(value = "Endpoint to receive events")
+  @ApiOperation(value = "Endpoint to receive hearing events")
   @RequestMapping(value = ["/hearing/{id}"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun postEvent(@PathVariable(required = false) id: String, @RequestBody hearingEvent: HearingEvent) {
