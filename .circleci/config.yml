@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@3.8
+  hmpps: ministryofjustice/hmpps@3.10
   jira: circleci/jira@1.2.2
   slack: circleci/slack@4.4.2
 
@@ -167,9 +167,22 @@ workflows:
       - hmpps/gradle_owasp_dependency_check:
           context:
             - hmpps-common-vars
-      - hmpps/veracode_policy_scan:
+      - hmpps/veracode_pipeline_scan:
           context:
             - hmpps-common-vars
             - veracode-credentials
+  security-weekly:
+    triggers:
+      - schedule:
+          cron: "23 4 * * 1"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - hmpps/veracode_policy_scan:
+          context:
+            - veracode-credentials
+            - hmpps-common-vars
 
 
