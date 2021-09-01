@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -28,7 +29,7 @@ class EventController(
 
   @ApiOperation(value = "Endpoint to receive hearing events")
   @RequestMapping(value = ["/hearing/{id}"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-  @ResponseStatus(HttpStatus.ACCEPTED)
+  @ResponseStatus(HttpStatus.OK)
   fun postEvent(@PathVariable(required = false) id: String, @RequestBody hearingEvent: HearingEvent) {
     log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
     val hearing = hearingEvent.hearing
@@ -37,6 +38,18 @@ class EventController(
       mapOf("courtCode" to hearing.courtCentre.code, "id" to hearing.id)
     )
     messageNotifier.send(hearingEvent)
+  }
+
+  @ApiOperation(value = "Endpoint to delete a hearing")
+  @DeleteMapping(value = ["/hearing/{id}/delete"])
+  @ResponseStatus(HttpStatus.OK)
+  fun deleteEvent(@PathVariable(required = false) id: String) {
+    log.info("Received hearing delete request id: %s".format(id))
+    telemetryService.trackEvent(
+      TelemetryEventType.COURT_HEARING_DELETE_EVENT_RECEIVED,
+      mapOf("id" to id)
+    )
+    // TODO - how to send a delete event for a hearing ?
   }
 
   companion object {
