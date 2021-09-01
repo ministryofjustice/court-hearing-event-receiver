@@ -101,8 +101,8 @@ class EventControllerIntTest : IntegrationTestBase() {
 
       // TODO - when we understand the nature of the DELETE message to be posted, then verify the SNS posting
 
-      val expectedMap = mapOf("id" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2", "courtCode" to "B10JQ00")
-      verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_EVENT_RECEIVED, expectedMap)
+      val expectedMap = mapOf("id" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
+      verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_DELETE_EVENT_RECEIVED, expectedMap)
     }
 
     @Test
