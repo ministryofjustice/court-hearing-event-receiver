@@ -27,14 +27,27 @@ class EventController(
   private val telemetryService: TelemetryService
 ) {
 
-  @ApiOperation(value = "Endpoint to receive hearing events")
+  @ApiOperation(value = "Endpoint to receive hearing events of CONFIRMED/UPDATE type")
   @RequestMapping(value = ["/hearing/{id}"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.OK)
   fun postEvent(@PathVariable(required = false) id: String, @RequestBody hearingEvent: HearingEvent) {
     log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
     val hearing = hearingEvent.hearing
     telemetryService.trackEvent(
-      TelemetryEventType.COURT_HEARING_EVENT_RECEIVED,
+      TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
+      mapOf("courtCode" to hearing.courtCentre.code, "id" to hearing.id)
+    )
+    messageNotifier.send(hearingEvent)
+  }
+
+  @ApiOperation(value = "Endpoint to receive hearing events of RESULT type")
+  @RequestMapping(value = ["/hearing/{id}/result"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+  @ResponseStatus(HttpStatus.OK)
+  fun postResultEvent(@PathVariable(required = false) id: String, @RequestBody hearingEvent: HearingEvent) {
+    log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
+    val hearing = hearingEvent.hearing
+    telemetryService.trackEvent(
+      TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
       mapOf("courtCode" to hearing.courtCentre.code, "id" to hearing.id)
     )
     messageNotifier.send(hearingEvent)
