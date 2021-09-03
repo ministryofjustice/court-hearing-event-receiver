@@ -42,7 +42,7 @@ class EventControllerIntTest : IntegrationTestBase() {
   @Nested
   inner class ConfirmedUpdatedEndpoint {
     @Test
-    fun whenPostToEventEndpointWithRequiredRole_thenReturn204NoContent_andPushToTopic() {
+    fun whenPostToEventEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
 
       postEvent(
         hearingEvent,
@@ -58,7 +58,7 @@ class EventControllerIntTest : IntegrationTestBase() {
       assertThat(messages.messages[0].body).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
 
       val expectedMap = mapOf("id" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2", "courtCode" to "B10JQ00")
-      verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_EVENT_RECEIVED, expectedMap)
+      verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, expectedMap)
     }
 
     @Test
@@ -76,11 +76,51 @@ class EventControllerIntTest : IntegrationTestBase() {
         .exchange()
         .expectStatus().isUnauthorized
     }
+  }
+
+  @Nested
+  inner class ResultEndpoint {
+    @Test
+    fun whenPostToEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
+
+      postEvent(
+        hearingEvent,
+        jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
+        RESULT_PATH
+      )
+        .exchange()
+        .expectStatus().isOk
+
+      // Verify new thing received at topic
+      val messages = sqs.receiveMessageAsync("http://localhost:4566/000000000000/test-queue")
+        .get(5, TimeUnit.SECONDS)
+      assertThat(messages.messages.size).isEqualTo(1)
+      assertThat(messages.messages[0].body).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
+
+      val expectedMap = mapOf("id" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2", "courtCode" to "B10JQ00")
+      verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, expectedMap)
+    }
+
+    @Test
+    fun whenPostToEndpointWithoutRequiredRole_thenReturn403Forbidden() {
+
+      postEvent(hearingEvent, jwtHelper.createJwt("common-platform-events"))
+        .exchange()
+        .expectStatus().isForbidden
+    }
+
+    @Test
+    fun whenPostToEndpointWithBadToken_thenReturn401Unauthorized() {
+      val token = "bad_token"
+      postEvent(hearingEvent, token)
+        .exchange()
+        .expectStatus().isUnauthorized
+    }
 
     private fun postEvent(hearingEvent: HearingEvent, token: String) =
       webTestClient
         .post()
-        .uri(String.format(UPDATED_PATH, hearingEvent.hearing.id))
+        .uri(String.format(UPDATE_PATH, hearingEvent.hearing.id))
         .contentType(MediaType.APPLICATION_JSON)
         .header("Authorization", "Bearer $token")
         .body(Mono.just(hearingEvent), HearingEvent::class.java)
@@ -89,12 +129,11 @@ class EventControllerIntTest : IntegrationTestBase() {
   @Nested
   inner class DeleteEndpoint {
     @Test
-    fun whenPostToHearingDeleteEndpointWithRequiredRole_thenReturn204NoContent_andPushToTopic() {
+    fun whenPostToHearingDeleteEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
 
       deleteEvent(
-        hearingEvent,
         jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
-        DELETE_PATH
+        hearingEvent.hearing.id
       )
         .exchange()
         .expectStatus().isOk
@@ -108,7 +147,7 @@ class EventControllerIntTest : IntegrationTestBase() {
     @Test
     fun whenPostToHearingDeleteEndpointWithoutRequiredRole_thenReturn403Forbidden() {
 
-      deleteEvent(hearingEvent, jwtHelper.createJwt("common-platform-events"), DELETE_PATH)
+      deleteEvent(jwtHelper.createJwt("common-platform-events"), hearingEvent.hearing.id)
         .exchange()
         .expectStatus().isForbidden
     }
@@ -116,20 +155,29 @@ class EventControllerIntTest : IntegrationTestBase() {
     @Test
     fun whenPostToEventEndpointWithBadToken_thenReturn401Unauthorized() {
       val token = "bad_token"
-      deleteEvent(hearingEvent, token, DELETE_PATH)
+      deleteEvent(token, hearingEvent.hearing.id)
         .exchange()
         .expectStatus().isUnauthorized
     }
 
-    private fun deleteEvent(hearingEvent: HearingEvent, token: String, id: String) =
+    private fun deleteEvent(token: String, id: String) =
       webTestClient
         .delete()
-        .uri(String.format(DELETE_PATH, hearingEvent.hearing.id))
+        .uri(String.format(DELETE_PATH, id))
         .header("Authorization", "Bearer $token")
   }
 
+  private fun postEvent(hearingEvent: HearingEvent, token: String, pathFormat: String = UPDATE_PATH) =
+    webTestClient
+      .post()
+      .uri(String.format(pathFormat, hearingEvent.hearing.id))
+      .contentType(MediaType.APPLICATION_JSON)
+      .header("Authorization", "Bearer $token")
+      .body(Mono.just(hearingEvent), HearingEvent::class.java)
+
   companion object {
-    const val UPDATED_PATH: String = "/hearing/%s"
+    const val UPDATE_PATH: String = "/hearing/%s"
+    const val RESULT_PATH: String = "/hearing/%s/result"
     const val DELETE_PATH: String = "/hearing/%s/delete"
   }
 }

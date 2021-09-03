@@ -19,8 +19,8 @@ internal class TelemetryServiceTest {
   @Test
   fun `when track event then use customDimensions map`() {
     val map = mapOf("key" to "value")
-    telemetryService.trackEvent(TelemetryEventType.COURT_HEARING_EVENT_RECEIVED, map)
+    telemetryService.trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, map)
 
-    verify(telemetryClient).trackEvent("PiCCourtHearingEventReceived", map, null)
+    verify(telemetryClient).trackEvent("PiCCourtHearingUpdateEventReceived", map, null)
   }
 }
