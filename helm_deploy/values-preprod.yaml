@@ -20,4 +20,5 @@ generic-service:
     HMPPSAUTH_BASEURL: "https://sign-in-preprod.hmpps.service.justice.gov.uk/auth"
 
   allowlist:
-    hmcts: "51.140.138.86/32"
+    hmcts-1: "51.140.138.86/32"
+    hmcts-2: "51.145.115.21/32"
