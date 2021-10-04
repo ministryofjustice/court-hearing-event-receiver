@@ -1,5 +1,5 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "3.3.8"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "3.3.9"
   kotlin("plugin.spring") version "1.5.10"
 }
 
@@ -14,6 +14,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("com.amazonaws:aws-java-sdk-sns:1.11.1024")
   implementation("com.amazonaws:aws-java-sdk-sqs:1.11.1024")
+  implementation("com.amazonaws:aws-java-sdk-s3:1.11.1024")
 
   implementation("io.springfox:springfox-swagger2:2.9.2")
   implementation("io.springfox:springfox-swagger-ui:2.9.2")

@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.controller
 
+import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.sqs.AmazonSQSAsync
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockitokotlin2.verify
@@ -14,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles
 import reactor.core.publisher.Mono
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.S3Service
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
 import java.io.File
@@ -28,7 +30,13 @@ class EventControllerIntTest : IntegrationTestBase() {
   lateinit var mapper: ObjectMapper
 
   @Autowired
+  lateinit var s3Service: S3Service
+
+  @Autowired
   lateinit var sqs: AmazonSQSAsync
+
+  @Autowired
+  lateinit var s3Client: AmazonS3
 
   @MockBean
   lateinit var telemetryService: TelemetryService
@@ -41,8 +49,10 @@ class EventControllerIntTest : IntegrationTestBase() {
 
   @Nested
   inner class ConfirmedUpdatedEndpoint {
+
     @Test
     fun whenPostToEventEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
+      val initialS3Count = s3Client.listObjects(bucketName).objectSummaries.size
 
       postEvent(
         hearingEvent,
@@ -59,6 +69,8 @@ class EventControllerIntTest : IntegrationTestBase() {
 
       val expectedMap = mapOf("id" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2", "courtCode" to "B10JQ00")
       verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, expectedMap)
+
+      assertThat(s3Client.listObjects(bucketName).objectSummaries.size).isGreaterThan(initialS3Count)
     }
 
     @Test
