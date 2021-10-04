@@ -3,8 +3,8 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.service
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.extensions.UUID_REGEX
 import java.lang.IllegalArgumentException
 
-enum class MessageType(s: String) {
-  CONFIRM_UPDATE("confirm_update"), RESULT("result"), DELETE("delete"), UNKNOWN("unknown");
+enum class MessageType() {
+  CONFIRM_UPDATE(), RESULT(), DELETE(), UNKNOWN();
 }
 
 fun getMessageType(path: String): MessageType {

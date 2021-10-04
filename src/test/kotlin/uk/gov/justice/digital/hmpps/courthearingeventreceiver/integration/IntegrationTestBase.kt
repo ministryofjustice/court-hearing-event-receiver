@@ -77,8 +77,8 @@ abstract class IntegrationTestBase {
     @Bean
     fun amazonS3Client(
       @Value("\${aws.region-name}") regionName: String,
-      @Value("\${aws.s3.access_key_id}") s3AccessKeyId: String,
-      @Value("\${aws.s3.secret_access_key}") s3SecretAccessKey: String
+      @Value("\${aws.sns.access_key_id}") s3AccessKeyId: String,
+      @Value("\${aws.sns.secret_access_key}") s3SecretAccessKey: String
     ): AmazonS3 {
       val credentials: AWSCredentials = BasicAWSCredentials(s3AccessKeyId, s3SecretAccessKey)
 
