@@ -52,8 +52,6 @@ class EventControllerIntTest : IntegrationTestBase() {
 
     @Test
     fun whenPostToEventEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
-      val initialS3Count = s3Client.listObjects(bucketName).objectSummaries.size
-
       postEvent(
         hearingEvent,
         jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE"))
@@ -69,8 +67,6 @@ class EventControllerIntTest : IntegrationTestBase() {
 
       val expectedMap = mapOf("id" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2", "courtCode" to "B10JQ00")
       verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, expectedMap)
-
-      assertThat(s3Client.listObjects(bucketName).objectSummaries.size).isGreaterThan(initialS3Count)
     }
 
     @Test
