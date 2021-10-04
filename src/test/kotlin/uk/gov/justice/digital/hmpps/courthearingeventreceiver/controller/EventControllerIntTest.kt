@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.controller
 
+import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.sqs.AmazonSQSAsync
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockitokotlin2.verify
@@ -14,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles
 import reactor.core.publisher.Mono
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.S3Service
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
 import java.io.File
@@ -28,7 +30,13 @@ class EventControllerIntTest : IntegrationTestBase() {
   lateinit var mapper: ObjectMapper
 
   @Autowired
+  lateinit var s3Service: S3Service
+
+  @Autowired
   lateinit var sqs: AmazonSQSAsync
+
+  @Autowired
+  lateinit var s3Client: AmazonS3
 
   @MockBean
   lateinit var telemetryService: TelemetryService
@@ -41,9 +49,9 @@ class EventControllerIntTest : IntegrationTestBase() {
 
   @Nested
   inner class ConfirmedUpdatedEndpoint {
+
     @Test
     fun whenPostToEventEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
-
       postEvent(
         hearingEvent,
         jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE"))
