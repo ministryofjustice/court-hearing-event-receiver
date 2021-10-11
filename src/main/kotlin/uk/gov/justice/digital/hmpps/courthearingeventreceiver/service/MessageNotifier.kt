@@ -34,6 +34,6 @@ class MessageNotifier(
   }
 
   companion object {
-    private val log = LoggerFactory.getLogger(this::class.java)
+    private val log = LoggerFactory.getLogger(MessageNotifier::class.java)
   }
 }
