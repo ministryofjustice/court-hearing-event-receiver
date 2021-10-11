@@ -5,23 +5,23 @@ import javax.validation.constraints.NotBlank
 
 data class Offence(
 
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("id")
   val id: String,
 
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("offenceDefinitionId")
   val offenceDefinitionId: String,
 
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("offenceCode")
   val offenceCode: String,
 
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("offenceTitle")
   val offenceTitle: String,
 
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("wording")
   val wording: String,
 

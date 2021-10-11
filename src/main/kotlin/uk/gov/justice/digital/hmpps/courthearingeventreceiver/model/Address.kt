@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Address(
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("address1")
   val address1: String,
   @JsonProperty("address2")

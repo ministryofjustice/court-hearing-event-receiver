@@ -6,15 +6,15 @@ import javax.validation.constraints.NotBlank
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ProsecutionCaseIdentifier(
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("prosecutionAuthorityCode")
   val prosecutionAuthorityCode: String,
 
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("prosecutionAuthorityId")
   val prosecutionAuthorityId: String,
 
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("caseURN")
   val caseURN: String
 )

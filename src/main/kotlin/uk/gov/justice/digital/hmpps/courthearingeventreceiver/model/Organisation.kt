@@ -6,10 +6,10 @@ import javax.validation.constraints.NotBlank
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Organisation(
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("name")
   val name: String,
 
   @JsonProperty("address")
-  val address: Address
+  val address: Address?
 )
