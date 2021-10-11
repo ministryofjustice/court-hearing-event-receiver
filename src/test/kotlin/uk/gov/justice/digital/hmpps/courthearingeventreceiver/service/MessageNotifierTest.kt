@@ -24,6 +24,7 @@ import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.CourtCentre
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.Hearing
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingType
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.JurisdictionType
 
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
 @Import(MessageNotifierTest.TestNotifierConfig::class)
@@ -45,7 +46,8 @@ internal class MessageNotifierTest {
       hearing = Hearing(
         id = "hearing-id",
         courtCentre = CourtCentre(code = "B10JQ", roomId = "abc", roomName = "Crown Court 3-1", id = "abc"),
-        type = HearingType(id = "abc", description = "Sentence")
+        type = HearingType(id = "abc", description = "Sentence"),
+        jurisdictionType = JurisdictionType.MAGISTRATES
       )
     )
     val result = PublishResult().withMessageId("messageId")
