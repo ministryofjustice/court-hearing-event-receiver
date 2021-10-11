@@ -1,17 +1,6 @@
 hmpps-auth:
   baseurl: https://sign-in-dev.hmpps.service.justice.gov.uk/auth
 
-logging:
-  level:
-    root: WARN
-    uk:
-      gov:
-        justice:
-          digital:
-            hmpps: TRACE
-
-#
-
 # Localstack settings
 aws:
   region_name: eu-west-2
