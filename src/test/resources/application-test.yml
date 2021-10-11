@@ -5,9 +5,6 @@ management.endpoint:
   health.cache.time-to-live: 0
   info.cache.time-to-live: 0
 
-hmppsauth:
-  baseurl: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
-
 # Localstack settings
 aws:
   region_name: eu-west-2

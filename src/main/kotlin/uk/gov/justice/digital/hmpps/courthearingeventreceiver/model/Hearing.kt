@@ -27,7 +27,7 @@ data class Hearing(
 
   @field:NotNull
   @JsonProperty("jurisdictionType")
-  val jurisdictionType: JurisdictionType = JurisdictionType.MAGISTRATES,
+  val jurisdictionType: JurisdictionType,
 
   @field:Valid
   @field:NotEmpty
