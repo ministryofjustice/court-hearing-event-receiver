@@ -1,16 +1,22 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.config
 
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.context.request.WebRequest
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 import javax.validation.ValidationException
 
 @RestControllerAdvice
-class CourtHearingEventReceiverExceptionHandler {
+class CourtHearingEventReceiverExceptionHandler : ResponseEntityExceptionHandler() {
+
   @ExceptionHandler(ValidationException::class)
   fun handleValidationException(e: Exception): ResponseEntity<ErrorResponse> {
     log.info("Validation exception: {}", e.message)
@@ -39,8 +45,20 @@ class CourtHearingEventReceiverExceptionHandler {
       )
   }
 
+  public override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException, headers: HttpHeaders, status: HttpStatus?, request: WebRequest?): ResponseEntity<Any?>? {
+    log.error("Unexpected exception", ex)
+    val response = ErrorResponse(status = 400, developerMessage = ex.message, userMessage = ex.message)
+    return ResponseEntity(response, BAD_REQUEST)
+  }
+
+  public override fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException, headers: HttpHeaders, status: HttpStatus?, request: WebRequest?): ResponseEntity<Any?>? {
+    log.error("Unexpected exception", ex)
+    val response = ErrorResponse(status = 400, developerMessage = ex.message, userMessage = ex.message)
+    return ResponseEntity(response, BAD_REQUEST)
+  }
+
   companion object {
-    private val log = LoggerFactory.getLogger(this::class.java)
+    private val log = LoggerFactory.getLogger(CourtHearingEventReceiverExceptionHandler::class.java)
   }
 }
 

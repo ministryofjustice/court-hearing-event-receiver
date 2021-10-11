@@ -4,27 +4,32 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.Gender
 import java.time.LocalDate
+import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PersonDetails(
 
-  @NotNull
+  @field:NotNull
   @JsonProperty("gender")
   val gender: Gender,
 
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("lastName")
   val lastName: String,
 
+  @JsonProperty("middleName")
+  val middleName: String?,
+
   @JsonProperty("firstName")
-  val firstName: String,
+  val firstName: String?,
 
   @JsonProperty("dateOfBirth")
-  val dateOfBirth: LocalDate,
+  val dateOfBirth: LocalDate?,
 
+  @field:Valid
   @JsonProperty("address")
-  val address: Address
+  val address: Address?
 
 )

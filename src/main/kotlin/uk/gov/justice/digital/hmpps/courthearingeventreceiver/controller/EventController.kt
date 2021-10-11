@@ -17,6 +17,7 @@ import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.MessageNotifier
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
+import javax.validation.Valid
 
 @Api(value = "Hearing Event")
 @RestController
@@ -30,7 +31,7 @@ class EventController(
   @ApiOperation(value = "Endpoint to receive hearing events of CONFIRMED/UPDATE type")
   @RequestMapping(value = ["/hearing/{id}"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.OK)
-  fun postEvent(@PathVariable(required = false) id: String, @RequestBody hearingEvent: HearingEvent) {
+  fun postEvent(@PathVariable(required = false) id: String, @Valid @RequestBody hearingEvent: HearingEvent) {
     log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
     val hearing = hearingEvent.hearing
     telemetryService.trackEvent(
@@ -43,7 +44,7 @@ class EventController(
   @ApiOperation(value = "Endpoint to receive hearing events of RESULT type")
   @RequestMapping(value = ["/hearing/{id}/result"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.OK)
-  fun postResultEvent(@PathVariable(required = false) id: String, @RequestBody hearingEvent: HearingEvent) {
+  fun postResultEvent(@PathVariable(required = false) id: String, @Valid @RequestBody hearingEvent: HearingEvent) {
     log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
     val hearing = hearingEvent.hearing
     telemetryService.trackEvent(
@@ -66,6 +67,6 @@ class EventController(
   }
 
   companion object {
-    private val log = LoggerFactory.getLogger(this::class.java)
+    private val log = LoggerFactory.getLogger(EventController::class.java)
   }
 }

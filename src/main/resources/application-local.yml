@@ -1,6 +1,17 @@
 hmpps-auth:
   baseurl: https://sign-in-dev.hmpps.service.justice.gov.uk/auth
 
+logging:
+  level:
+    root: WARN
+    uk:
+      gov:
+        justice:
+          digital:
+            hmpps: TRACE
+
+#
+
 # Localstack settings
 aws:
   region_name: eu-west-2
@@ -13,3 +24,7 @@ aws:
     queue_name: "test-queue"
     access_key_id: foobar
     secret_access_key: foobar
+  s3:
+    access_key_id: foobar
+    secret_access_key: foobar
+    bucket_name: local-644707540a8083b7b15a77f51641f632

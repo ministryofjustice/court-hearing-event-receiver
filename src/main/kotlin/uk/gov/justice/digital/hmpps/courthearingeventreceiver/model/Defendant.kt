@@ -2,34 +2,38 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Defendant(
 
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("id")
   val id: String,
 
-  @NotEmpty
+  @field:Valid
+  @field:NotEmpty
   @JsonProperty("offences")
   val offences: List<Offence> = emptyList(),
 
   // This looks to be simply the same value as the id in the parent ProsecutionCase.
-  @NotBlank
+  @field:NotBlank
   @JsonProperty("prosecutionCaseId")
   val prosecutionCaseId: String,
 
-  // We are told, but it is not confirmed in the schema, that there will be a personDefendant OR legalEntityDefendant
+  // There will be a personDefendant OR legalEntityDefendant
+  @field:Valid
   @JsonProperty("personDefendant")
   val personDefendant: PersonDefendant?,
 
+  @field:Valid
   @JsonProperty("legalEntityDefendant")
   val legalEntityDefendant: LegalEntityDefendant?,
 
   @JsonProperty("masterDefendantId")
-  val masterDefendantId: String,
+  val masterDefendantId: String?,
 
   @JsonProperty("pncId")
   val pncId: String?,

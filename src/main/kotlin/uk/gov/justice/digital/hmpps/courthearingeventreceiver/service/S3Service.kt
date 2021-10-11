@@ -22,20 +22,20 @@ class S3Service(
 ) {
   fun uploadMessage(uriPath: String, messageContent: String): String? {
 
-    return try {
-      val s3Key = buildS3Key(
-        courtCode = getCourtCode(messageContent),
-        receiptTime = LocalDateTime.now(),
-        messageType = getMessageType(uriPath),
-        hearingEventId = findUuid(uriPath)
-      )
+    val s3Key = buildS3Key(
+      courtCode = getCourtCode(messageContent),
+      receiptTime = LocalDateTime.now(),
+      messageType = getMessageType(uriPath),
+      hearingEventId = findUuid(uriPath)
+    )
 
+    return try {
       val putResult = amazonS3Client.putObject(bucketName, s3Key, messageContent)
       log.info("File {} saved to S3 bucket {} with expiration date of {}, eTag {}", "TBD", bucketName, putResult.expirationTime, putResult.eTag)
       putResult.eTag
     } catch (ex: RuntimeException) {
       // Happy to swallow this one with a log statement because failure to back up the file is not business critical
-      log.error("Failed to back up file {} saved to S3 bucket {}", "TBD", bucketName, ex)
+      log.error("Failed to back up file {} saved to S3 bucket {}", s3Key, bucketName, ex)
       null
     }
   }
@@ -51,6 +51,6 @@ class S3Service(
   }
 
   companion object {
-    private val log = LoggerFactory.getLogger(this::class.java)
+    private val log = LoggerFactory.getLogger(S3Service::class.java)
   }
 }

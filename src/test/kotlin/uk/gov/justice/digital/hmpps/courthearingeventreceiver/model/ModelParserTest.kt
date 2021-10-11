@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -26,6 +27,7 @@ internal class ModelParserTest {
   fun beforeEach() {
     mapper = ObjectMapper()
     mapper.registerModule(JavaTimeModule())
+    mapper.registerModule(KotlinModule())
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
   }
 
@@ -37,7 +39,7 @@ internal class ModelParserTest {
     val hearing = mapper.readValue(content, Hearing::class.java)
 
     assertThat(hearing.id).isEqualTo("8bbb4fe3-a899-45c7-bdd4-4ee25ac5a83f")
-    assertThat(hearing.courtCentre.code).isNull()
+    assertThat(hearing.courtCentre.code).isEqualTo("B05KP00")
     assertThat(hearing.type.description).isEqualTo("Sentence")
     assertThat(hearing.jurisdictionType).isSameAs(JurisdictionType.CROWN)
     assertThat(hearing.hearingDays.size).isEqualTo(1)

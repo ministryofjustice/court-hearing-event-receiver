@@ -4,19 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 import javax.validation.constraints.NotNull
-import javax.validation.constraints.Positive
+import javax.validation.constraints.PositiveOrZero
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class HearingDay(
 
-  @NotNull
+  @field:NotNull
   @JsonProperty("sittingDay")
   val sittingDay: LocalDateTime,
 
-  @Positive
+  @field:PositiveOrZero
   @JsonProperty("listedDurationMinutes")
   val listedDurationMinutes: Int,
 
+  @field:PositiveOrZero
   @JsonProperty("listingSequence")
-  val listingSequence: Int?
+  val listingSequence: Int
 )
