@@ -1,8 +1,7 @@
-import jdk.internal.vm.vector.VectorSupport.test
-
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "3.3.10"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "3.3.12"
   kotlin("plugin.spring") version "1.5.10"
+  kotlin("jvm") version "1.5.31"
 }
 
 configurations {
@@ -23,6 +22,8 @@ dependencies {
   implementation("io.springfox:springfox-swagger-ui:2.9.2")
 
   testImplementation("io.jsonwebtoken:jjwt:0.9.1")
+  testImplementation(platform("org.junit:junit-bom:5.7.1"))
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter")
 }
 
 tasks {
