@@ -22,8 +22,6 @@ dependencies {
   implementation("io.springfox:springfox-swagger-ui:2.9.2")
 
   testImplementation("io.jsonwebtoken:jjwt:0.9.1")
-  testImplementation(platform("org.junit:junit-bom:5.7.1"))
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter")
 }
 
 tasks {
