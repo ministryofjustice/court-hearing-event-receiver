@@ -43,7 +43,7 @@ class S3Service(
   fun getCourtCode(messageContent: String): String {
     return try {
       val hearingEvent = mapper.readValue<HearingEvent>(messageContent)
-      hearingEvent.hearing.courtCentre.code ?: "UNKNOWN_COURT"
+      hearingEvent.hearing.courtCentre.code
     } catch (ex: JsonProcessingException) {
       log.error("Failed to parse ", ex)
       "UNKNOWN_COURT"

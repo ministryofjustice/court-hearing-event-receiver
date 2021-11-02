@@ -14,7 +14,7 @@ data class CourtCentre(
   @field:NotBlank
   @field:Size(min = 5)
   @JsonProperty("code")
-  val code: String?,
+  val code: String,
 
   @field:NotBlank
   @JsonProperty("roomId")

@@ -55,3 +55,6 @@ management:
     info:
       cache:
         time-to-live: 2000ms
+
+# Deliberately exclude all courts in first release
+#included-court-codes: ""

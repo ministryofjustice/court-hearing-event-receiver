@@ -21,3 +21,5 @@ aws:
     access_key_id: foobar
     secret_access_key: foobar
     bucket_name: local-644707540a8083b7b15a77f51641f632
+
+included-court-codes: "B10JQ,B33HU,B14LO"

@@ -4,6 +4,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -25,7 +26,8 @@ class EventController(
   @Autowired
   private val messageNotifier: MessageNotifier,
   @Autowired
-  private val telemetryService: TelemetryService
+  private val telemetryService: TelemetryService,
+  @Value("#{'\${included-court-codes}'.split(',')}") private val includedCourts: Set<String> = emptySet(),
 ) {
 
   @ApiOperation(value = "Endpoint to receive hearing events of CONFIRMED/UPDATE type")
@@ -33,12 +35,7 @@ class EventController(
   @ResponseStatus(HttpStatus.OK)
   fun postEvent(@PathVariable(required = false) id: String, @Valid @RequestBody hearingEvent: HearingEvent) {
     log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
-    val hearing = hearingEvent.hearing
-    telemetryService.trackEvent(
-      TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
-      mapOf("courtCode" to hearing.courtCentre.code, "id" to hearing.id)
-    )
-    messageNotifier.send(hearingEvent)
+    trackAndSendEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, hearingEvent)
   }
 
   @ApiOperation(value = "Endpoint to receive hearing events of RESULT type")
@@ -46,12 +43,7 @@ class EventController(
   @ResponseStatus(HttpStatus.OK)
   fun postResultEvent(@PathVariable(required = false) id: String, @Valid @RequestBody hearingEvent: HearingEvent) {
     log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
-    val hearing = hearingEvent.hearing
-    telemetryService.trackEvent(
-      TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
-      mapOf("courtCode" to hearing.courtCentre.code, "id" to hearing.id)
-    )
-    messageNotifier.send(hearingEvent)
+    trackAndSendEvent(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
   }
 
   @ApiOperation(value = "Endpoint to delete a hearing")
@@ -64,6 +56,18 @@ class EventController(
       mapOf("id" to id)
     )
     // TODO - how to send a delete event for a hearing ?
+  }
+
+  private fun trackAndSendEvent(eventType: TelemetryEventType, hearingEvent: HearingEvent) {
+    val hearing = hearingEvent.hearing
+    val courtCode = hearing.courtCentre.code.substring(0, 5)
+    telemetryService.trackEvent(
+      eventType,
+      mapOf("courtCode" to courtCode, "id" to hearing.id)
+    )
+    if (includedCourts.contains(courtCode)) {
+      messageNotifier.send(hearingEvent)
+    }
   }
 
   companion object {
