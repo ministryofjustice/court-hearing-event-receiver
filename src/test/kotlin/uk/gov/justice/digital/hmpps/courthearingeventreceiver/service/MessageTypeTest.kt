@@ -8,17 +8,14 @@ internal class MessageTypeTest {
   @Test
   fun `when there is a result path return RESULT as type`() {
 
-    val messageType = getMessageType("/hearing/$UUID/result")
-
-    assertThat(messageType).isSameAs(MessageType.RESULT)
+    assertThat(getMessageType("/hearing/$UUID/result")).isSameAs(MessageType.RESULT)
+    assertThat(getMessageType("/hearing/$UUID/result/")).isSameAs(MessageType.RESULT)
   }
 
   @Test
   fun `when there is a result path return DELETE as type`() {
-
-    val messageType = getMessageType("/hearing/$UUID/delete")
-
-    assertThat(messageType).isSameAs(MessageType.DELETE)
+    assertThat(getMessageType("/hearing/$UUID/delete")).isSameAs(MessageType.DELETE)
+    assertThat(getMessageType("/hearing/$UUID/delete/")).isSameAs(MessageType.DELETE)
   }
 
   @Test
@@ -30,9 +27,17 @@ internal class MessageTypeTest {
   }
 
   @Test
-  fun `when there is some other unknown path return UNKNOWN as type`() {
+  fun `when the path starts with hearing be lenient whatever happens after`() {
 
     val messageType = getMessageType("/hearing/$UUID/operation/to/be/defined")
+
+    assertThat(messageType).isSameAs(MessageType.CONFIRM_UPDATE)
+  }
+
+  @Test
+  fun `when there is some other unknown path then record it as unknown`() {
+
+    val messageType = getMessageType("/someother/$UUID/operation/")
 
     assertThat(messageType).isSameAs(MessageType.UNKNOWN)
   }

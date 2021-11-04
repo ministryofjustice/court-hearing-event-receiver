@@ -5,7 +5,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 fun buildS3Key(courtCode: String, messageType: MessageType, receiptTime: LocalDateTime, hearingEventId: String): String {
-  return "cp" + PATH_DELIMITER + messageType + PATH_DELIMITER + courtCode + PATH_DELIMITER + receiptTime.toLocalDate().toString() + PATH_DELIMITER + receiptTime.toLocalTime().format(formatter) + FIELD_DELIMITER + hearingEventId
+  return "cp".plus(PATH_DELIMITER).plus(messageType)
+    .plus(PATH_DELIMITER).plus(courtCode)
+    .plus(PATH_DELIMITER).plus(receiptTime.toLocalDate().toString())
+    .plus(PATH_DELIMITER).plus(receiptTime.toLocalTime().format(formatter))
+    .plus(FIELD_DELIMITER).plus(hearingEventId)
 }
 
 fun findUuid(string: String): String = UUID_REGEX.find(string).let { it?.value ?: "" }
