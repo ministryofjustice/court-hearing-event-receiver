@@ -31,7 +31,7 @@ class S3Service(
 
     return try {
       val putResult = amazonS3Client.putObject(bucketName, s3Key, messageContent)
-      log.info("File {} saved to S3 bucket {} with expiration date of {}, eTag {}", "TBD", bucketName, putResult.expirationTime, putResult.eTag)
+      log.info("File {} saved to S3 bucket {} with expiration date of {}, eTag {}", s3Key, bucketName, putResult.expirationTime, putResult.eTag)
       putResult.eTag
     } catch (ex: RuntimeException) {
       // Happy to swallow this one with a log statement because failure to back up the file is not business critical

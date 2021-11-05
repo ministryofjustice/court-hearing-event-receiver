@@ -1,24 +1,27 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.service
 
-import uk.gov.justice.digital.hmpps.courthearingeventreceiver.extensions.UUID_REGEX
-import java.lang.IllegalArgumentException
+import org.slf4j.LoggerFactory
 
-enum class MessageType() {
-  CONFIRM_UPDATE(), RESULT(), DELETE(), UNKNOWN();
+enum class MessageType {
+  CONFIRM_UPDATE, RESULT, DELETE, UNKNOWN;
 }
+
+private val log = LoggerFactory.getLogger(MessageType::class.java)
 
 fun getMessageType(path: String): MessageType {
 
-  val elements = path.lowercase().split("/")
-  val finalElement = elements.last()
+  val elements = path.lowercase().trim('/').split("/")
 
-  return when (UUID_REGEX.matches(finalElement)) {
-    true -> MessageType.CONFIRM_UPDATE
+  return when (elements.last()) {
+    "delete" -> MessageType.DELETE
+    "result" -> MessageType.RESULT
     else -> {
-      try {
-        MessageType.valueOf(finalElement.uppercase())
-      } catch (iae: IllegalArgumentException) {
-        MessageType.UNKNOWN
+      when (path.contains("hearing")) {
+        true -> MessageType.CONFIRM_UPDATE
+        false -> {
+          log.error("Unable to correctly set the path from $path")
+          MessageType.UNKNOWN
+        }
       }
     }
   }
