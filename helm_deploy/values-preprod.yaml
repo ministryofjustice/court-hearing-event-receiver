@@ -22,7 +22,3 @@ generic-service:
   allowlist:
     hmcts-1: "51.140.138.86/32"
     hmcts-2: "51.145.115.21/32"
-    # Temporary pen testing w/c 8th November 2021
-    bsi-pen-1: "145.239.254.21"
-    bsi-pen-2: "54.37.241.156/30"
-    bsi-pen-3: "167.71.136.237/32"
