@@ -20,4 +20,5 @@ generic-service:
     HMPPSAUTH_BASEURL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
 
   allowlist:
-    hmcts: "51.140.24.220/32"
+    hmcts: "51.140.24.220/32" # this may be redundant - TBD after successful receipt of payload
+    hmcts-imz: "51.140.52.246/32" # we understand this is the externally facing IP we should receive traffic from
