@@ -54,3 +54,6 @@ generic-service:
 generic-prometheus-alerts:
   targetApplication: court-hearing-event-receiver
   alertSeverity: slack-hmpps-user-preferences
+
+poddisruptionbudget:
+  enabled: false
