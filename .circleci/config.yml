@@ -111,6 +111,8 @@ workflows:
           name: helm_lint
       - hmpps/build_docker:
           name: build_docker
+          requires:
+            - build
           filters:
             branches:
               only:
@@ -125,7 +127,6 @@ workflows:
               only:
                 - main
           requires:
-            - build
             - build_docker
             - helm_lint
             - test-integration
