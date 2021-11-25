@@ -9,7 +9,7 @@ generic-service:
 
   ingress:
     enabled: true
-    modsecurity_enabled: true
+    modsecurity_enabled: false
     host: app-hostname.local    # override per environment
     path: /
 
