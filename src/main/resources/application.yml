@@ -57,3 +57,6 @@ management:
         time-to-live: 2000ms
 
 included-court-codes: "B10BF,B10FR,B11JP,B11KF,B10LX,B10MR,B47CL,B17JA,B03OT,B01CE,B32UD,B21DA,B30PI,B01LY,B10BD,B10JJ,B10JQ,B30PG"
+
+feature:
+  use-included-courts-list: true

@@ -18,3 +18,4 @@ generic-service:
 
   env:
     HMPPSAUTH_BASEURL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
+    FEATURE_USE_INCLUDED_COURTS_LIST: false

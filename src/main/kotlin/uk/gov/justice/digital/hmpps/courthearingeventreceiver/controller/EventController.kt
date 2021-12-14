@@ -27,7 +27,10 @@ class EventController(
   private val messageNotifier: MessageNotifier,
   @Autowired
   private val telemetryService: TelemetryService,
-  @Value("#{'\${included-court-codes}'.split(',')}") private val includedCourts: Set<String> = emptySet(),
+  @Value("#{'\${included-court-codes}'.split(',')}")
+  private val includedCourts: Set<String> = emptySet(),
+  @Value("\${feature.use-included-courts-list}")
+  private val useIncludedCourtsList: Boolean = false,
 ) {
 
   @ApiOperation(value = "Endpoint to receive hearing events of CONFIRMED/UPDATE type")
@@ -65,7 +68,7 @@ class EventController(
       eventType,
       mapOf("courtCode" to courtCode, "id" to hearing.id)
     )
-    if (includedCourts.contains(courtCode)) {
+    if (!useIncludedCourtsList || includedCourts.contains(courtCode)) {
       messageNotifier.send(hearingEvent)
     }
   }
