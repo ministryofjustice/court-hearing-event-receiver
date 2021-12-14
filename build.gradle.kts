@@ -90,3 +90,8 @@ task<Test>("integrationTest") {
   testLogging.showStackTraces = true
   include("**/*IntTest*")
 }
+
+tasks.register<Copy>("installGitHooks") {
+  from(layout.projectDirectory.dir("hooks"))
+  into(layout.projectDirectory.dir(".git/hooks"))
+}
