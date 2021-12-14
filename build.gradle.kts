@@ -7,15 +7,16 @@ configurations {
   testImplementation { exclude(group = "org.junit.vintage") }
 }
 
+val awsSdkVersion = "1.12.122"
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-validation")
-  implementation("com.amazonaws:aws-java-sdk-sns:1.12.81")
-  implementation("com.amazonaws:aws-java-sdk-sqs:1.12.81")
-  implementation("com.amazonaws:aws-java-sdk-s3:1.12.81")
+  implementation("com.amazonaws:aws-java-sdk-sns:$awsSdkVersion")
+  implementation("com.amazonaws:aws-java-sdk-sqs:$awsSdkVersion")
+  implementation("com.amazonaws:aws-java-sdk-s3:$awsSdkVersion")
 
   implementation("io.springfox:springfox-swagger2:2.9.2")
   implementation("io.springfox:springfox-swagger-ui:2.9.2")
