@@ -18,7 +18,7 @@ dependencies {
   implementation("com.amazonaws:aws-java-sdk-sqs:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-s3:$awsSdkVersion")
 
-  implementation("io.springfox:springfox-swagger2:2.9.2")
+  implementation("io.springfox:springfox-swagger2:3.0.0")
   implementation("io.springfox:springfox-swagger-ui:2.9.2")
 
   testImplementation("io.jsonwebtoken:jjwt:0.9.1")
