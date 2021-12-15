@@ -39,7 +39,8 @@ internal class EventControllerTest {
   fun beforeEach() {
     val str = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
     hearingEvent = mapper.readValue(str, HearingEvent::class.java)
-    eventController = EventController(messageNotifier, telemetryService, includedCourts = INCLUDED_COURTS)
+    eventController =
+      EventController(messageNotifier, telemetryService, includedCourts = INCLUDED_COURTS, useIncludedCourtsList = true)
   }
 
   @Test
@@ -50,49 +51,97 @@ internal class EventControllerTest {
     eventController.postEvent(id, hearingEvent)
 
     verify(messageNotifier).send(hearingEvent)
-    verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, mapOf("courtCode" to NORTH_TYNESIDE, "id" to id))
+    verify(telemetryService).trackEvent(
+      TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
+      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+    )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
 
   @Test
   fun `when receive update message for excluded court then do not send message`() {
-    eventController = EventController(messageNotifier, telemetryService, includedCourts = emptySet())
+    eventController =
+      EventController(messageNotifier, telemetryService, includedCourts = emptySet(), useIncludedCourtsList = true)
 
     val id = hearingEvent.hearing.id
 
     eventController.postEvent(id, hearingEvent)
 
-    verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, mapOf("courtCode" to NORTH_TYNESIDE, "id" to id))
+    verify(telemetryService).trackEvent(
+      TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
+      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+    )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
 
   @Test
   fun `when receive result message for included court then send message`() {
+    val id = hearingEvent.hearing.id
+
+    eventController.postResultEvent(id, hearingEvent)
+
+    verify(messageNotifier).send(hearingEvent)
+    verify(telemetryService).trackEvent(
+      TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
+      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+    )
+    verifyNoMoreInteractions(telemetryService, messageNotifier)
+  }
+
+  @Test
+  fun `when receive result message for included court and allow list disabled then send message`() {
+    eventController =
+      EventController(messageNotifier, telemetryService, includedCourts = INCLUDED_COURTS, useIncludedCourtsList = false)
 
     val id = hearingEvent.hearing.id
 
     eventController.postResultEvent(id, hearingEvent)
 
     verify(messageNotifier).send(hearingEvent)
-    verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, mapOf("courtCode" to NORTH_TYNESIDE, "id" to id))
+    verify(telemetryService).trackEvent(
+      TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
+      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+    )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
 
   @Test
   fun `when receive result message for excluded court then do not send message`() {
-    eventController = EventController(messageNotifier, telemetryService, includedCourts = emptySet())
+    eventController =
+      EventController(messageNotifier, telemetryService, includedCourts = emptySet(), useIncludedCourtsList = true)
 
     val id = hearingEvent.hearing.id
 
     eventController.postResultEvent(id, hearingEvent)
 
-    verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, mapOf("courtCode" to NORTH_TYNESIDE, "id" to id))
+    verify(telemetryService).trackEvent(
+      TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
+      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+    )
+    verifyNoMoreInteractions(telemetryService, messageNotifier)
+  }
+
+  @Test
+  fun `when receive result message for excluded court and allow list disabled then send message`() {
+    eventController =
+      EventController(messageNotifier, telemetryService, includedCourts = emptySet(), useIncludedCourtsList = false)
+
+    val id = hearingEvent.hearing.id
+
+    eventController.postResultEvent(id, hearingEvent)
+
+    verify(messageNotifier).send(hearingEvent)
+    verify(telemetryService).trackEvent(
+      TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
+      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+    )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
 
   companion object {
     @JvmField
     var NORTH_TYNESIDE = "B10JQ"
+
     @JvmField
     var LEICESTER = "B33HU"
 
