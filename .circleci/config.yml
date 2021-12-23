@@ -113,21 +113,21 @@ workflows:
           name: build_docker
           requires:
             - build
-#          filters:
-#            branches:
-#              only:
-#                - main
-#                - helm_lint
+          filters:
+            branches:
+              only:
+                - main
+                - helm_lint
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
           helm_additional_args: --values ./court-hearing-event-receiver/values-live1.yaml
           context:
             - hmpps-common-vars
-#          filters:
-#            branches:
-#              only:
-#                - main
+          filters:
+            branches:
+              only:
+                - main
           requires:
             - build_docker
             - helm_lint
@@ -167,10 +167,10 @@ workflows:
           context:
             - hmpps-common-vars
             - court-probation-live-dev
-#          filters:
-#            branches:
-#              only:
-#                - main
+          filters:
+            branches:
+              only:
+                - main
           requires:
             - build_docker
             - helm_lint
