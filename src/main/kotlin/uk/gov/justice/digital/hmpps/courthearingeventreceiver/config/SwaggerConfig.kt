@@ -1,6 +1,5 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.config
 
-import com.google.common.base.Predicates
 import org.springframework.beans.BeansException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.info.BuildProperties
@@ -34,14 +33,10 @@ class SwaggerConfig {
       .select()
       .apis(RequestHandlerSelectors.any())
       .paths(
-        Predicates.or(
-          mutableListOf(
-            PathSelectors.regex("(\\/hearing/.*)"),
-            PathSelectors.regex("(\\/ping)"),
-            PathSelectors.regex("(\\/info)"),
-            PathSelectors.regex("(\\/health)")
-          )
-        )
+        PathSelectors.regex("(\\/hearing/.*)")
+          .or(PathSelectors.regex("(\\/ping)"))
+          .or(PathSelectors.regex("(\\/info)"))
+          .or(PathSelectors.regex("(\\/health)"))
       )
       .build()
     docket.genericModelSubstitutes(Optional::class.java)
