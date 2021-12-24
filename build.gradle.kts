@@ -7,7 +7,7 @@ configurations {
   testImplementation { exclude(group = "org.junit.vintage") }
 }
 
-val awsSdkVersion = "1.12.129"
+val awsSdkVersion = "1.12.131"
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springframework.boot:spring-boot-starter-security")
@@ -18,8 +18,7 @@ dependencies {
   implementation("com.amazonaws:aws-java-sdk-sqs:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-s3:$awsSdkVersion")
 
-  implementation("io.springfox:springfox-swagger2:2.9.2")
-  implementation("io.springfox:springfox-swagger-ui:2.9.2")
+  implementation("io.springfox:springfox-boot-starter:3.0.0")
 
   testImplementation("io.jsonwebtoken:jjwt:0.9.1")
 }
