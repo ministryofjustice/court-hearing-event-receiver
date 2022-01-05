@@ -113,11 +113,11 @@ workflows:
           name: build_docker
           requires:
             - build
-          filters:
-            branches:
-              only:
-                - main
-                - helm_lint
+          # filters:
+          #   branches:
+          #     only:
+          #       - main
+          #       - helm_lint
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
