@@ -125,10 +125,10 @@ workflows:
           context:
             - hmpps-common-vars
             - court-probation-live-dev
-          filters:
-            branches:
-              only:
-                - main
+          # filters:
+          #   branches:
+          #     only:
+          #       - main
           requires:
             - build_docker
             - helm_lint
