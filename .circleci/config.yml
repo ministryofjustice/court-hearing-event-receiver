@@ -121,9 +121,10 @@ workflows:
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
-          helm_additional_args: --values ./court-hearing-event-receiver/values-live1.yaml
+          helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
           context:
             - hmpps-common-vars
+            - court-probation-live-dev
           filters:
             branches:
               only:
@@ -139,10 +140,10 @@ workflows:
       - hmpps/deploy_env:
           name: deploy_preprod
           env: "preprod"
-          helm_additional_args: --values ./court-hearing-event-receiver/values-live1.yaml
+          helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
           context:
             - hmpps-common-vars
-            - court-probation-preprod
+            - court-probation-live-preprod
           requires:
             - request-preprod-approval
       - request-prod-approval:
@@ -151,41 +152,6 @@ workflows:
             - deploy_preprod
       - hmpps/deploy_env:
           name: deploy_prod
-          env: "prod"
-          helm_additional_args: --values ./court-hearing-event-receiver/values-live1.yaml
-          slack_channel_name: probation_in_court_dev
-          slack_notification: true
-          context:
-            - hmpps-common-vars
-            - court-probation-prod
-          requires:
-            - request-prod-approval
-      - hmpps/deploy_env:
-          name: deploy_live_dev
-          env: "dev"
-          helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
-          context:
-            - hmpps-common-vars
-            - court-probation-live-dev
-          filters:
-            branches:
-              only:
-                - main
-          requires:
-            - build_docker
-            - helm_lint
-            - test-integration
-      - hmpps/deploy_env:
-          name: deploy_live_preprod
-          env: "preprod"
-          helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
-          context:
-            - hmpps-common-vars
-            - court-probation-live-preprod
-          requires:
-            - request-preprod-approval
-      - hmpps/deploy_env:
-          name: deploy_live_prod
           env: "prod"
           helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
           slack_channel_name: probation_in_court_dev
