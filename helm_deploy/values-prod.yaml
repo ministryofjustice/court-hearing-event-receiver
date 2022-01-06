@@ -18,6 +18,7 @@ generic-service:
 
   env:
     HMPPSAUTH_BASEURL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
+    FEATURE_USE_INCLUDED_COURTS_LIST: false
 
   allowlist:
     hmcts-1: "51.140.24.220/32"
