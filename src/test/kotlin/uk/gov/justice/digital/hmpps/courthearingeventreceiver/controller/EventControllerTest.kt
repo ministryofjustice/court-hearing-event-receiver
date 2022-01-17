@@ -29,6 +29,14 @@ internal class EventControllerTest {
       .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
   }
 
+  private val hearingId = "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2"
+  private val expectedProperties = mapOf(
+    "courtCode" to NORTH_TYNESIDE,
+    "hearingId" to hearingId,
+    "caseId" to "1d1861ed-e18c-429d-bad0-671802f9cdba",
+    "caseUrn" to "80GD8183221"
+  )
+
   @Mock
   lateinit var messageNotifier: MessageNotifier
 
@@ -46,14 +54,31 @@ internal class EventControllerTest {
   @Test
   fun `when receive update message for included court then send message`() {
 
-    val id = hearingEvent.hearing.id
-
-    eventController.postEvent(id, hearingEvent)
+    eventController.postEvent(hearingId, hearingEvent)
 
     verify(messageNotifier).send(hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
-      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+      expectedProperties
+    )
+    verifyNoMoreInteractions(telemetryService, messageNotifier)
+  }
+
+  @Test
+  fun `when receive update message with no prosecutionCases for included court then send message and track event`() {
+    val caselessHearingEvent = HearingEvent(hearing = hearingEvent.hearing.copy(prosecutionCases = emptyList()))
+
+    eventController.postEvent(hearingId, caselessHearingEvent)
+
+    verify(messageNotifier).send(caselessHearingEvent)
+    verify(telemetryService).trackEvent(
+      TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
+      mapOf(
+        "courtCode" to NORTH_TYNESIDE,
+        "hearingId" to hearingId,
+        "caseId" to null,
+        "caseUrn" to null
+      )
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
@@ -63,27 +88,23 @@ internal class EventControllerTest {
     eventController =
       EventController(messageNotifier, telemetryService, includedCourts = emptySet(), useIncludedCourtsList = true)
 
-    val id = hearingEvent.hearing.id
-
-    eventController.postEvent(id, hearingEvent)
+    eventController.postEvent(hearingId, hearingEvent)
 
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
-      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+      expectedProperties
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
 
   @Test
   fun `when receive result message for included court then send message`() {
-    val id = hearingEvent.hearing.id
-
-    eventController.postResultEvent(id, hearingEvent)
+    eventController.postResultEvent(hearingId, hearingEvent)
 
     verify(messageNotifier).send(hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
-      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+      expectedProperties
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
@@ -93,14 +114,12 @@ internal class EventControllerTest {
     eventController =
       EventController(messageNotifier, telemetryService, includedCourts = INCLUDED_COURTS, useIncludedCourtsList = false)
 
-    val id = hearingEvent.hearing.id
-
-    eventController.postResultEvent(id, hearingEvent)
+    eventController.postResultEvent(hearingId, hearingEvent)
 
     verify(messageNotifier).send(hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
-      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+      expectedProperties
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
@@ -110,13 +129,11 @@ internal class EventControllerTest {
     eventController =
       EventController(messageNotifier, telemetryService, includedCourts = emptySet(), useIncludedCourtsList = true)
 
-    val id = hearingEvent.hearing.id
-
-    eventController.postResultEvent(id, hearingEvent)
+    eventController.postResultEvent(hearingId, hearingEvent)
 
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
-      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+      expectedProperties
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
@@ -126,14 +143,12 @@ internal class EventControllerTest {
     eventController =
       EventController(messageNotifier, telemetryService, includedCourts = emptySet(), useIncludedCourtsList = false)
 
-    val id = hearingEvent.hearing.id
-
-    eventController.postResultEvent(id, hearingEvent)
+    eventController.postResultEvent(hearingId, hearingEvent)
 
     verify(messageNotifier).send(hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
-      mapOf("courtCode" to NORTH_TYNESIDE, "id" to id)
+      expectedProperties
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }

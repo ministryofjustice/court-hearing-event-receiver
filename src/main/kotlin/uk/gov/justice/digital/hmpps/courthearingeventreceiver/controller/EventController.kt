@@ -66,7 +66,12 @@ class EventController(
     val courtCode = hearing.courtCentre.code.substring(0, 5)
     telemetryService.trackEvent(
       eventType,
-      mapOf("courtCode" to courtCode, "id" to hearing.id)
+      mapOf(
+        "courtCode" to courtCode,
+        "hearingId" to hearing.id,
+        "caseId" to hearing.prosecutionCases.getOrNull(0)?.id,
+        "caseUrn" to hearing.prosecutionCases.getOrNull(0)?.prosecutionCaseIdentifier?.caseURN
+      )
     )
     if (!useIncludedCourtsList || includedCourts.contains(courtCode)) {
       messageNotifier.send(hearingEvent)
