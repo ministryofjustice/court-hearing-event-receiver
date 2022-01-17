@@ -12,11 +12,11 @@ internal class GlobalKtTest {
 
     val courtCode = "B10JQ"
     val messageType = MessageType.RESULT
-    val receiptTime = LocalDateTime.of(2021, Month.DECEMBER, 25, 23, 59, 59)
+    val receiptTime = LocalDateTime.of(2021, Month.DECEMBER, 25, 23, 59, 59, 123000)
 
     val path = buildS3Key(courtCode, messageType, receiptTime, UUID)
 
-    assertThat(path).isEqualTo("cp/" + messageType.name + "/" + courtCode + "/2021-12-25/23-59-59-" + UUID)
+    assertThat(path).isEqualTo("cp/" + messageType.name + "/" + courtCode + "/2021-12-25/23-59-59-123000-" + UUID)
   }
 
   @Test
