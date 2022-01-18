@@ -57,7 +57,12 @@ class EventControllerIntTest : IntegrationTestBase() {
       assertThat(messages.messages.size).isEqualTo(1)
       assertThat(messages.messages[0].body).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
 
-      val expectedMap = mapOf("id" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2", "courtCode" to "B10JQ")
+      val expectedMap = mapOf(
+        "courtCode" to "B10JQ",
+        "hearingId" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2",
+        "caseId" to "1d1861ed-e18c-429d-bad0-671802f9cdba",
+        "caseUrn" to "80GD8183221"
+      )
       verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, expectedMap)
     }
 
@@ -97,7 +102,12 @@ class EventControllerIntTest : IntegrationTestBase() {
       assertThat(messages.messages.size).isEqualTo(1)
       assertThat(messages.messages[0].body).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
 
-      val expectedMap = mapOf("id" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2", "courtCode" to "B10JQ")
+      val expectedMap = mapOf(
+        "courtCode" to "B10JQ",
+        "hearingId" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2",
+        "caseId" to "1d1861ed-e18c-429d-bad0-671802f9cdba",
+        "caseUrn" to "80GD8183221"
+      )
       verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, expectedMap)
     }
 

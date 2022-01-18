@@ -18,7 +18,7 @@ fun findUuid(string: String): String = UUID_REGEX.find(string).let { it?.value ?
 var PATH_DELIMITER = "/"
 var FIELD_DELIMITER = "-"
 
-val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH-mm-ss")
+val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH-mm-ss-nnn")
 
 @JvmField
 var UUID_REGEX = "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}".toRegex()

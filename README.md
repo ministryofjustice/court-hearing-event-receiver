@@ -8,6 +8,7 @@ The service will receive court hearing events from CP and publish these to SNS.
 This section contains the bare minimum you need to do to get the app running against the dev environment assuming you've got all the necessary dependencies (see Prerequisites section).
 - Run `docker-compose up localstack` to start  localstack with SNS, S3 and any other dependent AWS services
 - Run `./gradlew clean build` to build the application
+- Optional: Run `./gradlew installGitHooks` to install Git hooks from `./hooks` directory. Note these require localstack to be running to pass.
 
 ---
 
