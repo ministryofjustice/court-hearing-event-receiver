@@ -26,6 +26,9 @@ data class Offence(
   val wording: String,
 
   @JsonProperty("offenceLegislation")
-  val offenceLegislation: String? = null
+  val offenceLegislation: String? = null,
+
+  @JsonProperty("listingNumber")
+  val listingNumber: Int? = null
 
 )
