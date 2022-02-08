@@ -21,5 +21,6 @@ data class CourtCentre(
   val roomId: String,
 
   @JsonProperty("roomName")
+  @field:NotBlank
   val roomName: String
 )
