@@ -6,18 +6,7 @@ import uk.gov.justice.digital.hmpps.courthearingeventreceiver.integration.Integr
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class InfoTest : IntegrationTestBase() {
-
-  @Test
-  fun `Info page is accessible`() {
-    webTestClient.get()
-      .uri("/info")
-      .exchange()
-      .expectStatus()
-      .isOk
-      .expectBody()
-      .jsonPath("app.name").isEqualTo("Court Hearing Event Receiver")
-  }
+class InfoTestIntTest : IntegrationTestBase() {
 
   @Test
   fun `Info page reports version`() {

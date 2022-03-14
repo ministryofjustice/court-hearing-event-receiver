@@ -1,5 +1,5 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "3.3.12"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "4.1.0"
   kotlin("plugin.spring") version "1.6.10"
 }
 
@@ -17,8 +17,6 @@ dependencies {
   implementation("com.amazonaws:aws-java-sdk-sns:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-sqs:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-s3:$awsSdkVersion")
-
-  implementation("io.springfox:springfox-boot-starter:3.0.0")
 
   testImplementation("io.jsonwebtoken:jjwt:0.9.1")
 }

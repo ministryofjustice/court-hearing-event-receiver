@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@3.11.11
+  hmpps: ministryofjustice/hmpps@3.14
   jira: circleci/jira@1.2.2
   slack: circleci/slack@4.4.2
 
@@ -40,9 +40,9 @@ jobs:
       - run:
           name: Record the Application Version
           command: |
-            jar xvf build/libs/court-hearing-event-*.jar BOOT-INF/classes/META-INF/build-info.properties
-            APP_VERSION=$(grep 'build.version=' BOOT-INF/classes/META-INF/build-info.properties | awk -F= '{print $2}')
-            rm BOOT-INF/classes/META-INF/build-info.properties
+            jar xvf build/libs/court-hearing-event-*.jar META-INF/build-info.properties
+            APP_VERSION=$(grep 'build.version=' META-INF/build-info.properties | awk -F= '{print $2}')
+            rm META-INF/build-info.properties
             # make up a good version name
             SHORT_HASH=$(git rev-parse --short HEAD)
             TAG=${APP_VERSION}.${SHORT_HASH}

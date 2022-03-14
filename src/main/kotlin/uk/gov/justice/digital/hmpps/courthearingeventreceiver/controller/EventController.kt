@@ -1,7 +1,5 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.controller
 
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -20,7 +18,6 @@ import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryE
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
 import javax.validation.Valid
 
-@Api(value = "Hearing Event")
 @RestController
 class EventController(
   @Autowired
@@ -33,7 +30,6 @@ class EventController(
   private val useIncludedCourtsList: Boolean = false,
 ) {
 
-  @ApiOperation(value = "Endpoint to receive hearing events of CONFIRMED/UPDATE type")
   @RequestMapping(value = ["/hearing/{id}"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.OK)
   fun postEvent(@PathVariable(required = false) id: String, @Valid @RequestBody hearingEvent: HearingEvent) {
@@ -41,7 +37,6 @@ class EventController(
     trackAndSendEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, hearingEvent)
   }
 
-  @ApiOperation(value = "Endpoint to receive hearing events of RESULT type")
   @RequestMapping(value = ["/hearing/{id}/result"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.OK)
   fun postResultEvent(@PathVariable(required = false) id: String, @Valid @RequestBody hearingEvent: HearingEvent) {
@@ -49,7 +44,6 @@ class EventController(
     trackAndSendEvent(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
   }
 
-  @ApiOperation(value = "Endpoint to delete a hearing")
   @DeleteMapping(value = ["/hearing/{id}/delete"])
   @ResponseStatus(HttpStatus.OK)
   fun deleteEvent(@PathVariable(required = false) id: String) {
