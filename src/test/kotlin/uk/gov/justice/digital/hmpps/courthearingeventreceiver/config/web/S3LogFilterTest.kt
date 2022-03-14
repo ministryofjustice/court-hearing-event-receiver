@@ -1,15 +1,15 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.config.web
 
-import com.nhaarman.mockitokotlin2.isA
-import com.nhaarman.mockitokotlin2.same
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.isA
+import org.mockito.kotlin.same
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.S3Service
 import javax.servlet.FilterChain
 import javax.servlet.ServletInputStream
