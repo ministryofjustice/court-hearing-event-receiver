@@ -30,6 +30,8 @@ data class PersonDetails(
 
   @field:Valid
   @JsonProperty("address")
-  val address: Address?
+  val address: Address?,
 
+  @JsonProperty("contact")
+  val contact: Contact?
 )
