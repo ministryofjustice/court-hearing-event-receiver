@@ -7,11 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class Contact(
 
   @JsonProperty("home")
-  val home: String,
+  val home: String?,
 
   @JsonProperty("mobile")
-  val mobile: String,
+  val mobile: String?,
 
   @JsonProperty("work")
-  val work: String
+  val work: String?
 )
