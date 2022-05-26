@@ -72,3 +72,4 @@ ecr.repo
 # Helm
 helm_deploy/court-hearing-event-receiver/Chart.lock
 helm_deploy/court-hearing-event-receiver/charts/
+/.trivyignore
