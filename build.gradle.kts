@@ -1,5 +1,5 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "4.2.1"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "4.2.3"
   kotlin("plugin.spring") version "1.6.21"
 }
 
@@ -7,7 +7,7 @@ configurations {
   testImplementation { exclude(group = "org.junit.vintage") }
 }
 
-val awsSdkVersion = "1.12.237"
+val awsSdkVersion = "1.12.239"
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springframework.boot:spring-boot-starter-security")
