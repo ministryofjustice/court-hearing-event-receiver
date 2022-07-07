@@ -2,14 +2,16 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.config.web
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.*
+import org.mockito.kotlin.isA
+import org.mockito.kotlin.same
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
-import java.io.File
 import javax.servlet.FilterChain
 import javax.servlet.ServletInputStream
 import javax.servlet.http.HttpServletRequest
@@ -40,7 +42,6 @@ internal class CourtHearingEventFieldsFilterTest {
 
   private lateinit var observeFieldsMap: Map<String, String>
 
-
   @BeforeEach
   fun setUp() {
     courtHearingEventFieldsFilter = CourtHearingEventFieldsFilter(telemetryService, observeFields)
@@ -59,7 +60,6 @@ internal class CourtHearingEventFieldsFilterTest {
 
     verify(chain).doFilter(same(request), same(response))
     verifyNoInteractions(telemetryService)
-
   }
 
   @Test
@@ -80,7 +80,6 @@ internal class CourtHearingEventFieldsFilterTest {
 
     verify(chain).doFilter(isA<CustomHttpRequestWrapper>(), same(response))
     verify(telemetryService).trackEvent(TelemetryEventType.COMMON_PLATFORM_EVENT_OBSERVED, fieldsNotPresentMap)
-
   }
 
   companion object {

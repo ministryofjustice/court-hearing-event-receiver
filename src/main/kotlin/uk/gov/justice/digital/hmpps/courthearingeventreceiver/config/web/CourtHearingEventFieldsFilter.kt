@@ -16,7 +16,6 @@ import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 
-
 @Component
 class CourtHearingEventFieldsFilter(
   @Autowired private val telemetryService: TelemetryService,
@@ -24,24 +23,23 @@ class CourtHearingEventFieldsFilter(
   private val observedFields: ObserveFields
 ) : Filter {
 
-
   override fun doFilter(request: ServletRequest?, response: ServletResponse?, filterChain: FilterChain?) {
 
     val httpRequest = request as HttpServletRequest
-    if (observedFields.fields?.isNotEmpty() !!) {
+    if (observedFields.fields?.isNotEmpty()!!) {
       val requestWrapper = CustomHttpRequestWrapper(httpRequest)
       filterChain?.doFilter(requestWrapper, response)
       val jsonContext: ReadContext = JsonPath.parse(requestWrapper.inputStream)
       try {
         trackEvent(jsonContext.jsonString(), observedFields)
-      }catch(exception: UnsupportedOperationException){
+      } catch (exception: UnsupportedOperationException) {
         return
       }
+
       return
     }
     filterChain?.doFilter(request, response)
   }
-
 
   private fun trackEvent(requestJson: String, observedFields: ObserveFields) {
     val (defenceOrganisationAttributes, pncIdExist, croNumberValueExist) = buildEventDetails(requestJson, observedFields)
@@ -65,7 +63,7 @@ class CourtHearingEventFieldsFilter(
     }?.distinct()?.collect(Collectors.toList())
 
     val defenceOrganisationAttributes =
-      if (defenceOrganisationValues?.isNotEmpty() == true) defenceOrganisationValues.joinToString {values ->  "\'${values}\'" } else NOT_PRESENT
+      if (defenceOrganisationValues?.isNotEmpty() == true) defenceOrganisationValues.joinToString { values -> "\'${values}\'" } else NOT_PRESENT
 
     val pncIdPath = observedFields.fields?.get(PNC_PATH_KEY)
     val pncIdValues = getPathValue(document, pncIdPath)
