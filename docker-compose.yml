@@ -13,11 +13,11 @@ services:
       - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=dev
 
-  localstack:
+  localstack-cher:
     image: localstack/localstack:latest
     networks:
       - hmpps
-    container_name: localstack
+    container_name: localstack-cher
     ports:
       - "4566-4597:4566-4597"
       - 8999:8080
