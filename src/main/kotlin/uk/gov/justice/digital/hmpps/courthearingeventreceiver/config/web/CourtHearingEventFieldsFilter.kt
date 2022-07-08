@@ -19,8 +19,7 @@ import javax.servlet.http.HttpServletRequest
 @Component
 class CourtHearingEventFieldsFilter(
   @Autowired private val telemetryService: TelemetryService,
-  @Autowired
-  private val observedFields: ObserveFields
+  @Autowired private val observedFields: ObserveFields
 ) : Filter {
 
   override fun doFilter(request: ServletRequest?, response: ServletResponse?, filterChain: FilterChain?) {
@@ -42,14 +41,14 @@ class CourtHearingEventFieldsFilter(
   }
 
   private fun trackEvent(requestJson: String, observedFields: ObserveFields) {
-    val (defenceOrganisationAttributes, pncIdExist, croNumberValueExist) = buildEventDetails(requestJson, observedFields)
+    val (defenceOrganisationAttributes, pncIdExist, croNumberExist) = buildEventDetails(requestJson, observedFields)
 
     telemetryService.trackEvent(
       TelemetryEventType.COMMON_PLATFORM_EVENT_OBSERVED,
       mapOf(
         DEFENCE_ORGANISATION_PATH_KEY to defenceOrganisationAttributes,
         PNC_PATH_KEY to pncIdExist.toString(),
-        CRO_PATH_KEY to croNumberValueExist.toString(),
+        CRO_PATH_KEY to croNumberExist.toString(),
       )
     )
   }
