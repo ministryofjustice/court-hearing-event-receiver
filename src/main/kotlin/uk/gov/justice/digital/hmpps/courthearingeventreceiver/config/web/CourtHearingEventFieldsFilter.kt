@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
-import java.util.stream.Collectors
 import javax.servlet.Filter
 import javax.servlet.FilterChain
 import javax.servlet.ServletRequest
@@ -41,41 +40,20 @@ class CourtHearingEventFieldsFilter(
   }
 
   private fun trackEvent(requestJson: String, observedFields: ObserveFields) {
-    val (defenceOrganisationAttributes, pncIdExist, croNumberExist) = buildEventDetails(requestJson, observedFields)
-
     telemetryService.trackEvent(
       TelemetryEventType.COMMON_PLATFORM_EVENT_OBSERVED,
-      mapOf(
-        DEFENCE_ORGANISATION_PATH_KEY to defenceOrganisationAttributes,
-        PNC_PATH_KEY to pncIdExist.toString(),
-        CRO_PATH_KEY to croNumberExist.toString(),
-      )
+      buildEventDetails(requestJson, observedFields)
     )
   }
 
-  private fun buildEventDetails(requestJson: String, observedFields: ObserveFields): Triple<String?, Boolean, Boolean> {
+  private fun buildEventDetails(requestJson: String, observedFields: ObserveFields): MutableMap<String, String> {
     val document: Any = Configuration.defaultConfiguration().jsonProvider().parse(requestJson)
-
-    val defenceOrganisationPath = observedFields.fields?.get(DEFENCE_ORGANISATION_PATH_KEY)
-    val defenceOrganisationValues = getPathValue(document, defenceOrganisationPath)?.stream()?.map { item ->
-      item.keys
-    }?.distinct()?.collect(Collectors.toList())
-
-    val defenceOrganisationAttributes =
-      if (defenceOrganisationValues?.isNotEmpty() == true) defenceOrganisationValues.joinToString { values -> "\'${values}\'" } else NOT_PRESENT
-
-    val pncIdPath = observedFields.fields?.get(PNC_PATH_KEY)
-    val pncIdValues = getPathValue(document, pncIdPath)
-
-    val pncIdExist =
-      pncIdValues?.isNotEmpty() == true
-
-    val croNumberPath = observedFields.fields?.get(CRO_PATH_KEY)
-    val croNumberValues = getPathValue(document, croNumberPath)
-
-    val croNumberExist =
-      croNumberValues?.isNotEmpty() == true
-    return Triple(defenceOrganisationAttributes, pncIdExist, croNumberExist)
+    val fieldExistMap = mutableMapOf<String, String>()
+    observedFields.fields?.entries!!.forEach { field ->
+      val exist = getPathValue(document, field.value)?.isNotEmpty() == true
+      fieldExistMap[field.key] = exist.toString()
+    }
+    return fieldExistMap
   }
 
   private fun getPathValue(json: Any, jsonpath: String?): List<Map<String, String>>? {
@@ -89,9 +67,5 @@ class CourtHearingEventFieldsFilter(
 
   companion object {
     private val log = LoggerFactory.getLogger(CourtHearingEventFieldsFilter::class.java)
-    private const val NOT_PRESENT = "Not Present"
-    private const val DEFENCE_ORGANISATION_PATH_KEY = "defenceOrganisation"
-    private const val PNC_PATH_KEY = "pnc"
-    private const val CRO_PATH_KEY = "cro"
   }
 }

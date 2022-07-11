@@ -74,7 +74,7 @@ internal class CourtHearingEventFieldsFilterTest {
     courtHearingEventFieldsFilter.doFilter(request, response, chain)
 
     val fieldsNotPresentMap = buildMap {
-      put("defenceOrganisation", "'[name]', '[name, contact]'")
+      put("defenceOrganisation", "true")
       put("pnc", "true")
       put("cro", "true")
     }
