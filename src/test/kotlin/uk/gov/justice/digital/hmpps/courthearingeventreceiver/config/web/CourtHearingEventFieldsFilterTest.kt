@@ -54,7 +54,8 @@ internal class CourtHearingEventFieldsFilterTest {
   }
 
   @Test
-  fun `when no observe fields configured then do not send any details`() {
+  fun `when request method is a POST and no observe fields configured then do not send any details`() {
+    whenever(request.method).thenReturn("POST")
     whenever(observeFields.fields).thenReturn(emptyMap())
 
     courtHearingEventFieldsFilter.doFilter(request, response, chain)
@@ -64,7 +65,18 @@ internal class CourtHearingEventFieldsFilterTest {
   }
 
   @Test
+  fun `when request method is a GET then do not send any details`() {
+    whenever(request.method).thenReturn("GET")
+
+    courtHearingEventFieldsFilter.doFilter(request, response, chain)
+
+    verify(chain).doFilter(same(request), same(response))
+    verifyNoInteractions(telemetryService)
+  }
+
+  @Test
   fun `when values present for the observe fields then send event with details`() {
+    whenever(request.method).thenReturn("POST")
     whenever(request.inputStream).thenReturn(inputStream)
     val byteArray = HEARING_EVENT_JSON.toByteArray(CHARSET)
     whenever(inputStream.readAllBytes()).thenReturn(byteArray)
@@ -84,7 +96,7 @@ internal class CourtHearingEventFieldsFilterTest {
   }
 
   companion object {
-    val HEARING_EVENT_JSON = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
+    val HEARING_EVENT_JSON = File("src/test/resources/json/court-hearing-event.json").readText(Charsets.UTF_8)
     private val CHARSET = Charsets.UTF_8
   }
 }

@@ -6,6 +6,7 @@ import com.jayway.jsonpath.PathNotFoundException
 import com.jayway.jsonpath.ReadContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
@@ -24,16 +25,16 @@ class CourtHearingEventFieldsFilter(
   override fun doFilter(request: ServletRequest?, response: ServletResponse?, filterChain: FilterChain?) {
 
     val httpRequest = request as HttpServletRequest
-    if (observedFields.fields?.isNotEmpty()!!) {
+    if (HttpMethod.POST.matches(httpRequest.method) && observedFields.fields?.isNotEmpty()!!) {
       val requestWrapper = CustomHttpRequestWrapper(httpRequest)
       filterChain?.doFilter(requestWrapper, response)
       val jsonContext: ReadContext = JsonPath.parse(requestWrapper.inputStream)
       try {
         trackEvent(jsonContext.jsonString(), observedFields)
       } catch (exception: UnsupportedOperationException) {
+        log.warn(exception.message)
         return
       }
-
       return
     }
     filterChain?.doFilter(request, response)
