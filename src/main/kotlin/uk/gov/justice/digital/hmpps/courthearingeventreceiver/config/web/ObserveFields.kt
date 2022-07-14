@@ -1,8 +1,8 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.config.web
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.stereotype.Component
+import org.springframework.boot.context.properties.ConstructorBinding
 
-@Component
+@ConstructorBinding
 @ConfigurationProperties(prefix = "observe")
-data class ObserveFields(val fields: Map<String, String>)
+data class ObserveFields(val fields: Map<String, ObserveFieldDetails>)

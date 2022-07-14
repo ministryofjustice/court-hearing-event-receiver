@@ -51,7 +51,7 @@ class CourtHearingEventFieldsFilter(
     val document: Any = Configuration.defaultConfiguration().jsonProvider().parse(requestJson)
     val fieldExistMap = mutableMapOf<String, String>()
     observedFields.fields.entries.forEach { field ->
-      val exist = getPathValue(document, field.value)?.isNotEmpty() == true
+      val exist = getPathValue(document, field.value.path)?.isNotEmpty() == true
       fieldExistMap[field.key] = exist.toString()
     }
     return fieldExistMap
