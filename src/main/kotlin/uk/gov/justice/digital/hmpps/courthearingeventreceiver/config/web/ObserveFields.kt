@@ -5,4 +5,4 @@ import org.springframework.stereotype.Component
 
 @Component
 @ConfigurationProperties(prefix = "observe")
-data class ObserveFields(var fields: Map<String, String>? = mapOf())
+data class ObserveFields(val fields: Map<String, String>)

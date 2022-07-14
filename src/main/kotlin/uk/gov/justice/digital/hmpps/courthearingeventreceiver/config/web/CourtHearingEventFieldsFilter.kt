@@ -25,7 +25,7 @@ class CourtHearingEventFieldsFilter(
   override fun doFilter(request: ServletRequest?, response: ServletResponse?, filterChain: FilterChain?) {
 
     val httpRequest = request as HttpServletRequest
-    if (HttpMethod.POST.matches(httpRequest.method) && observedFields.fields?.isNotEmpty()!!) {
+    if (HttpMethod.POST.matches(httpRequest.method) && observedFields.fields.isNotEmpty()) {
       val requestWrapper = CustomHttpRequestWrapper(httpRequest)
       filterChain?.doFilter(requestWrapper, response)
       val jsonContext: ReadContext = JsonPath.parse(requestWrapper.inputStream)
@@ -50,7 +50,7 @@ class CourtHearingEventFieldsFilter(
   private fun buildEventDetails(requestJson: String, observedFields: ObserveFields): MutableMap<String, String> {
     val document: Any = Configuration.defaultConfiguration().jsonProvider().parse(requestJson)
     val fieldExistMap = mutableMapOf<String, String>()
-    observedFields.fields?.entries!!.forEach { field ->
+    observedFields.fields.entries.forEach { field ->
       val exist = getPathValue(document, field.value)?.isNotEmpty() == true
       fieldExistMap[field.key] = exist.toString()
     }
