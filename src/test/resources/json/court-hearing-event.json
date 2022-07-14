@@ -1,0 +1,146 @@
+{
+  "hearing": {
+    "courtCentre": {
+      "address": {
+        "address1": "The Law Courts",
+        "address2": "Alexandra Road",
+        "address3": "Wimbledon",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW19 7JP"
+      },
+      "code": "B10JQ00",
+      "name": "Wimbledon Magistrates' Court",
+      "roomId": "1414ea28-8b0e-3ba7-8f97-f2bb6d5dd38c",
+      "roomName": "Courtroom 05",
+      "id": "59cb14a6-e8de-4615-9b9e-94bf5ef81ad2"
+    },
+    "hearingDays": [
+      {
+        "listedDurationMinutes": 1,
+        "listingSequence": 0,
+        "sittingDay": "2021-06-25T09:00:00.000Z"
+      }
+    ],
+    "id": "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2",
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases":
+    [
+      {
+        "caseStatus": "ACTIVE",
+        "defendants":
+        [
+          {
+            "id": "ac24a1be-939b-49a4-a524-21a3d228f8bc",
+            "masterDefendantId": "ac24a1be-939b-49a4-a524-21a3d228f8bc",
+            "offences":
+            [
+              {
+                "id": "3e1218c4-1946-429b-9cb6-f497206405a6",
+                "modeOfTrial": "Summary",
+                "offenceCode": "CA03013",
+                "offenceDefinitionId": "062cedf4-b495-3a6c-9148-cec6bef362ed",
+                "offenceLegislation": "Contrary to section 366(8)(a) and    (9) of the Communications Act 2003.",
+                "offenceTitle": "Obstruct person executing search warrant for TV receiver",
+                "orderIndex": 1,
+                "wording": "Has a violent past and fear that he will commit further offences and\n                interfere with witnesse"
+              }
+            ],
+            "defenceOrganisation": {
+              "organisation": {
+                "name": "RAF"
+              }
+            },
+            "croNumber": "cro number1",
+            "pncId": "pnc number1",
+            "personDefendant":
+            {
+              "personDetails":
+              {
+                "address":
+                {
+                  "address1": "1234",
+                  "address2": "StreetDescription",
+                  "address3": "Locality2O"
+                },
+                "dateOfBirth": "1982-06-29",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Geoff",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Klingon",
+                "title": "Mr"
+              }
+            },
+            "prosecutionAuthorityReference": "TFL",
+            "prosecutionCaseId": "1d1861ed-e18c-429d-bad0-671802f9cdba"
+          },
+          {
+            "id": "ac24a1be-939b-49a4-a524-21a3d228f8bc",
+            "masterDefendantId": "ac24a1be-939b-49a4-a524-21a3d228f8bc",
+            "offences":
+            [
+              {
+                "id": "3e1218c4-1946-429b-9cb6-f497206405a6",
+                "modeOfTrial": "Summary",
+                "offenceCode": "CA03013",
+                "offenceDefinitionId": "062cedf4-b495-3a6c-9148-cec6bef362ed",
+                "offenceLegislation": "Contrary to section 366(8)(a) and    (9) of the Communications Act 2003.",
+                "offenceTitle": "Obstruct person executing search warrant for TV receiver",
+                "orderIndex": 1,
+                "wording": "Has a violent past and fear that he will commit further offences and\n                interfere with witnesse"
+              }
+            ],
+            "defenceOrganisation": {
+              "organisation": {
+                "name": "Royal Navy",
+                "contact": {
+                  "primaryEmail": "test@test.com"
+                }
+              }
+            },
+            "croNumber": "cro number2",
+            "pncId": "pnc number2",
+            "personDefendant":
+            {
+              "personDetails":
+              {
+                "address":
+                {
+                  "address1": "1234",
+                  "address2": "StreetDescription",
+                  "address3": "Locality2O"
+                },
+                "dateOfBirth": "1982-06-29",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Geoff",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Klingon",
+                "title": "Mr"
+              }
+            },
+            "prosecutionAuthorityReference": "TFL",
+            "prosecutionCaseId": "1d1861ed-e18c-429d-bad0-671802f9cdba"
+          }
+        ],
+        "id": "1d1861ed-e18c-429d-bad0-671802f9cdba",
+        "initiationCode": "C",
+        "originatingOrganisation": "0300000",
+        "prosecutionCaseIdentifier":
+        {
+          "majorCreditorCode": "PF30",
+          "prosecutionAuthorityCode": "DERPF",
+          "prosecutionAuthorityId": "bdc190e7-c939-37ca-be4b-9f615d6ef40e",
+          "prosecutionAuthorityName": "Derbyshire Police",
+          "prosecutionAuthorityOUCode": "0300000",
+          "caseURN": "80GD8183221"
+        }
+      }
+    ],
+    "type": {
+      "description": "Sentence",
+      "id": "5ae4c090-0f70-4694-b4fc-707633d2b430"
+    }
+  }
+}
