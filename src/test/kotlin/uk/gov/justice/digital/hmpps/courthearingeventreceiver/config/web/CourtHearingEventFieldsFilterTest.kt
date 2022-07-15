@@ -51,8 +51,8 @@ internal class CourtHearingEventFieldsFilterTest {
   @BeforeEach
   fun setUp() {
     defenceOrgFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*]", false)
-    pncFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].pncId", true)
-    croFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].croNumber", true)
+    pncFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].pncId", false)
+    croFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].croNumber", false)
 
     observeFieldsMap = buildMap {
       put("defenceOrganisation", defenceOrgFieldDetails)
