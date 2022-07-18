@@ -86,7 +86,7 @@ internal class CourtHearingEventFieldsFilterTest {
   }
 
   @Test
-  fun `when values present for the observe fields then send event with details`() {
+  fun `when print value is false for the observe fields then send event with fields exist as true`() {
     whenever(request.method).thenReturn("POST")
     whenever(request.inputStream).thenReturn(inputStream)
     val byteArray = HEARING_EVENT_JSON.toByteArray(CHARSET)
@@ -101,6 +101,39 @@ internal class CourtHearingEventFieldsFilterTest {
       put("defenceOrganisation", "true")
       put("pncId", "true")
       put("croNumber", "true")
+    }
+
+    verify(chain).doFilter(isA<CustomHttpRequestWrapper>(), same(response))
+    verify(telemetryService).trackEvent(TelemetryEventType.COMMON_PLATFORM_EVENT_OBSERVED, fieldsNotPresentMap)
+  }
+
+  @Test
+  fun `when print value is true for the observe fields then send event with field details`() {
+    defenceOrgFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*]", true)
+    pncFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].pncId", true)
+    croFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].croNumber", true)
+
+    observeFieldsMap = buildMap {
+      put("defenceOrganisation", defenceOrgFieldDetails)
+      put("pncId", pncFieldDetails)
+      put("croNumber", croFieldDetails)
+    }
+    observeFields = ObserveFields(observeFieldsMap)
+
+    whenever(request.method).thenReturn("POST")
+    whenever(request.inputStream).thenReturn(inputStream)
+    val byteArray = HEARING_EVENT_JSON.toByteArray(CHARSET)
+    whenever(inputStream.readAllBytes()).thenReturn(byteArray)
+    whenever(request.characterEncoding).thenReturn(CHARSET.name())
+
+    courtHearingEventFieldsFilter = CourtHearingEventFieldsFilter(telemetryService, observeFields)
+
+    courtHearingEventFieldsFilter.doFilter(request, response, chain)
+
+    val fieldsNotPresentMap = buildMap {
+      put("defenceOrganisation", "[{\"name\":\"RAF\"},{\"name\":\"Royal Navy\",\"contact\":{\"primaryEmail\":\"test@test.com\"}}]")
+      put("pncId", "[\"pnc number1\",\"pnc number2\"]")
+      put("croNumber", "[\"cro number1\",\"cro number2\"]")
     }
 
     verify(chain).doFilter(isA<CustomHttpRequestWrapper>(), same(response))
