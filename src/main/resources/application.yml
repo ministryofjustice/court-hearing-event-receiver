@@ -63,8 +63,14 @@ feature:
 
 observe:
   fields:
-    defenceOrganisation: "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*]"
-    pnc: "hearing.prosecutionCases[*].defendants[*].pncId"
-    cro: "hearing.prosecutionCases[*].defendants[*].croNumber"
+    defenceOrganisation:
+     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*]"
+     printValue: false
+    pnc:
+      path: "hearing.prosecutionCases[*].defendants[*].pncId"
+      printValue: true
+    cro:
+      path: "hearing.prosecutionCases[*].defendants[*].croNumber"
+      printValue: true
 
 

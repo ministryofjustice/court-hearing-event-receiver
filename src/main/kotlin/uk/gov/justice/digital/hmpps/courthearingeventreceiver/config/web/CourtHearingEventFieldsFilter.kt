@@ -49,15 +49,20 @@ class CourtHearingEventFieldsFilter(
 
   private fun buildEventDetails(requestJson: String, observedFields: ObserveFields): MutableMap<String, String> {
     val document: Any = Configuration.defaultConfiguration().jsonProvider().parse(requestJson)
-    val fieldExistMap = mutableMapOf<String, String>()
+    val eventDetails = mutableMapOf<String, String>()
     observedFields.fields.entries.forEach { field ->
-      val exist = getPathValue(document, field.value)?.isNotEmpty() == true
-      fieldExistMap[field.key] = exist.toString()
+      val values = getPathValues(document, field.value.path)
+      if (!field.value.printValue) {
+        val exist = values?.isNotEmpty() == true
+        eventDetails[field.key] = exist.toString()
+      } else {
+        eventDetails[field.key] = if (!values.isNullOrEmpty()) values.toString() else "Not Present"
+      }
     }
-    return fieldExistMap
+    return eventDetails
   }
 
-  private fun getPathValue(json: Any, jsonpath: String?): List<Map<String, String>>? {
+  private fun getPathValues(json: Any, jsonpath: String?): List<Map<String, String>>? {
     return try {
       JsonPath.read(json, jsonpath)
     } catch (exception: PathNotFoundException) {
