@@ -63,8 +63,26 @@ feature:
 
 observe:
   fields:
-    defenceOrganisation:
-     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*]"
+    defenceOrganisation-description:
+     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.description"
+     printValue: false
+    defenceOrganisation-addressLine1:
+     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.address.address1"
+     printValue: false
+    defenceOrganisation-addressPostCode:
+     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.address.postCode"
+     printValue: false
+    defenceOrganisation-contactHome:
+     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.contact.home"
+     printValue: false     
+    defenceOrganisation-contactWork:
+     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.contact.work"
+     printValue: false
+    defenceOrganisation-contactMobile:
+     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.contact.mobile"
+     printValue: false
+    defenceOrganisation-contactPrimaryEmail:
+     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.contact.primaryEmail"
      printValue: false
     pnc:
       path: "hearing.prosecutionCases[*].defendants[*].pncId"
