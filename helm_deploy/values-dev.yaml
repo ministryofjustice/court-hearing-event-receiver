@@ -5,8 +5,11 @@ generic-service:
     tlsSecretName: court-probation-dev-cert-secret
 
   autoscaling:
-    minReplicas: 2
-    maxReplicas: 3
+    minReplicas: 1
+    maxReplicas: 2
+
+  poddisruptionbudget:
+    enabled: false
 
   resources:
     limits:
