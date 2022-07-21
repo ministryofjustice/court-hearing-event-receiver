@@ -57,6 +57,8 @@ internal class ModelParserTest {
     assertThat(hearing.prosecutionCases[0].defendants[1].id).isEqualTo("903c4c54-f667-4770-8fdf-1adbb5957c25")
     assertThat(hearing.prosecutionCases[0].defendants[0].offences.size).isEqualTo(2)
     assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].offenceLegislation).isEqualTo("Contrary to section 20 of the Offences Against the    Person Act 1861.")
+    assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].judicialResults[0].isConvictedResult).isEqualTo(false)
+    assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].judicialResults[0].label).isEqualTo("Adjournment")
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.firstName).isEqualTo("Trevion")
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.lastName).isEqualTo("McCullough")
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.gender).isSameAs(Gender.MALE)
