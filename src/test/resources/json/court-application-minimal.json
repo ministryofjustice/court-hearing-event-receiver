@@ -43,7 +43,17 @@
                 "offenceLegislation": "Contrary to section 366(8)(a) and    (9) of the Communications Act 2003.",
                 "offenceTitle": "Obstruct person executing search warrant for TV receiver",
                 "orderIndex": 1,
-                "wording": "Has a violent past and fear that he will commit further offences and\n                interfere with witnesse"
+                "wording": "Has a violent past and fear that he will commit further offences and\n                interfere with witnesse",
+                "judicialResults": [
+                  {
+                    "isConvictedResult": false,
+                    "label": "Adjournment",
+                    "type": {
+                      "description": "Plea and Trial Preparation",
+                      "id": "06b0c2bf-3f98-46ed-ab7e-56efaf9ecced"
+                    }
+                  }
+                ]
               }
             ],
             "personDefendant":

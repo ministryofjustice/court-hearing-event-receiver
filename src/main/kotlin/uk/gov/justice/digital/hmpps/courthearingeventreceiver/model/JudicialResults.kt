@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class JudicialResults(
-  @field:NotBlank
   @JsonProperty("isConvictedResult")
   val isConvictedResult: Boolean,
 
