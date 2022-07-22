@@ -56,7 +56,7 @@ class EventControllerIntTest : IntegrationTestBase() {
         .get(5, TimeUnit.SECONDS)
       assertThat(messages.messages.size).isEqualTo(1)
       assertThat(messages.messages[0].body).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
-      // assertThat(messages.messages[0].body).contains("Adjournment")
+      assertThat(messages.messages[0].body).contains("Adjournment")
 
       val expectedMap = mapOf(
         "courtCode" to "B10JQ",
