@@ -90,5 +90,13 @@ observe:
     cro:
       path: "hearing.prosecutionCases[*].defendants[*].croNumber"
       printValue: true
-
+    judicialResults-label:
+      path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].label"
+      printValue: false
+    judicialResults-isConvictedResult:
+      path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].isConvictedResult"
+      printValue: false
+    judicialResults-type-description:
+      path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].type.description"
+      printValue: false
 
