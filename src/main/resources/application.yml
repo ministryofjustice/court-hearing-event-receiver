@@ -63,26 +63,17 @@ feature:
 
 observe:
   fields:
-    defenceOrganisation-description:
-     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.description"
+    associatedDefenceOrganisation:
+     path:  "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation[*]"
      printValue: false
-    defenceOrganisation-addressLine1:
-     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.address.address1"
+    defenceOrganisation:
+     path:  "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation[*].defenceOrganisation"
      printValue: false
-    defenceOrganisation-addressPostCode:
-     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.address.postCode"
+    defenceOrganisation-organisation:
+     path:  "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation[*].defenceOrganisation.organisation"
      printValue: false
-    defenceOrganisation-contactHome:
-     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.contact.home"
-     printValue: false     
-    defenceOrganisation-contactWork:
-     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.contact.work"
-     printValue: false
-    defenceOrganisation-contactMobile:
-     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.contact.mobile"
-     printValue: false
-    defenceOrganisation-contactPrimaryEmail:
-     path:  "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation.contact.primaryEmail"
+    defenceOrganisation-name:
+     path:  "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation[*].defenceOrganisation.organisation.name"
      printValue: false
     pnc:
       path: "hearing.prosecutionCases[*].defendants[*].pncId"
@@ -92,11 +83,11 @@ observe:
       printValue: true
     judicialResults-label:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].label"
-      printValue: false
+      printValue: true
     judicialResults-isConvictedResult:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].isConvictedResult"
-      printValue: false
+      printValue: true
     judicialResults-type-description:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].type.description"
-      printValue: false
+      printValue: true
 
