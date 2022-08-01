@@ -23,7 +23,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.CourtCentre
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.Hearing
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
-import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingType
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingType
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.JurisdictionType
 
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
@@ -54,12 +55,14 @@ internal class MessageNotifierTest {
     whenever(amazonSNSClient.publish(any()))
       .thenReturn(result)
 
-    messageNotifier.send(hearingEvent)
+    messageNotifier.send(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
 
     verify(amazonSNSClient).publish(publishRequest.capture())
     assertThat(publishRequest.value.message).contains("hearing-id")
     assertThat(publishRequest.value.messageAttributes["messageType"]?.dataType).isEqualTo("String")
     assertThat(publishRequest.value.messageAttributes["messageType"]?.stringValue).isEqualTo("CP_TEST_COURT_CASE")
+    assertThat(publishRequest.value.messageAttributes["hearingEventType"]?.dataType).isEqualTo("String")
+    assertThat(publishRequest.value.messageAttributes["hearingEventType"]?.stringValue).isEqualTo(HearingEventType.RESULTED.description)
   }
 
   @TestConfiguration

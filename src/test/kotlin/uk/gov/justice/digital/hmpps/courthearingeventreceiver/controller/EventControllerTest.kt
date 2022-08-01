@@ -56,7 +56,7 @@ internal class EventControllerTest {
 
     eventController.postEvent(hearingId, hearingEvent)
 
-    verify(messageNotifier).send(hearingEvent)
+    verify(messageNotifier).send(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
       expectedProperties
@@ -70,7 +70,7 @@ internal class EventControllerTest {
 
     eventController.postEvent(hearingId, caselessHearingEvent)
 
-    verify(messageNotifier).send(caselessHearingEvent)
+    verify(messageNotifier).send(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, caselessHearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
       mapOf(
@@ -101,7 +101,7 @@ internal class EventControllerTest {
   fun `when receive result message for included court then send message`() {
     eventController.postResultEvent(hearingId, hearingEvent)
 
-    verify(messageNotifier).send(hearingEvent)
+    verify(messageNotifier).send(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
       expectedProperties
@@ -116,7 +116,7 @@ internal class EventControllerTest {
 
     eventController.postResultEvent(hearingId, hearingEvent)
 
-    verify(messageNotifier).send(hearingEvent)
+    verify(messageNotifier).send(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
       expectedProperties
@@ -145,7 +145,7 @@ internal class EventControllerTest {
 
     eventController.postResultEvent(hearingId, hearingEvent)
 
-    verify(messageNotifier).send(hearingEvent)
+    verify(messageNotifier).send(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
       expectedProperties

@@ -55,11 +55,11 @@ class EventController(
     // TODO - how to send a delete event for a hearing ?
   }
 
-  private fun trackAndSendEvent(eventType: TelemetryEventType, hearingEvent: HearingEvent) {
+  private fun trackAndSendEvent(telemetryEventType: TelemetryEventType, hearingEvent: HearingEvent) {
     val hearing = hearingEvent.hearing
     val courtCode = hearing.courtCentre.code.substring(0, 5)
     telemetryService.trackEvent(
-      eventType,
+      telemetryEventType,
       mapOf(
         "courtCode" to courtCode,
         "hearingId" to hearing.id,
@@ -68,7 +68,7 @@ class EventController(
       )
     )
     if (!useIncludedCourtsList || includedCourts.contains(courtCode)) {
-      messageNotifier.send(hearingEvent)
+      messageNotifier.send(telemetryEventType, hearingEvent)
     }
   }
 
