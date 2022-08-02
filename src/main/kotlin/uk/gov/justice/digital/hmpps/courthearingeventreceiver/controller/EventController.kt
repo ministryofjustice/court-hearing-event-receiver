@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.MessageNotifier
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
@@ -34,14 +35,14 @@ class EventController(
   @ResponseStatus(HttpStatus.OK)
   fun postEvent(@PathVariable(required = false) id: String, @Valid @RequestBody hearingEvent: HearingEvent) {
     log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
-    trackAndSendEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, hearingEvent)
+    trackAndSendEvent(HearingEventType.CONFIRMED_OR_UPDATED, hearingEvent)
   }
 
   @RequestMapping(value = ["/hearing/{id}/result"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.OK)
   fun postResultEvent(@PathVariable(required = false) id: String, @Valid @RequestBody hearingEvent: HearingEvent) {
     log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
-    trackAndSendEvent(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
+    trackAndSendEvent(HearingEventType.RESULTED, hearingEvent)
   }
 
   @DeleteMapping(value = ["/hearing/{id}/delete"])
@@ -55,11 +56,11 @@ class EventController(
     // TODO - how to send a delete event for a hearing ?
   }
 
-  private fun trackAndSendEvent(eventType: TelemetryEventType, hearingEvent: HearingEvent) {
+  private fun trackAndSendEvent(hearingEventType: HearingEventType, hearingEvent: HearingEvent) {
     val hearing = hearingEvent.hearing
     val courtCode = hearing.courtCentre.code.substring(0, 5)
     telemetryService.trackEvent(
-      eventType,
+      hearingEventType.getTelemetryEventType(),
       mapOf(
         "courtCode" to courtCode,
         "hearingId" to hearing.id,
@@ -68,7 +69,7 @@ class EventController(
       )
     )
     if (!useIncludedCourtsList || includedCourts.contains(courtCode)) {
-      messageNotifier.send(hearingEvent)
+      messageNotifier.send(hearingEventType, hearingEvent)
     }
   }
 
