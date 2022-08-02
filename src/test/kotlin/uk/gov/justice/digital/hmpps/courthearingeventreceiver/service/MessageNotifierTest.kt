@@ -55,12 +55,12 @@ internal class MessageNotifierTest {
     whenever(amazonSNSClient.publish(any()))
       .thenReturn(result)
 
-    messageNotifier.send(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
+    messageNotifier.send(HearingEventType.RESULTED, hearingEvent)
 
     verify(amazonSNSClient).publish(publishRequest.capture())
     assertThat(publishRequest.value.message).contains("hearing-id")
     assertThat(publishRequest.value.messageAttributes["messageType"]?.dataType).isEqualTo("String")
-    assertThat(publishRequest.value.messageAttributes["messageType"]?.stringValue).isEqualTo("CP_TEST_COURT_CASE")
+    assertThat(publishRequest.value.messageAttributes["messageType"]?.stringValue).isEqualTo("COMMON_PLATFORM_HEARING")
     assertThat(publishRequest.value.messageAttributes["hearingEventType"]?.dataType).isEqualTo("String")
     assertThat(publishRequest.value.messageAttributes["hearingEventType"]?.stringValue).isEqualTo(HearingEventType.RESULTED.description)
   }

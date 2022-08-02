@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.MessageNotifier
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
@@ -56,7 +57,7 @@ internal class EventControllerTest {
 
     eventController.postEvent(hearingId, hearingEvent)
 
-    verify(messageNotifier).send(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, hearingEvent)
+    verify(messageNotifier).send(HearingEventType.CONFIRMED_OR_UPDATED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
       expectedProperties
@@ -70,7 +71,7 @@ internal class EventControllerTest {
 
     eventController.postEvent(hearingId, caselessHearingEvent)
 
-    verify(messageNotifier).send(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, caselessHearingEvent)
+    verify(messageNotifier).send(HearingEventType.CONFIRMED_OR_UPDATED, caselessHearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
       mapOf(
@@ -101,7 +102,7 @@ internal class EventControllerTest {
   fun `when receive result message for included court then send message`() {
     eventController.postResultEvent(hearingId, hearingEvent)
 
-    verify(messageNotifier).send(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
+    verify(messageNotifier).send(HearingEventType.RESULTED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
       expectedProperties
@@ -116,7 +117,7 @@ internal class EventControllerTest {
 
     eventController.postResultEvent(hearingId, hearingEvent)
 
-    verify(messageNotifier).send(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
+    verify(messageNotifier).send(HearingEventType.RESULTED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
       expectedProperties
@@ -145,7 +146,7 @@ internal class EventControllerTest {
 
     eventController.postResultEvent(hearingId, hearingEvent)
 
-    verify(messageNotifier).send(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, hearingEvent)
+    verify(messageNotifier).send(HearingEventType.RESULTED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
       expectedProperties

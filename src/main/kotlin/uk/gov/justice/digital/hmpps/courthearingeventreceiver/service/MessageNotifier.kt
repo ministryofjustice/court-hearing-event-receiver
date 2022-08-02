@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 
-private const val MESSAGE_TYPE = "CP_TEST_COURT_CASE"
+private const val MESSAGE_TYPE = "COMMON_PLATFORM_HEARING"
 
 @Component
 class MessageNotifier(
@@ -22,7 +22,7 @@ class MessageNotifier(
   @Value("\${aws.sns.topic_arn}")
   private val topicArn: String
 ) {
-  fun send(telemetryEventType: TelemetryEventType, hearingEvent: HearingEvent) {
+  fun send(hearingEventType: HearingEventType, hearingEvent: HearingEvent) {
 
     val messageTypeValue = MessageAttributeValue()
       .withDataType("String")
@@ -30,22 +30,12 @@ class MessageNotifier(
 
     val hearingEventTypeValue = MessageAttributeValue()
       .withDataType("String")
-      .withStringValue(getHearingEventTypeValue(telemetryEventType))
+      .withStringValue(hearingEventType.description)
 
     val publishRequest = PublishRequest(topicArn, objectMapper.writeValueAsString(hearingEvent))
       .withMessageAttributes(mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue))
     val publishResult = amazonSNSClient.publish(publishRequest)
     log.info("Published message with message Id {}", publishResult.messageId)
-  }
-
-  fun getHearingEventTypeValue(telemetryEventType: TelemetryEventType): String? {
-    return when (telemetryEventType) {
-      TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED -> HearingEventType.CONFIRMED_OR_UPDATED.description
-      TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED -> HearingEventType.RESULTED.description
-      else -> {
-        HearingEventType.UNKNOWN.description
-      }
-    }
   }
 
   companion object {
