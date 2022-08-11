@@ -60,10 +60,7 @@
                 {
                   "isConvictedResult": false,
                   "label": "Adjournment",
-                  "type": {
-                    "description": "Plea and Trial Preparation",
-                    "id": "06b0c2bf-3f98-46ed-ab7e-56efaf9ecced"
-                  }
+                  "judicialResultTypeId": "06b0c2bf-3f98-46ed-ab7e-56efaf9ecced"
                 }
               ]
             },
