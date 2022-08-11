@@ -3,7 +3,6 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class JudicialResults(
@@ -14,7 +13,6 @@ data class JudicialResults(
   @JsonProperty("label")
   val label: String,
 
-  @field:NotNull
-  @JsonProperty("type")
-  val type: JudicialResultType,
+  @JsonProperty("judicialResultTypeId")
+  val judicialResultTypeId: String?,
 )
