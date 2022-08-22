@@ -63,24 +63,6 @@ feature:
 
 observe:
   fields:
-    associatedDefenceOrganisation:
-     path:  "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation[*]"
-     printValue: false
-    defenceOrganisation:
-     path:  "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation[*].defenceOrganisation"
-     printValue: false
-    defenceOrganisation-organisation:
-     path:  "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation[*].defenceOrganisation.organisation"
-     printValue: false
-    defenceOrganisation-name:
-     path:  "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation[*].defenceOrganisation.organisation.name"
-     printValue: false
-    pnc:
-      path: "hearing.prosecutionCases[*].defendants[*].pncId"
-      printValue: true
-    cro:
-      path: "hearing.prosecutionCases[*].defendants[*].croNumber"
-      printValue: true
     judicialResults-label:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].label"
       printValue: true
@@ -89,5 +71,8 @@ observe:
       printValue: true
     judicialResults-type-description:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].type.description"
+      printValue: true
+    hearingType:
+      path: "hearing.type.description"
       printValue: true
 
