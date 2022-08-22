@@ -1,9 +1,13 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.config.web
 
 import com.jayway.jsonpath.Configuration
+import com.jayway.jsonpath.DocumentContext
 import com.jayway.jsonpath.JsonPath
+import com.jayway.jsonpath.Option
 import com.jayway.jsonpath.PathNotFoundException
 import com.jayway.jsonpath.ReadContext
+import com.jayway.jsonpath.spi.json.JsonSmartJsonProvider
+import com.jayway.jsonpath.spi.mapper.JsonSmartMappingProvider
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
@@ -48,7 +52,12 @@ class CourtHearingEventFieldsFilter(
   }
 
   private fun buildEventDetails(requestJson: String, observedFields: ObserveFields): MutableMap<String, String> {
-    val document: Any = Configuration.defaultConfiguration().jsonProvider().parse(requestJson)
+    val configuration = Configuration.builder()
+      .options(Option.ALWAYS_RETURN_LIST)
+      .jsonProvider(JsonSmartJsonProvider())
+      .mappingProvider(JsonSmartMappingProvider())
+      .build()
+    val document = JsonPath.using(configuration).parse(requestJson)
     val eventDetails = mutableMapOf<String, String>()
     observedFields.fields.entries.forEach { field ->
       val values = getPathValues(document, field.value.path)
@@ -62,9 +71,9 @@ class CourtHearingEventFieldsFilter(
     return eventDetails
   }
 
-  private fun getPathValues(json: Any, jsonpath: String?): List<Map<String, String>>? {
+  private fun getPathValues(jsonDocument: DocumentContext, jsonpath: String?): List<Map<String, String>>? {
     return try {
-      JsonPath.read(json, jsonpath)
+      jsonDocument.read(jsonpath)
     } catch (exception: PathNotFoundException) {
       log.error(exception.message)
       emptyList()
