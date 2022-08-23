@@ -48,6 +48,8 @@ internal class CourtHearingEventFieldsFilterTest {
 
   private lateinit var courtHearingEventFieldsFilter: CourtHearingEventFieldsFilter
 
+  private lateinit var hearingTypeFieldDetails: ObserveFieldDetails
+
   @BeforeEach
   fun setUp() {
     defenceOrgFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*]", false)
@@ -112,11 +114,13 @@ internal class CourtHearingEventFieldsFilterTest {
     defenceOrgFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*]", true)
     pncFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].pncId", true)
     croFieldDetails = ObserveFieldDetails("hearing.prosecutionCases[*].defendants[*].croNumber", true)
+    hearingTypeFieldDetails = ObserveFieldDetails("hearing.type.description", true)
 
     observeFieldsMap = buildMap {
       put("defenceOrganisation", defenceOrgFieldDetails)
       put("pncId", pncFieldDetails)
       put("croNumber", croFieldDetails)
+      put("hearingType", hearingTypeFieldDetails)
     }
     observeFields = ObserveFields(observeFieldsMap)
 
@@ -130,14 +134,15 @@ internal class CourtHearingEventFieldsFilterTest {
 
     courtHearingEventFieldsFilter.doFilter(request, response, chain)
 
-    val fieldsNotPresentMap = buildMap {
+    val fieldsPresentMap = buildMap {
       put("defenceOrganisation", "[{\"name\":\"RAF\"},{\"name\":\"Royal Navy\",\"contact\":{\"primaryEmail\":\"test@test.com\"}}]")
       put("pncId", "[\"pnc number1\",\"pnc number2\"]")
       put("croNumber", "[\"cro number1\",\"cro number2\"]")
+      put("hearingType", "[\"Sentence\"]")
     }
 
     verify(chain).doFilter(isA<CustomHttpRequestWrapper>(), same(response))
-    verify(telemetryService).trackEvent(TelemetryEventType.COMMON_PLATFORM_EVENT_OBSERVED, fieldsNotPresentMap)
+    verify(telemetryService).trackEvent(TelemetryEventType.COMMON_PLATFORM_EVENT_OBSERVED, fieldsPresentMap)
   }
 
   companion object {
