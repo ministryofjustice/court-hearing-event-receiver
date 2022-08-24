@@ -8,6 +8,7 @@ generic-service:
     port: 8080
 
   ingress:
+    v1_2_enabled: true
     enabled: true
     modsecurity_enabled: false
     host: app-hostname.local    # override per environment
