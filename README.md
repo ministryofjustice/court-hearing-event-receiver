@@ -23,3 +23,13 @@ We also use:
 
 ---
 
+## Downloading archived payloads
+
+Cher believes in life after upload and so places a backup of each received payload in an S3 bucket. This produces a lot of data so it's useful to know exactly where you need to look for a given file in the S3 bucket. Files will be placed in the bucket at a path where each of the identifiers in the filename can be determined from AppInsights customEvent telemetry. The following is an example followed by meaning of each component of the file path:
+
+```
+/cp/CONFIRM_UPDATE/C44SA00/2022-08-30/15-24-09-623847927-e31c1d8e-c940-4b7c-a879-214a57ef3864
+/cp/<hearingEventType>/<courtCode>/<dateOfReceipt:YYYY-MM-DD>/<receiptTime:HH-mm-ss-nnn>-<hearingId>
+```
+
+These files can be downloaded either using the AWS CLI or using the [`./copy-s3.bash` script which can be found in `court-case-source`](https://github.com/ministryofjustice/court-case-source/blob/main/copy-s3.bash). GUI's such as Cyberduck are not recommended because the huge numbers of files in the prod bucket make it *incredibly* slow to list the contents.
