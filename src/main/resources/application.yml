@@ -75,4 +75,7 @@ observe:
     hearingType:
       path: "hearing.type.description"
       printValue: true
+    offenceCode:
+      path: "prosecutionCases[*].defendants[*].offences[*].offenceCode"
+      printValue: true
 
