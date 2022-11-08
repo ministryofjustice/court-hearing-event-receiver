@@ -78,3 +78,10 @@ observe:
     offenceCode:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].offenceCode"
       printValue: true
+    defendantMarker:
+      Path: "hearing.prosecutionCases[*].defendants[*].markers[*].markerTypeDescription"
+      printValue: true
+    caseMarker:
+      path: "hearing.prosecutionCases[*].markers[*].markerTypeDescription"
+      printValue: true
+
