@@ -81,34 +81,34 @@ observe:
     caseMarker:
       path: "hearing.prosecutionCases[*].caseMarkers[*].markerTypeDescription"
       printValue: true
-    selfDefinedEthnicity:	
+    selfDefinedEthnicity:
       path: "hearing.prosecutionCases[*].defendants[*].personDefendant[*].personDetails[*].ethnicity[*].selfDefinedEthnicityDescription"
       printValue: true
-    observedEthnicity:	
+    observedEthnicity:
       path: "hearing.prosecutionCases[*].defendants[*].personDefendant[*].personDetails[*].ethnicity[*].observedEthnicityDescription"
       printValue: true
-    defenceOrganisation1:	
+    defenceOrganisation1:
       path: "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation[*].name"
       printValue: true
     defenceOrganisation2:
       path: "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation[*].organisation[*].name"
       printValue: true
-    victimFirstName:	
+    victimFirstName:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].victims[*].firstName"
       printValue: false
-    victimLastName:	
+    victimLastName:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].victims[*].lastName"
       printValue: false
-    victimContact:	
+    victimContact:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].victims[*].contact"
       printValue: false
-    plea:	
+    plea:
       Path: "hearing.prosecutionCases[*].defendants[*].offences[*].plea[*].pleaValue"
       printValue: true
-    verdict:	
+    verdict:
       Path: "hearing.prosecutionCases[*].defendants[*].offences[*].verdict[*].verdictType[*].description"
       printValue: true
-    altCourtCode:	
+    altCourtCode:
       path: "hearing.courtCentre[*].code"
       printValue: true
 
