@@ -82,34 +82,25 @@ observe:
       path: "hearing.prosecutionCases[*].caseMarkers[*].markerTypeDescription"
       printValue: true
     selfDefinedEthnicity:
-      path: "hearing.prosecutionCases[*].defendants[*].personDefendant[*].personDetails[*].ethnicity[*].selfDefinedEthnicityDescription"
+      path: "hearing.prosecutionCases[*].defendants[*].personDefendant.personDetails.ethnicity.selfDefinedEthnicityDescription"
       printValue: true
     observedEthnicity:
-      path: "hearing.prosecutionCases[*].defendants[*].personDefendant[*].personDetails[*].ethnicity[*].observedEthnicityDescription"
+      path: "hearing.prosecutionCases[*].defendants[*].personDefendant.personDetails.ethnicity.observedEthnicityDescription"
       printValue: true
     defenceOrganisation1:
-      path: "hearing.prosecutionCases[*].defendants[*].defenceOrganisation[*].organisation[*].name"
+      path: "hearing.prosecutionCases[*].defendants[*].defenceOrganisation.name"
       printValue: true
     defenceOrganisation2:
-      path: "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation[*].organisation[*].name"
+      path: "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation.organisation.name"
       printValue: true
-    victimFirstName:
-      path: "hearing.prosecutionCases[*].defendants[*].offences[*].victims[*].firstName"
-      printValue: false
-    victimLastName:
-      path: "hearing.prosecutionCases[*].defendants[*].offences[*].victims[*].lastName"
-      printValue: false
-    victimContact:
-      path: "hearing.prosecutionCases[*].defendants[*].offences[*].victims[*].contact"
-      printValue: false
     plea:
-      Path: "hearing.prosecutionCases[*].defendants[*].offences[*].plea[*].pleaValue"
+      Path: "hearing.prosecutionCases[*].defendants[*].offences[*].plea.pleaValue"
       printValue: true
     verdict:
-      Path: "hearing.prosecutionCases[*].defendants[*].offences[*].verdict[*].verdictType[*].description"
+      Path: "hearing.prosecutionCases[*].defendants[*].offences[*].verdict.verdictType.description"
       printValue: true
     altCourtCode:
-      path: "hearing.courtCentre[*].code"
+      path: "hearing.courtCentre.code"
       printValue: true
 
 
