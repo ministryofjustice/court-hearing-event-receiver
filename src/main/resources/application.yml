@@ -102,5 +102,11 @@ observe:
     altCourtCode:
       path: "hearing.courtCentre.code"
       printValue: true
+    hearingLabel:
+      path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].label"
+      printValue: true
+    hearingResultText:
+      path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].resultText"
+      printValue: true
 
 
