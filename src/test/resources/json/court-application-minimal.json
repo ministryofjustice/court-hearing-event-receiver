@@ -44,6 +44,9 @@
                 "offenceTitle": "Obstruct person executing search warrant for TV receiver",
                 "orderIndex": 1,
                 "wording": "Has a violent past and fear that he will commit further offences and\n                interfere with witnesse",
+                "plea": {
+                  "pleaValue": "pleaValue"
+                },
                 "judicialResults": [
                   {
                     "isConvictedResult": false,
