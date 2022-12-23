@@ -79,6 +79,11 @@
             "prosecutionCaseId": "1d1861ed-e18c-429d-bad0-671802f9cdba"
           }
         ],
+        "caseMarkers": [
+          {
+            "markerTypeDescription": "typeDescription"
+          }
+        ],
         "id": "1d1861ed-e18c-429d-bad0-671802f9cdba",
         "initiationCode": "C",
         "originatingOrganisation": "0300000",
