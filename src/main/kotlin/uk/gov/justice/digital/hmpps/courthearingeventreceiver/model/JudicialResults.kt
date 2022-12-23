@@ -17,5 +17,5 @@ data class JudicialResults(
   val judicialResultTypeId: String?,
 
   @JsonProperty("resultText")
-  val resultText:String?
+  val resultText: String?
 )

@@ -9,5 +9,5 @@ data class CaseMarker(
 
   @field:NotBlank
   @JsonProperty("markerTypeDescription")
-  val markerTypeDescription:String
+  val markerTypeDescription: String
 )

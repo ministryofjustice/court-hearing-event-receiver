@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class Ethnicity(
 
   @JsonProperty("observedEthnicityDescription")
-  val observedEthnicityDescription:String?,
+  val observedEthnicityDescription: String?,
 
   @JsonProperty("selfDefinedEthnicityDescription")
-  val selfDefinedEthnicityDescription:String?
+  val selfDefinedEthnicityDescription: String?
 )
