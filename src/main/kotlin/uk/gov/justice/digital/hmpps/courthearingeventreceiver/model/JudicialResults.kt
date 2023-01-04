@@ -13,7 +13,6 @@ data class JudicialResults(
   @JsonProperty("label")
   val label: String,
 
-  @JsonProperty("judicialResultTypeId")
   val judicialResultTypeId: String?,
 
   @JsonProperty("resultText")

@@ -33,7 +33,6 @@ data class ProsecutionCase(
 
   @field:Valid
   @field:NotEmpty
-  @JsonProperty("caseMarkers")
   val caseMarkers: List<CaseMarker> = emptyList()
 
 )
