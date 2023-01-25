@@ -18,10 +18,9 @@ executors:
         environment:
           - SERVICES=sqs,sns,s3
           - DEBUG=${DEBUG- }
-          - DATA_DIR=/tmp/localstack/data
+          - PERSISTENCE=1
           - DOCKER_HOST=unix:///var/run/docker.sock
           - AWS_EXECUTION_ENV=True
-          - DEFAULT_REGION=eu-west-2
           - TMPDIR=/private
     environment:
       _JAVA_OPTIONS: -Xmx256m -XX:ParallelGCThreads=2 -XX:ConcGCThreads=2 -XX:ParallelGCThreads=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2 -Dorg.gradle.daemon=false
