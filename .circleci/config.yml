@@ -8,13 +8,13 @@ orbs:
 executors:
   builder:
     docker:
-      - image: circleci/openjdk:16-jdk-buster-browsers
+      - image: cimg/openjdk:16.0.2-browsers
     working_directory: ~/app
 
   validator-integration:
     docker:
-      - image: circleci/openjdk:16-jdk-buster-browsers
-      - image: localstack/localstack:latest
+      - image: cimg/openjdk:16.0.2-browsers
+      - image: localstack/localstack:1.3
         environment:
           - SERVICES=sqs,sns,s3
           - DEBUG=${DEBUG- }
@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Record the Application Version
           command: |
-            jar xvf build/libs/court-hearing-event-*.jar META-INF/build-info.properties
+            $JAVA_HOME/bin/jar xvf build/libs/court-hearing-event-*.jar META-INF/build-info.properties
             APP_VERSION=$(grep 'build.version=' META-INF/build-info.properties | awk -F= '{print $2}')
             rm META-INF/build-info.properties
             # make up a good version name
