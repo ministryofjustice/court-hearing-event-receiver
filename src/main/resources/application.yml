@@ -69,9 +69,6 @@ observe:
     judicialResults-isConvictedResult:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].isConvictedResult"
       printValue: true
-    judicialResults-type-description:
-      path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].type.description"
-      printValue: true
     hearingType:
       path: "hearing.type.description"
       printValue: true
@@ -87,12 +84,6 @@ observe:
     observedEthnicity:
       path: "hearing.prosecutionCases[*].defendants[*].personDefendant.personDetails.ethnicity.observedEthnicityDescription"
       printValue: true
-    defenceOrganisation1:
-      path: "hearing.prosecutionCases[*].defendants[*].defenceOrganisation.name"
-      printValue: true
-    defenceOrganisation2:
-      path: "hearing.prosecutionCases[*].defendants[*].associatedDefenceOrganisation.organisation.name"
-      printValue: true
     plea:
       Path: "hearing.prosecutionCases[*].defendants[*].offences[*].plea.pleaValue"
       printValue: true
@@ -105,8 +96,29 @@ observe:
     hearingLabel:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].label"
       printValue: true
-    hearingResultText:
-      path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].resultText"
-      printValue: true
+    judiciary:
+      path: "hearing.judiciary"
+    judiciaryFirstName:
+      path: "hearing.judiciary[*].firstName"
+    judiciaryLastName:
+      path: "hearing.judiciary[*].lastName"
+    delegatedPowers1:
+      path: ".hearing.prosecutionCases[*].defendants[*].offences[*].plea.delegatedPowers"
+    delegatedPowers1FirstName:
+      path: ".hearing.prosecutionCases[*].defendants[*].offences[*].plea.delegatedPowers.firstName"
+    delegatedPowers1LastName:
+      path: ".hearing.prosecutionCases[*].defendants[*].offences[*].plea.delegatedPowers.lastName"
+    delegatedPowers2:
+      path: ".hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].delegatedPowers"
+    delegatedPowers2FirstName:
+      path: ".hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].delegatedPowers.firstName"
+    delegatedPowers2LastName:
+      path: ".hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].delegatedPowers.lastName"
+    defendantAssociatedPersons:
+      path: ".hearing.prosecutionCases[*].defendants[*].associatedPersons[*]"
+    defendantAssociatedPersonsFirstName:
+      path: ".hearing.prosecutionCases[*].defendants[*].associatedPersons[*].firstName"
+    defendantAssociatedPersonsLastName:
+      path: ".hearing.prosecutionCases[*].defendants[*].associatedPersons[*].lastName"
 
 
