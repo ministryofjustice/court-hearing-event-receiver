@@ -36,4 +36,9 @@ data class Offence(
   @JsonProperty("judicialResults")
   val judicialResults: List<JudicialResults> = emptyList(),
 
+  @field:Valid
+  val plea: Plea,
+
+  val verdict: Verdict?,
+
 )

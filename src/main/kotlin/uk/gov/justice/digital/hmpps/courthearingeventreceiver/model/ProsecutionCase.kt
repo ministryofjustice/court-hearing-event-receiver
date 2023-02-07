@@ -29,6 +29,10 @@ data class ProsecutionCase(
   val defendants: List<Defendant> = emptyList(),
 
   @JsonProperty("caseStatus")
-  val caseStatus: String?
+  val caseStatus: String?,
+
+  @field:Valid
+  @field:NotEmpty
+  val caseMarkers: List<CaseMarker> = emptyList()
 
 )

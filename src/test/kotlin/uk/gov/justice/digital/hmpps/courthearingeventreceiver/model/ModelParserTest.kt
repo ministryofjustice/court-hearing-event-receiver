@@ -60,9 +60,13 @@ internal class ModelParserTest {
     assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].judicialResults[0].isConvictedResult).isEqualTo(false)
     assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].judicialResults[0].label).isEqualTo("Adjournment")
     assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].judicialResults[0].judicialResultTypeId).isEqualTo("06b0c2bf-3f98-46ed-ab7e-56efaf9ecced")
+    assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].plea.pleaValue).isEqualTo("GUILTY")
+    assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].verdict?.verdictType?.description).isEqualTo("verdictTypeValue")
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.firstName).isEqualTo("Trevion")
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.lastName).isEqualTo("McCullough")
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.gender).isSameAs(Gender.MALE)
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.dateOfBirth).isEqualTo(LocalDate.of(1983, Month.FEBRUARY, 28))
+    assertThat(hearing.prosecutionCases[0].defendants[1].personDefendant?.personDetails?.ethnicity?.observedEthnicityDescription).isEqualTo("observedEthnicityDescription")
+    assertThat(hearing.prosecutionCases[0].defendants[1].personDefendant?.personDetails?.ethnicity?.selfDefinedEthnicityDescription).isEqualTo("selfDefinedEthnicityDescription")
   }
 }

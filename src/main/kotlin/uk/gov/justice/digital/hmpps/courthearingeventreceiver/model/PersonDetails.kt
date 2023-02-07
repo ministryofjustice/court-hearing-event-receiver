@@ -33,5 +33,7 @@ data class PersonDetails(
   val address: Address?,
 
   @JsonProperty("contact")
-  val contact: Contact?
+  val contact: Contact?,
+
+  val ethnicity: Ethnicity?
 )

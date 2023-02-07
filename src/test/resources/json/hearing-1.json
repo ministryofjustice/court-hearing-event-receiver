@@ -54,6 +54,11 @@
                 "pleaDate": "2019-01-01",
                 "pleaValue": "GUILTY"
               },
+              "verdict": {
+                "verdictType": {
+                  "description": "verdictTypeValue"
+                }
+             },
               "startDate": "2010-08-01",
               "wording": "on 01/08/2009 at  the County public house, unlawfully and maliciously wounded, John Smith",
               "judicialResults": [
@@ -197,6 +202,10 @@
                 "address2": "London Road",
                 "address3": "England",
                 "address4": "UK"
+              },
+              "ethnicity": {
+                "observedEthnicityDescription": "observedEthnicityDescription",
+                "selfDefinedEthnicityDescription": "selfDefinedEthnicityDescription"
               },
               "dateOfBirth": "1997-02-28",
               "firstName": "Trycia",
