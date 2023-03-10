@@ -37,7 +37,7 @@ data class Offence(
   val judicialResults: List<JudicialResults> = emptyList(),
 
   @field:Valid
-  val plea: Plea,
+  val plea: Plea?,
 
   val verdict: Verdict?,
 
