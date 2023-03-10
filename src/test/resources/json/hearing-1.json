@@ -89,12 +89,6 @@
               "offenceLegislationWelsh": "Yn groes i adran 20 Deddf Troseddau Corfforol 1861.",
               "offenceTitle": "Wound / inflict grievous bodily harm without intent",
               "offenceTitleWelsh": "Clwyfo / peri niwed corfforol difrifol heb fwriadu",
-              "plea": {
-                "offenceId": "ea1c2cf1-f155-483b-a908-81158a9b2f9b",
-                "originatingHearingId": "c1d3a081-85f1-40a1-bd31-ec5e6677249e",
-                "pleaDate": "2019-01-01",
-                "pleaValue": "GUILTY"
-              },
               "startDate": "2010-08-01",
               "wording": "on 01/08/2009 at  the County public house, unlawfully and maliciously wounded, John Smith"
             }
@@ -180,12 +174,6 @@
               "offenceLegislationWelsh": "Yn groes i adran 20 Deddf Troseddau Corfforol 1861.",
               "offenceTitle": "Wound / inflict grievous bodily harm without intent",
               "offenceTitleWelsh": "Clwyfo / peri niwed corfforol difrifol heb fwriadu",
-              "plea": {
-                "offenceId": "18db7545-5783-4410-aba6-f59bf3ae1f30",
-                "originatingHearingId": "c1d3a081-85f1-40a1-bd31-ec5e6677249e",
-                "pleaDate": "2019-01-01",
-                "pleaValue": "GUILTY"
-              },
               "startDate": "2010-08-01",
               "wording": "on 01/08/2009 at  the County public house, unlawfully and maliciously wounded, John Smith"
             }
