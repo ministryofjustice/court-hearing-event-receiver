@@ -47,6 +47,7 @@ internal class ModelParserTest {
     assertThat(hearing.hearingDays[0].listingSequence).isEqualTo(0)
     assertThat(hearing.prosecutionCases.size).isEqualTo(1)
     assertThat(hearing.prosecutionCases[0].id).isEqualTo("b7417f11-49d8-482d-b516-ba4135d38d0d")
+    assertThat(hearing.prosecutionCases[0].caseMarkers).isEmpty();
     assertThat(hearing.prosecutionCases[0].initiationCode).isSameAs(InitiationCode.C)
     assertThat(hearing.prosecutionCases[0].caseStatus).isEqualTo("READY_FOR_REVIEW")
     assertThat(hearing.prosecutionCases[0].defendants.size).isEqualTo(2)
