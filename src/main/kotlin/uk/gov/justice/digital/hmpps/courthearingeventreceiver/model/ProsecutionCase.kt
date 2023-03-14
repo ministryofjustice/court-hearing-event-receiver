@@ -32,7 +32,6 @@ data class ProsecutionCase(
   val caseStatus: String?,
 
   @field:Valid
-  @field:NotEmpty
   val caseMarkers: List<CaseMarker> = emptyList()
 
 )
