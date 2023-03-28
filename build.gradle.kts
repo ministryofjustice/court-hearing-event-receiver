@@ -17,7 +17,7 @@ dependencies {
   implementation("com.amazonaws:aws-java-sdk-sns:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-sqs:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-s3:$awsSdkVersion")
-  implementation("com.jayway.jsonpath:json-path:2.7.0")
+  implementation("com.jayway.jsonpath:json-path:2.8.0")
 
   testImplementation("io.jsonwebtoken:jjwt:0.9.1")
 }
