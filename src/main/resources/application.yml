@@ -123,6 +123,6 @@ observe:
     victimLastName:
       path: ".hearing.prosecutionCases[*].defendants[*].offences[*].victims[*].lastName"
     hearingResultText:
-      path: "hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].resultText"
+      path: ".hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].resultText"
       printValue: true
 
