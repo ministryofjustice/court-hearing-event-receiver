@@ -122,3 +122,7 @@ observe:
       path: ".hearing.prosecutionCases[*].defendants[*].associatedPersons[*].lastName"
     victimLastName:
       path: ".hearing.prosecutionCases[*].defendants[*].offences[*].victims[*].lastName"
+    hearingResultText:
+      path: ".hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].resultText"
+      printValue: true
+
