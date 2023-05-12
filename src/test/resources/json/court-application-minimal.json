@@ -47,6 +47,12 @@
                 "plea": {
                   "pleaValue": "pleaValue"
                 },
+                "verdict": {
+                  "verdictDate": "2019-01-01",
+                  "verdictType": {
+                    "description": "verdictTypeValue"
+                  }
+                },
                 "judicialResults": [
                   {
                     "isConvictedResult": false,
