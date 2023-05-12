@@ -55,6 +55,7 @@
                 "pleaValue": "GUILTY"
               },
               "verdict": {
+                "verdictDate": "2019-01-01",
                 "verdictType": {
                   "description": "verdictTypeValue"
                 }
