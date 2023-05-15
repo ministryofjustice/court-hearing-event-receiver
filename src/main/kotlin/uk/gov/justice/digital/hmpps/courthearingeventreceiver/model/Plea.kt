@@ -1,11 +1,11 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import javax.validation.constraints.NotBlank
+import java.time.LocalDate
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Plea(
 
-  @field:NotBlank
-  val pleaValue: String
+  val pleaValue: String,
+  val pleaDate: LocalDate?
 )
