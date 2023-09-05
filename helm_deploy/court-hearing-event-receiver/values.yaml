@@ -2,6 +2,8 @@
 generic-service:
   nameOverride: court-hearing-event-receiver
 
+  serviceAccountName: "court-case-service"
+
   image:
     repository: quay.io/hmpps/court-hearing-event-receiver
     tag: app_version    # override at deployment time
