@@ -1,4 +1,3 @@
----
 generic-service:
   nameOverride: court-hearing-event-receiver
 
@@ -6,7 +5,7 @@ generic-service:
 
   image:
     repository: quay.io/hmpps/court-hearing-event-receiver
-    tag: app_version    # override at deployment time
+    tag: app_version # override at deployment time
     port: 8080
 
   ingress:
@@ -14,7 +13,7 @@ generic-service:
     v1_2_enabled: true
     enabled: true
     modsecurity_enabled: false
-    host: app-hostname.local    # override per environment
+    host: app-hostname.local # override per environment
     path: /
 
   autoscaling:
@@ -44,13 +43,8 @@ generic-service:
       aws_s3_bucket_name: bucket_name
 
   allowlist:
-    office: "217.33.148.210/32"
-    health-kick: "35.177.252.195/32"
-    mojvpn: "81.134.202.29/32"
-    cloudplatform-live1-1: "35.178.209.113/32"
-    cloudplatform-live1-2: "3.8.51.207/32"
-    cloudplatform-live1-3: "35.177.252.54/32"
-    global-protect: "35.176.93.186/32"
+    groups:
+      - internal
 
 generic-prometheus-alerts:
   targetApplication: court-hearing-event-receiver
