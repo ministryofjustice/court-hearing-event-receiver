@@ -123,7 +123,6 @@ workflows:
           helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
           context:
             - hmpps-common-vars
-            - court-probation-live-dev
           filters:
             branches:
               only:
