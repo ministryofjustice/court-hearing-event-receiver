@@ -33,3 +33,13 @@ Cher believes in life after upload and so places a backup of each received paylo
 ```
 
 These files can be downloaded either using the AWS CLI or using the [`./copy-s3.bash` script which can be found in `court-case-source`](https://github.com/ministryofjustice/court-case-source/blob/main/copy-s3.bash). GUI's such as Cyberduck are not recommended because the huge numbers of files in the prod bucket make it *incredibly* slow to list the contents.
+
+---
+
+## Running integration tests
+
+To run the Integration tests :
+- Run `docker compose up localstack-cher` to start  localstack with SNS, S3 and any other dependent AWS services
+- Run `./gradlew integrationTest` 
+
+
