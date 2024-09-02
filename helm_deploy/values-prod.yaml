@@ -24,4 +24,3 @@ generic-service:
     hmcts-1: 51.140.24.220/32
     hmcts-2: 51.140.52.246/32
     hmcts-3: 51.11.12.29/32
-    groups: []
