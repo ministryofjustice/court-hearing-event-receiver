@@ -1,6 +1,7 @@
 generic-service:
   ingress:
-    host: court-hearing-event-receiver.hmpps.service.justice.gov.uk
+    hosts:
+      - court-hearing-event-receiver.hmpps.service.justice.gov.uk
     tlsSecretName: court-probation-cert-secret
 
   autoscaling:

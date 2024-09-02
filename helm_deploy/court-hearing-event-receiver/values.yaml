@@ -13,7 +13,8 @@ generic-service:
     v1_2_enabled: true
     enabled: true
     modsecurity_enabled: false
-    host: app-hostname.local # override per environment
+    hosts:
+      - app-hostname.local    # override per environment
     path: /
 
   autoscaling:
