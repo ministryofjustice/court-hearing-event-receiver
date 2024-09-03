@@ -35,7 +35,7 @@ internal class EventControllerTest {
     "courtCode" to NORTH_TYNESIDE,
     "hearingId" to hearingId,
     "caseId" to "1d1861ed-e18c-429d-bad0-671802f9cdba",
-    "caseUrn" to "80GD8183221"
+    "caseUrn" to "80GD8183221",
   )
 
   @Mock
@@ -54,13 +54,12 @@ internal class EventControllerTest {
 
   @Test
   fun `when receive update message for included court then send message`() {
-
     eventController.postEvent(hearingId, hearingEvent)
 
     verify(messageNotifier).send(HearingEventType.CONFIRMED_OR_UPDATED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
-      expectedProperties
+      expectedProperties,
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
@@ -78,8 +77,8 @@ internal class EventControllerTest {
         "courtCode" to NORTH_TYNESIDE,
         "hearingId" to hearingId,
         "caseId" to null,
-        "caseUrn" to null
-      )
+        "caseUrn" to null,
+      ),
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
@@ -93,7 +92,7 @@ internal class EventControllerTest {
 
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
-      expectedProperties
+      expectedProperties,
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
@@ -105,7 +104,7 @@ internal class EventControllerTest {
     verify(messageNotifier).send(HearingEventType.RESULTED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
-      expectedProperties
+      expectedProperties,
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
@@ -120,7 +119,7 @@ internal class EventControllerTest {
     verify(messageNotifier).send(HearingEventType.RESULTED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
-      expectedProperties
+      expectedProperties,
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
@@ -134,7 +133,7 @@ internal class EventControllerTest {
 
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
-      expectedProperties
+      expectedProperties,
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }
@@ -149,7 +148,7 @@ internal class EventControllerTest {
     verify(messageNotifier).send(HearingEventType.RESULTED, hearingEvent)
     verify(telemetryService).trackEvent(
       TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
-      expectedProperties
+      expectedProperties,
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
   }

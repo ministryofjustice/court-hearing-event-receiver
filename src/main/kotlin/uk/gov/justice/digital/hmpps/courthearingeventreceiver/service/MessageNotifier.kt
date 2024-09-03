@@ -20,10 +20,9 @@ class MessageNotifier(
   @Autowired
   private val amazonSNSClient: AmazonSNS,
   @Value("\${aws.sns.topic_arn}")
-  private val topicArn: String
+  private val topicArn: String,
 ) {
   fun send(hearingEventType: HearingEventType, hearingEvent: HearingEvent) {
-
     val messageTypeValue = MessageAttributeValue()
       .withDataType("String")
       .withStringValue(MESSAGE_TYPE)

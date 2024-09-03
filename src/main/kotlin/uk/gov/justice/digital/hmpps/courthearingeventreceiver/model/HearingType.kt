@@ -1,7 +1,7 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 
 data class HearingType(
   @NotBlank
@@ -13,5 +13,5 @@ data class HearingType(
   val description: String,
 
   @JsonProperty("welshDescription")
-  val welshDescription: String? = null
+  val welshDescription: String? = null,
 )

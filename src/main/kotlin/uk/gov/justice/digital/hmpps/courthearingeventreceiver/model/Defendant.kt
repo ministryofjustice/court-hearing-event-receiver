@@ -2,9 +2,9 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import javax.validation.Valid
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
+import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Defendant(
@@ -39,5 +39,5 @@ data class Defendant(
   val pncId: String?,
 
   @JsonProperty("croNumber")
-  val croNumber: String?
+  val croNumber: String?,
 )

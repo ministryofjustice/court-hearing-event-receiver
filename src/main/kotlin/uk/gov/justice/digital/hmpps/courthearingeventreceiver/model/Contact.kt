@@ -13,5 +13,5 @@ data class Contact(
   val mobile: String?,
 
   @JsonProperty("work")
-  val work: String?
+  val work: String?,
 )

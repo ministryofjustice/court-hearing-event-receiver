@@ -43,7 +43,6 @@ internal class S3ServiceTest {
 
   @Test
   fun `given broken JSON input then message is uploaded as file`() {
-
     val putResult: PutObjectResult = PutObjectResult().apply {
       expirationTime = Date()
       eTag = "ETAG"
@@ -60,7 +59,6 @@ internal class S3ServiceTest {
 
   @Test
   fun `given normal JSON input then message is uploaded as file`() {
-
     val putResult: PutObjectResult = PutObjectResult().apply {
       expirationTime = Date()
       eTag = "ETAG"

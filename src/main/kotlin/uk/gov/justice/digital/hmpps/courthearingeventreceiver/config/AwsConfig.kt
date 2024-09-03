@@ -15,7 +15,6 @@ class AwsConfig {
 
   @Bean
   fun amazonS3Client(@Value("\${aws.region-name}") regionName: String): AmazonS3 {
-
     return AmazonS3ClientBuilder
       .standard()
       .withRegion(regionName)
@@ -24,7 +23,6 @@ class AwsConfig {
 
   @Bean
   fun amazonSNSClient(@Value("\${aws.region-name}") regionName: String): AmazonSNS {
-
     return AmazonSNSClientBuilder
       .standard()
       .withRegion(regionName)

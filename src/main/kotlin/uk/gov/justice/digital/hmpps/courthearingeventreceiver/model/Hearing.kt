@@ -2,11 +2,11 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.JurisdictionType
-import javax.validation.Valid
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Hearing(
@@ -36,5 +36,5 @@ data class Hearing(
   @field:Valid
   @field:NotEmpty
   @JsonProperty("prosecutionCases")
-  val prosecutionCases: List<ProsecutionCase> = emptyList()
+  val prosecutionCases: List<ProsecutionCase> = emptyList(),
 )

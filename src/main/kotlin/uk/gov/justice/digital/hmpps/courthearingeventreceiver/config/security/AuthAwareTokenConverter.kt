@@ -19,7 +19,7 @@ class AuthAwareTokenConverter : Converter<Jwt, AbstractAuthenticationToken> {
     val authorities = jwt.claims.getOrDefault("authorities", List.of<Any>()) as Collection<String>
     return authorities.stream().map { role: String? ->
       SimpleGrantedAuthority(
-        role
+        role,
       )
     }.collect(Collectors.toUnmodifiableSet())
   }
