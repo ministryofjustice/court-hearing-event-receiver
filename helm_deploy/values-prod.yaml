@@ -1,7 +1,7 @@
----
 generic-service:
   ingress:
-    host: court-hearing-event-receiver.hmpps.service.justice.gov.uk
+    hosts:
+      - court-hearing-event-receiver.hmpps.service.justice.gov.uk
     tlsSecretName: court-probation-cert-secret
 
   autoscaling:
@@ -21,6 +21,6 @@ generic-service:
     FEATURE_USE_INCLUDED_COURTS_LIST: false
 
   allowlist:
-    hmcts-1: "51.140.24.220/32"
-    hmcts-2: "51.140.52.246/32"
-    hmcts-3: "51.11.12.29/32"
+    hmcts-1: 51.140.24.220/32
+    hmcts-2: 51.140.52.246/32
+    hmcts-3: 51.11.12.29/32

@@ -1,7 +1,8 @@
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@3.14
+
+  hmpps: ministryofjustice/hmpps@10
   jira: circleci/jira@1.2.2
   slack: circleci/slack@4.4.2
 
@@ -9,21 +10,6 @@ executors:
   builder:
     docker:
       - image: cimg/openjdk:16.0.2-browsers
-    working_directory: ~/app
-
-  validator-integration:
-    docker:
-      - image: cimg/openjdk:16.0.2-browsers
-      - image: localstack/localstack:1.3
-        environment:
-          - SERVICES=sqs,sns,s3
-          - DEBUG=${DEBUG- }
-          - PERSISTENCE=1
-          - DOCKER_HOST=unix:///var/run/docker.sock
-          - AWS_EXECUTION_ENV=True
-          - TMPDIR=/private
-    environment:
-      _JAVA_OPTIONS: -Xmx256m -XX:ParallelGCThreads=2 -XX:ConcGCThreads=2 -XX:ParallelGCThreads=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2 -Dorg.gradle.daemon=false
     working_directory: ~/app
 
 jobs:
@@ -68,19 +54,18 @@ jobs:
           template: basic_fail_1
 
   test-integration:
-    executor: validator-integration
+    executor:
+      name: hmpps/localstack
+      jdk_tag: "19.0"
+      localstack_tag: "3.0"
+      services: "s3,sqs,sns"
     steps:
       - checkout
       - hmpps/install_aws_cli
+      - hmpps/wait_till_ready
       - run:
-          name: Wait for SQS to be ready
-          command: curl -4 --connect-timeout 30 --retry-connrefused --retry 20 --retry-delay 5 http://localhost:4566
-      - run:
-          name: Set up S3
-          command: bash src/test/resources/localstack/setup-sns.sh
-      - run:
-          name: Set up queues
-          command: bash src/test/resources/localstack/setup-sns.sh
+          name: Set up AWS
+          command: bash src/test/resources/localstack/setup-aws.sh
       - restore_cache:
           keys:
             - gradle-{{ checksum "build.gradle.kts" }}
@@ -191,5 +176,3 @@ workflows:
           context:
             - veracode-credentials
             - hmpps-common-vars
-
-
