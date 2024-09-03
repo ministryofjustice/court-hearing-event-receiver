@@ -6,15 +6,13 @@ orbs:
   jira: circleci/jira@1.2.2
   slack: circleci/slack@4.4.2
 
-executors:
-  builder:
-    docker:
-      - image: cimg/openjdk:16.0.2-browsers
-    working_directory: ~/app
 
 jobs:
   build:
-    executor: builder
+    executor:
+      name: hmpps/java
+      tag: "19.0"
+
     steps:
       - checkout
       - restore_cache:
