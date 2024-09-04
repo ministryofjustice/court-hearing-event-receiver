@@ -1,9 +1,12 @@
 version: 2.1
 
 orbs:
-
   hmpps: ministryofjustice/hmpps@10
-  slack: circleci/slack@4.4.2
+
+parameters:
+  releases-slack-channel:
+    type: string
+    default: probation_in_court_dev
 
 executors:
   builder:
@@ -48,9 +51,6 @@ jobs:
             - build/libs
             - build.gradle.kts
             - app_version.txt
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
 
   test-integration:
     executor:
@@ -145,7 +145,7 @@ workflows:
           pipeline_id: <<pipeline.id>>
           pipeline_number: <<pipeline.number>>
           helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
-          slack_channel_name: probation_in_court_dev
+          slack_channel_name: << pipeline.parameters.releases-slack-channel >>
           slack_notification: true
           context:
             - hmpps-common-vars
