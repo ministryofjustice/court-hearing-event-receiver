@@ -4,6 +4,9 @@ orbs:
   hmpps: ministryofjustice/hmpps@10
 
 parameters:
+  alerts-slack-channel:
+    type: string
+    default: probation_in_court_dev
   releases-slack-channel:
     type: string
     default: probation_in_court_dev
@@ -165,9 +168,15 @@ workflows:
                 - main
     jobs:
       - hmpps/gradle_owasp_dependency_check:
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
+          context:
+            - hmpps-common-vars
+      - hmpps/trivy_latest_scan:
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
           context:
             - hmpps-common-vars
       - hmpps/veracode_pipeline_scan:
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
           context:
             - hmpps-common-vars
             - veracode-credentials
@@ -181,6 +190,7 @@ workflows:
                 - main
     jobs:
       - hmpps/veracode_policy_scan:
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
           context:
             - veracode-credentials
             - hmpps-common-vars
