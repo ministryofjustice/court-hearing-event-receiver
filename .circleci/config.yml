@@ -3,7 +3,6 @@ version: 2.1
 orbs:
 
   hmpps: ministryofjustice/hmpps@10
-  jira: circleci/jira@1.2.2
   slack: circleci/slack@4.4.2
 
 executors:
@@ -105,6 +104,9 @@ workflows:
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
+          jira_update: true
+          pipeline_id: <<pipeline.id>>
+          pipeline_number: <<pipeline.number>>
           helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
           context:
             - hmpps-common-vars
@@ -123,6 +125,9 @@ workflows:
       - hmpps/deploy_env:
           name: deploy_preprod
           env: "preprod"
+          jira_update: true
+          pipeline_id: <<pipeline.id>>
+          pipeline_number: <<pipeline.number>>
           helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
           context:
             - hmpps-common-vars
@@ -136,6 +141,9 @@ workflows:
       - hmpps/deploy_env:
           name: deploy_prod
           env: "prod"
+          jira_update: true
+          pipeline_id: <<pipeline.id>>
+          pipeline_number: <<pipeline.number>>
           helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
           slack_channel_name: probation_in_court_dev
           slack_notification: true
