@@ -1,10 +1,15 @@
 version: 2.1
 
 orbs:
-
   hmpps: ministryofjustice/hmpps@10
-  jira: circleci/jira@1.2.2
-  slack: circleci/slack@4.4.2
+
+parameters:
+  alerts-slack-channel:
+    type: string
+    default: probation_in_court_dev
+  releases-slack-channel:
+    type: string
+    default: probation_in_court_dev
 
 executors:
   builder:
@@ -49,9 +54,6 @@ jobs:
             - build/libs
             - build.gradle.kts
             - app_version.txt
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
 
   test-integration:
     executor:
@@ -105,6 +107,9 @@ workflows:
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
+          jira_update: true
+          pipeline_id: <<pipeline.id>>
+          pipeline_number: <<pipeline.number>>
           helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
           context:
             - hmpps-common-vars
@@ -123,6 +128,9 @@ workflows:
       - hmpps/deploy_env:
           name: deploy_preprod
           env: "preprod"
+          jira_update: true
+          pipeline_id: <<pipeline.id>>
+          pipeline_number: <<pipeline.number>>
           helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
           context:
             - hmpps-common-vars
@@ -136,8 +144,11 @@ workflows:
       - hmpps/deploy_env:
           name: deploy_prod
           env: "prod"
+          jira_update: true
+          pipeline_id: <<pipeline.id>>
+          pipeline_number: <<pipeline.number>>
           helm_additional_args: --values ./court-hearing-event-receiver/values-live.yaml
-          slack_channel_name: probation_in_court_dev
+          slack_channel_name: << pipeline.parameters.releases-slack-channel >>
           slack_notification: true
           context:
             - hmpps-common-vars
@@ -157,9 +168,15 @@ workflows:
                 - main
     jobs:
       - hmpps/gradle_owasp_dependency_check:
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
+          context:
+            - hmpps-common-vars
+      - hmpps/trivy_latest_scan:
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
           context:
             - hmpps-common-vars
       - hmpps/veracode_pipeline_scan:
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
           context:
             - hmpps-common-vars
             - veracode-credentials
@@ -173,6 +190,7 @@ workflows:
                 - main
     jobs:
       - hmpps/veracode_policy_scan:
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
           context:
             - veracode-credentials
             - hmpps-common-vars
