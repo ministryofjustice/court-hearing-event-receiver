@@ -11,15 +11,11 @@ parameters:
     type: string
     default: probation_in_court_prod
 
-executors:
-  builder:
-    docker:
-      - image: cimg/openjdk:16.0.2-browsers
-    working_directory: ~/app
-
 jobs:
   build:
-    executor: builder
+    executor:
+      name: hmpps/java
+      tag: "16.0"
     steps:
       - checkout
       - restore_cache:
