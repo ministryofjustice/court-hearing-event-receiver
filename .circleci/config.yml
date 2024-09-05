@@ -9,7 +9,7 @@ parameters:
     default: probation_in_court_dev
   releases-slack-channel:
     type: string
-    default: probation_in_court_dev
+    default: probation_in_court_prod
 
 executors:
   builder:
@@ -103,7 +103,6 @@ workflows:
             branches:
               only:
                 - main
-                - helm_lint
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
