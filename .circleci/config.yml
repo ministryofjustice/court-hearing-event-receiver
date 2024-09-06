@@ -9,17 +9,13 @@ parameters:
     default: probation_in_court_dev
   releases-slack-channel:
     type: string
-    default: probation_in_court_dev
-
-executors:
-  builder:
-    docker:
-      - image: cimg/openjdk:16.0.2-browsers
-    working_directory: ~/app
+    default: probation_in_court_prod
 
 jobs:
   build:
-    executor: builder
+    executor:
+      name: hmpps/java
+      tag: "16.0"
     steps:
       - checkout
       - restore_cache:
@@ -103,7 +99,6 @@ workflows:
             branches:
               only:
                 - main
-                - helm_lint
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
