@@ -24,3 +24,6 @@ generic-service:
     hmcts-1: 51.140.138.86/32
     hmcts-2: 51.145.115.21/32
     hmcts-3: 51.143.153.50/32
+
+generic-prometheus-alerts:
+  alertSeverity: probation_in_court_alerts_preprod
