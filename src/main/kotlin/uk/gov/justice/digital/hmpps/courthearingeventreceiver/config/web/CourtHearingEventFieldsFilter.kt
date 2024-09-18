@@ -75,7 +75,7 @@ class CourtHearingEventFieldsFilter(
     return try {
       jsonDocument.read(jsonpath)
     } catch (exception: PathNotFoundException) {
-      log.error(exception.message)
+      log.info(exception.message)
       emptyList()
     }
   }
