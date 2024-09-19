@@ -46,7 +46,7 @@ class EventControllerIntTest : IntegrationTestBase() {
     fun whenPostToEventEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
       postEvent(
         hearingEvent,
-        jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE"))
+        jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
       )
         .exchange()
         .expectStatus().isOk
@@ -62,14 +62,13 @@ class EventControllerIntTest : IntegrationTestBase() {
         "courtCode" to "B10JQ",
         "hearingId" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2",
         "caseId" to "1d1861ed-e18c-429d-bad0-671802f9cdba",
-        "caseUrn" to "80GD8183221"
+        "caseUrn" to "80GD8183221",
       )
       verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, expectedMap)
     }
 
     @Test
     fun whenPostToEventEndpointWithoutRequiredRole_thenReturn403Forbidden() {
-
       postEvent(hearingEvent, jwtHelper.createJwt("common-platform-events"))
         .exchange()
         .expectStatus().isForbidden
@@ -88,11 +87,10 @@ class EventControllerIntTest : IntegrationTestBase() {
   inner class ResultEndpoint {
     @Test
     fun whenPostToEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
-
       postEvent(
         hearingEvent,
         jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
-        RESULT_PATH
+        RESULT_PATH,
       )
         .exchange()
         .expectStatus().isOk
@@ -107,14 +105,13 @@ class EventControllerIntTest : IntegrationTestBase() {
         "courtCode" to "B10JQ",
         "hearingId" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2",
         "caseId" to "1d1861ed-e18c-429d-bad0-671802f9cdba",
-        "caseUrn" to "80GD8183221"
+        "caseUrn" to "80GD8183221",
       )
       verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED, expectedMap)
     }
 
     @Test
     fun whenPostToEndpointWithoutRequiredRole_thenReturn403Forbidden() {
-
       postEvent(hearingEvent, jwtHelper.createJwt("common-platform-events"))
         .exchange()
         .expectStatus().isForbidden
@@ -141,10 +138,9 @@ class EventControllerIntTest : IntegrationTestBase() {
   inner class DeleteEndpoint {
     @Test
     fun whenPostToHearingDeleteEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
-
       deleteEvent(
         jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
-        hearingEvent.hearing.id
+        hearingEvent.hearing.id,
       )
         .exchange()
         .expectStatus().isOk
@@ -157,7 +153,6 @@ class EventControllerIntTest : IntegrationTestBase() {
 
     @Test
     fun whenPostToHearingDeleteEndpointWithoutRequiredRole_thenReturn403Forbidden() {
-
       deleteEvent(jwtHelper.createJwt("common-platform-events"), hearingEvent.hearing.id)
         .exchange()
         .expectStatus().isForbidden
@@ -183,14 +178,13 @@ class EventControllerIntTest : IntegrationTestBase() {
 
     @Test
     fun whenPostToEventEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
-
       val courtCentre = hearingEvent.hearing.courtCentre.copy(id = "", code = "   ")
       val hearing = hearingEvent.hearing.copy(courtCentre = courtCentre)
       val invalidHearingEvent = HearingEvent(hearing = hearing)
 
       postEvent(
         invalidHearingEvent,
-        jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE"))
+        jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
       )
         .exchange()
         .expectStatus().isBadRequest

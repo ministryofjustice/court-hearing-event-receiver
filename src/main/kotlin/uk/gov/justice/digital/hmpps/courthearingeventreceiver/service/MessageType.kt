@@ -9,7 +9,6 @@ enum class MessageType {
 private val log = LoggerFactory.getLogger(MessageType::class.java)
 
 fun getMessageType(path: String): MessageType {
-
   val elements = path.lowercase().trim('/').split("/")
 
   return when (elements.last()) {

@@ -42,14 +42,13 @@ internal class MessageNotifierTest {
 
   @Test
   fun `when get message then publish to SNS`() {
-
     val hearingEvent = HearingEvent(
       hearing = Hearing(
         id = "hearing-id",
         courtCentre = CourtCentre(code = "B10JQ", roomId = "abc", roomName = "Crown Court 3-1", id = "abc"),
         type = HearingType(id = "abc", description = "Sentence"),
-        jurisdictionType = JurisdictionType.MAGISTRATES
-      )
+        jurisdictionType = JurisdictionType.MAGISTRATES,
+      ),
     )
     val result = PublishResult().withMessageId("messageId")
     whenever(amazonSNSClient.publish(any()))

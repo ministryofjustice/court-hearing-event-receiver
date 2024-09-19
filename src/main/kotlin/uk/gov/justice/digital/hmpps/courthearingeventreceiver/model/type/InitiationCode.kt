@@ -7,5 +7,5 @@ enum class InitiationCode(val description: String) {
   C("Charge"),
   R("Remitted"),
   O("Other"),
-  Z("SJP Referral")
+  Z("SJP Referral"),
 }

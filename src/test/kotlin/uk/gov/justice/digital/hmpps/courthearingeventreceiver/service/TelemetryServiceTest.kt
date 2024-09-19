@@ -16,6 +16,7 @@ internal class TelemetryServiceTest {
 
   @InjectMocks
   lateinit var telemetryService: TelemetryService
+
   @Test
   fun `when track event then use customDimensions map`() {
     val map = mapOf("key" to "value")

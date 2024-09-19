@@ -48,7 +48,7 @@ abstract class IntegrationTestBase {
     @Value("\${aws.region_name}")
     private val regionName: String,
     @Value("\${aws.sqs.queue_name}")
-    private val queueName: String
+    private val queueName: String,
   ) {
 
     @Primary
@@ -65,7 +65,7 @@ abstract class IntegrationTestBase {
     fun amazonSNSClient(
       @Value("\${aws.region-name}") regionName: String,
       @Value("\${aws.sns.access_key_id}") awsAccessKeyId: String,
-      @Value("\${aws.sns.secret_access_key}") awsSecretAccessKey: String
+      @Value("\${aws.sns.secret_access_key}") awsSecretAccessKey: String,
     ): AmazonSNS {
       return AmazonSNSClientBuilder
         .standard()
@@ -78,7 +78,7 @@ abstract class IntegrationTestBase {
     fun amazonS3Client(
       @Value("\${aws.region-name}") regionName: String,
       @Value("\${aws.s3.access_key_id}") s3AccessKeyId: String,
-      @Value("\${aws.s3.secret_access_key}") s3SecretAccessKey: String
+      @Value("\${aws.s3.secret_access_key}") s3SecretAccessKey: String,
     ): AmazonS3 {
       val credentials: AWSCredentials = BasicAWSCredentials(s3AccessKeyId, s3SecretAccessKey)
 

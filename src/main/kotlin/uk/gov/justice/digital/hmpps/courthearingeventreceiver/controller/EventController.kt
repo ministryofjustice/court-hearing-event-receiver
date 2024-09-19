@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.controller
 
+import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -17,7 +18,6 @@ import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.Hearing
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.MessageNotifier
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
-import javax.validation.Valid
 
 @RestController
 class EventController(
@@ -33,14 +33,22 @@ class EventController(
 
   @RequestMapping(value = ["/hearing/{id}"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.OK)
-  fun postEvent(@PathVariable(required = false) id: String, @Valid @RequestBody hearingEvent: HearingEvent) {
+  fun postEvent(
+    @PathVariable(required = false) id: String,
+    @Valid @RequestBody
+    hearingEvent: HearingEvent,
+  ) {
     log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
     trackAndSendEvent(HearingEventType.CONFIRMED_OR_UPDATED, hearingEvent)
   }
 
   @RequestMapping(value = ["/hearing/{id}/result"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.OK)
-  fun postResultEvent(@PathVariable(required = false) id: String, @Valid @RequestBody hearingEvent: HearingEvent) {
+  fun postResultEvent(
+    @PathVariable(required = false) id: String,
+    @Valid @RequestBody
+    hearingEvent: HearingEvent,
+  ) {
     log.info("Received hearing event payload id: %s, path variable id: %s".format(hearingEvent.hearing.id, id))
     trackAndSendEvent(HearingEventType.RESULTED, hearingEvent)
   }
@@ -51,7 +59,7 @@ class EventController(
     log.info("Received hearing delete request id: %s".format(id))
     telemetryService.trackEvent(
       TelemetryEventType.COURT_HEARING_DELETE_EVENT_RECEIVED,
-      mapOf("id" to id)
+      mapOf("id" to id),
     )
     // TODO - how to send a delete event for a hearing ?
   }
@@ -65,8 +73,8 @@ class EventController(
         "courtCode" to courtCode,
         "hearingId" to hearing.id,
         "caseId" to hearing.prosecutionCases.getOrNull(0)?.id,
-        "caseUrn" to hearing.prosecutionCases.getOrNull(0)?.prosecutionCaseIdentifier?.caseURN
-      )
+        "caseUrn" to hearing.prosecutionCases.getOrNull(0)?.prosecutionCaseIdentifier?.caseURN,
+      ),
     )
     if (!useIncludedCourtsList || includedCourts.contains(courtCode)) {
       messageNotifier.send(hearingEventType, hearingEvent)

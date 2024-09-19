@@ -7,5 +7,5 @@ import java.time.LocalDate
 data class Verdict(
 
   val verdictType: VerdictType?,
-  val verdictDate: LocalDate?
+  val verdictDate: LocalDate?,
 )

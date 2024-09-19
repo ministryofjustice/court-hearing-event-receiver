@@ -15,7 +15,7 @@ jobs:
   build:
     executor:
       name: hmpps/java
-      tag: "16.0"
+      tag: "19.0"
     steps:
       - checkout
       - restore_cache:

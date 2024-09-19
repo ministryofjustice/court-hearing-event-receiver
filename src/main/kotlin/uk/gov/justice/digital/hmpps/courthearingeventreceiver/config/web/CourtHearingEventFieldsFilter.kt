@@ -8,26 +8,25 @@ import com.jayway.jsonpath.PathNotFoundException
 import com.jayway.jsonpath.ReadContext
 import com.jayway.jsonpath.spi.json.JsonSmartJsonProvider
 import com.jayway.jsonpath.spi.mapper.JsonSmartMappingProvider
+import jakarta.servlet.Filter
+import jakarta.servlet.FilterChain
+import jakarta.servlet.ServletRequest
+import jakarta.servlet.ServletResponse
+import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
-import javax.servlet.Filter
-import javax.servlet.FilterChain
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
-import javax.servlet.http.HttpServletRequest
 
 @Component
 class CourtHearingEventFieldsFilter(
   @Autowired private val telemetryService: TelemetryService,
-  @Autowired private val observedFields: ObserveFields
+  @Autowired private val observedFields: ObserveFields,
 ) : Filter {
 
   override fun doFilter(request: ServletRequest?, response: ServletResponse?, filterChain: FilterChain?) {
-
     val httpRequest = request as HttpServletRequest
     if (HttpMethod.POST.matches(httpRequest.method) && observedFields.fields.isNotEmpty()) {
       val requestWrapper = CustomHttpRequestWrapper(httpRequest)
@@ -47,7 +46,7 @@ class CourtHearingEventFieldsFilter(
   private fun trackEvent(requestJson: String, observedFields: ObserveFields) {
     telemetryService.trackEvent(
       TelemetryEventType.COMMON_PLATFORM_EVENT_OBSERVED,
-      buildEventDetails(requestJson, observedFields)
+      buildEventDetails(requestJson, observedFields),
     )
   }
 

@@ -4,7 +4,8 @@ import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryE
 
 enum class HearingEventType(val description: String) {
   CONFIRMED_OR_UPDATED("ConfirmedOrUpdated"),
-  RESULTED("Resulted");
+  RESULTED("Resulted"),
+  ;
 
   fun getTelemetryEventType(): TelemetryEventType {
     return when (this) {

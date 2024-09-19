@@ -2,8 +2,8 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.Size
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Size
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class CourtCentre(
@@ -22,5 +22,5 @@ data class CourtCentre(
 
   @JsonProperty("roomName")
   @field:NotBlank
-  val roomName: String
+  val roomName: String,
 )

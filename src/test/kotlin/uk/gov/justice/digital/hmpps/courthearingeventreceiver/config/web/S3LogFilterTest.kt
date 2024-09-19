@@ -1,5 +1,9 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.config.web
 
+import jakarta.servlet.FilterChain
+import jakarta.servlet.ServletInputStream
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -11,10 +15,6 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.S3Service
-import javax.servlet.FilterChain
-import javax.servlet.ServletInputStream
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 @ExtendWith(MockitoExtension::class)
 internal class S3LogFilterTest {
