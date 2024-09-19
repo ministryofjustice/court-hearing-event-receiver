@@ -10,6 +10,8 @@ import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.S3Service
 
+private val SUPPORTED_HTTP_METHODS = setOf(HttpMethod.DELETE, HttpMethod.POST, HttpMethod.PUT)
+
 @Component
 class S3LogFilter(@Autowired private val s3Service: S3Service) : Filter {
 
@@ -22,10 +24,5 @@ class S3LogFilter(@Autowired private val s3Service: S3Service) : Filter {
       return
     }
     filterChain.doFilter(request, response)
-  }
-
-  companion object {
-    @JvmField
-    var SUPPORTED_HTTP_METHODS = setOf(HttpMethod.DELETE, HttpMethod.POST, HttpMethod.PUT)
   }
 }

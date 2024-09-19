@@ -18,15 +18,19 @@ import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryE
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
 import java.io.File
 
+const val NORTH_TYNESIDE = "B10JQ"
+const val LEICESTER = "B33HU"
+
 @ExtendWith(MockitoExtension::class)
 internal class EventControllerTest {
 
+  val includedCourts = setOf(NORTH_TYNESIDE, LEICESTER)
   private lateinit var hearingEvent: HearingEvent
   private lateinit var eventController: EventController
   private val mapper by lazy {
     ObjectMapper()
       .registerModule(JavaTimeModule())
-      .registerModule(KotlinModule())
+      .registerModule(KotlinModule.Builder().build())
       .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
   }
 
@@ -49,7 +53,7 @@ internal class EventControllerTest {
     val str = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
     hearingEvent = mapper.readValue(str, HearingEvent::class.java)
     eventController =
-      EventController(messageNotifier, telemetryService, includedCourts = INCLUDED_COURTS, useIncludedCourtsList = true)
+      EventController(messageNotifier, telemetryService, includedCourts = includedCourts, useIncludedCourtsList = true)
   }
 
   @Test
@@ -112,7 +116,7 @@ internal class EventControllerTest {
   @Test
   fun `when receive result message for included court and allow list disabled then send message`() {
     eventController =
-      EventController(messageNotifier, telemetryService, includedCourts = INCLUDED_COURTS, useIncludedCourtsList = false)
+      EventController(messageNotifier, telemetryService, includedCourts = includedCourts, useIncludedCourtsList = false)
 
     eventController.postResultEvent(hearingId, hearingEvent)
 
@@ -151,16 +155,5 @@ internal class EventControllerTest {
       expectedProperties,
     )
     verifyNoMoreInteractions(telemetryService, messageNotifier)
-  }
-
-  companion object {
-    @JvmField
-    var NORTH_TYNESIDE = "B10JQ"
-
-    @JvmField
-    var LEICESTER = "B33HU"
-
-    @JvmField
-    var INCLUDED_COURTS = setOf(NORTH_TYNESIDE, LEICESTER)
   }
 }

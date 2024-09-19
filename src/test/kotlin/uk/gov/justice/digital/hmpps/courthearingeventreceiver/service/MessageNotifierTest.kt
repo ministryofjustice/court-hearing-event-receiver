@@ -71,7 +71,7 @@ internal class MessageNotifierTest {
     private lateinit var amazonSNSClient: AmazonSNS
 
     @Bean
-    fun objectMapper(): ObjectMapper = ObjectMapper().registerModule(KotlinModule())
+    fun objectMapper(): ObjectMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
 
     @Bean
     fun messageNotifier() = MessageNotifier(objectMapper(), amazonSNSClient, "topic")

@@ -27,7 +27,7 @@ internal class ModelParserTest {
   fun beforeEach() {
     mapper = ObjectMapper()
     mapper.registerModule(JavaTimeModule())
-    mapper.registerModule(KotlinModule())
+    mapper.registerModule(KotlinModule.Builder().build())
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
   }
 
