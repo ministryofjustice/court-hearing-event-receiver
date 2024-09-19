@@ -3,7 +3,10 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.service
 import org.slf4j.LoggerFactory
 
 enum class MessageType {
-  CONFIRM_UPDATE, RESULT, DELETE, UNKNOWN;
+  CONFIRM_UPDATE,
+  RESULT,
+  DELETE,
+  UNKNOWN,
 }
 
 private val log = LoggerFactory.getLogger(MessageType::class.java)

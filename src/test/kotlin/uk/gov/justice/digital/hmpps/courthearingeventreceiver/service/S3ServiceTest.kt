@@ -35,7 +35,7 @@ internal class S3ServiceTest {
   fun setUp() {
     val mapper = ObjectMapper()
     mapper.registerModule(JavaTimeModule())
-    mapper.registerModule(KotlinModule())
+    mapper.registerModule(KotlinModule.Builder().build())
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
     s3Service = S3Service("bucket-name", amazonS3Client, mapper)
     minimalJson = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)

@@ -1,18 +1,10 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "5.1.4"
-  kotlin("plugin.spring") version "1.8.21"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.5"
+  kotlin("plugin.spring") version "2.0.20"
 }
 
 java {
-  toolchain.languageVersion.set(JavaLanguageVersion.of(19))
-}
-
-tasks {
-  withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = "19"
-    }
-  }
+  toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 configurations {
@@ -67,7 +59,7 @@ tasks {
             "Test summary: ${result.testCount} tests, " +
               "${result.successfulTestCount} succeeded, " +
               "${result.failedTestCount} failed, " +
-              "${result.skippedTestCount} skipped"
+              "${result.skippedTestCount} skipped",
           )
           if (failedTests.isNotEmpty()) {
             logger.lifecycle("\tFailed Tests:")
