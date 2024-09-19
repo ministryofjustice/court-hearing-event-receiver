@@ -7,5 +7,5 @@ import java.time.LocalDate
 data class Plea(
 
   val pleaValue: String,
-  val pleaDate: LocalDate?
+  val pleaDate: LocalDate?,
 )

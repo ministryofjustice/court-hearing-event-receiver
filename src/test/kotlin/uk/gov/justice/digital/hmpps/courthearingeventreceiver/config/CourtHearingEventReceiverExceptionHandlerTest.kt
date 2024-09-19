@@ -10,7 +10,9 @@ import org.mockito.kotlin.whenever
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.context.request.ServletWebRequest
 
 @ExtendWith(MockitoExtension::class)
 internal class CourtHearingEventReceiverExceptionHandlerTest {
@@ -34,18 +36,17 @@ internal class CourtHearingEventReceiverExceptionHandlerTest {
   fun `given invalid method argument when get message then return BAD_REQUEST`() {
     whenever(methodArgumentNotValidException.message).thenReturn("MESSAGE")
 
-    val response = exceptionHandler.handleMethodArgumentNotValid(methodArgumentNotValidException, headers, HttpStatus.INTERNAL_SERVER_ERROR, null)
+    val response = exceptionHandler.handleMethodArgumentNotValid(methodArgumentNotValidException, headers, HttpStatus.INTERNAL_SERVER_ERROR, ServletWebRequest(MockHttpServletRequest()))
 
-    assertThat(response?.body.toString()).contains("MESSAGE")
-    assertThat(response?.statusCode?.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+    assertThat(response.body.toString()).contains("MESSAGE")
+    assertThat(response.statusCode.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
   }
 
   @Test
   fun `given message not readable when get message then return BAD_REQUEST`() {
-
     whenever(messageNotReadableException.message).thenReturn("MESSAGE")
 
-    val response = exceptionHandler.handleHttpMessageNotReadable(messageNotReadableException, headers, HttpStatus.INTERNAL_SERVER_ERROR, null)
+    val response = exceptionHandler.handleHttpMessageNotReadable(messageNotReadableException, headers, HttpStatus.INTERNAL_SERVER_ERROR, ServletWebRequest(MockHttpServletRequest()))
 
     assertThat(response?.body.toString()).contains("MESSAGE")
     assertThat(response?.statusCode?.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())

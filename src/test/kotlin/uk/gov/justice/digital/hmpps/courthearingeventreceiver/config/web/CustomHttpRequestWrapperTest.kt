@@ -1,5 +1,7 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.config.web
 
+import jakarta.servlet.ServletInputStream
+import jakarta.servlet.http.HttpServletRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -7,8 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
-import javax.servlet.ServletInputStream
-import javax.servlet.http.HttpServletRequest
 
 @ExtendWith(MockitoExtension::class)
 internal class CustomHttpRequestWrapperTest {

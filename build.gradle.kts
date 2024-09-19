@@ -1,34 +1,42 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "4.8.1"
-  kotlin("plugin.spring") version "1.8.10"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "5.1.4"
+  kotlin("plugin.spring") version "1.8.21"
+}
+
+java {
+  toolchain.languageVersion.set(JavaLanguageVersion.of(19))
+}
+
+tasks {
+  withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+      jvmTarget = "19"
+    }
+  }
 }
 
 configurations {
   testImplementation { exclude(group = "org.junit.vintage") }
 }
 
-val awsSdkVersion = "1.12.543"
+val awsSdkVersion = "1.12.770"
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-validation")
+
   implementation("com.amazonaws:aws-java-sdk-sns:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-sqs:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-s3:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-sts:$awsSdkVersion")
   implementation("com.jayway.jsonpath:json-path:2.9.0")
 
-  testImplementation("io.jsonwebtoken:jjwt:0.9.1")
+  testImplementation("io.jsonwebtoken:jjwt:0.12.6")
 }
 
 tasks {
-  compileKotlin {
-    kotlinOptions {
-      jvmTarget = "16"
-    }
-  }
 
   test {
     useJUnitPlatform()
@@ -47,6 +55,7 @@ tasks {
         when (result.resultType) {
           TestResult.ResultType.FAILURE -> failedTests.add(testDescriptor)
           TestResult.ResultType.SKIPPED -> skippedTests.add(testDescriptor)
+          else -> null
         }
       }
 

@@ -18,15 +18,14 @@ import java.time.LocalDateTime
 class S3Service(
   @Value("\${aws.s3.bucket_name}") private val bucketName: String,
   @Autowired private val amazonS3Client: AmazonS3,
-  @Autowired private val mapper: ObjectMapper
+  @Autowired private val mapper: ObjectMapper,
 ) {
   fun uploadMessage(uriPath: String, messageContent: String): String? {
-
     val s3Key = buildS3Key(
       courtCode = getCourtCode(messageContent),
       receiptTime = LocalDateTime.now(),
       messageType = getMessageType(uriPath),
-      hearingEventId = findUuid(uriPath)
+      hearingEventId = findUuid(uriPath),
     )
 
     return try {

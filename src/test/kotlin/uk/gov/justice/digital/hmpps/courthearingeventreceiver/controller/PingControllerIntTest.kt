@@ -15,7 +15,7 @@ class PingControllerIntTest : IntegrationTestBase() {
         .expectStatus().isOk
         .expectBody()
         .returnResult()
-        .responseBodyContent
+        .responseBodyContent,
     )
     assertThat(str).isEqualTo("pong")
   }
