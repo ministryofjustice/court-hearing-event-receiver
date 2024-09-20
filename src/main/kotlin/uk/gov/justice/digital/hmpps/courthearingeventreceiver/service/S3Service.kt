@@ -34,7 +34,7 @@ class S3Service(
       putResult.eTag
     } catch (ex: RuntimeException) {
       // Happy to swallow this one with a log statement because failure to back up the file is not business critical
-      log.error("Failed to back up file {} saved to S3 bucket {}", s3Key, bucketName, ex)
+      log.error("Failed to back up file {} to S3 bucket {}", s3Key, bucketName, ex)
       null
     }
   }

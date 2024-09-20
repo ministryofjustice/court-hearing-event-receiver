@@ -18,9 +18,8 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-validation")
+  implementation("uk.gov.justice.service.hmpps:hmpps-sqs-spring-boot-starter:4.4.2")
 
-  implementation("com.amazonaws:aws-java-sdk-sns:$awsSdkVersion")
-  implementation("com.amazonaws:aws-java-sdk-sqs:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-s3:$awsSdkVersion")
   implementation("com.amazonaws:aws-java-sdk-sts:$awsSdkVersion")
   implementation("com.jayway.jsonpath:json-path:2.9.0")

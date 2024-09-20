@@ -1,40 +1,40 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.service
 
-import com.amazonaws.services.sns.AmazonSNS
-import com.amazonaws.services.sns.model.MessageAttributeValue
-import com.amazonaws.services.sns.model.PublishRequest
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import software.amazon.awssdk.services.sns.model.MessageAttributeValue
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
+import uk.gov.justice.hmpps.sqs.HmppsQueueService
+import uk.gov.justice.hmpps.sqs.MissingTopicException
+import uk.gov.justice.hmpps.sqs.publish
 
 private const val MESSAGE_TYPE = "COMMON_PLATFORM_HEARING"
 
 @Component
 class MessageNotifier(
-  @Autowired
   private val objectMapper: ObjectMapper,
-  @Autowired
-  private val amazonSNSClient: AmazonSNS,
-  @Value("\${aws.sns.topic_arn}")
-  private val topicArn: String,
+  private val hmppsQueueService: HmppsQueueService,
 ) {
+  private val topic =
+    hmppsQueueService.findByTopicId("courtcaseeventstopic")
+      ?: throw MissingTopicException("Could not find topic ")
   fun send(hearingEventType: HearingEventType, hearingEvent: HearingEvent) {
-    val messageTypeValue = MessageAttributeValue()
-      .withDataType("String")
-      .withStringValue(MESSAGE_TYPE)
+    val messageTypeValue =
+      MessageAttributeValue.builder()
+        .dataType("String")
+        .stringValue(MESSAGE_TYPE)
+        .build()
 
-    val hearingEventTypeValue = MessageAttributeValue()
-      .withDataType("String")
-      .withStringValue(hearingEventType.description)
+    val hearingEventTypeValue =
+      MessageAttributeValue.builder()
+        .dataType("String")
+        .stringValue(hearingEventType.description)
+        .build()
 
-    val publishRequest = PublishRequest(topicArn, objectMapper.writeValueAsString(hearingEvent))
-      .withMessageAttributes(mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue))
-    val publishResult = amazonSNSClient.publish(publishRequest)
-    log.info("Published message with message Id {}", publishResult.messageId)
+    val publishResult = topic.publish("commonplatform.case.received", objectMapper.writeValueAsString(hearingEvent), mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue))
+    log.info("Published message with message Id {}", publishResult.messageId())
   }
 
   companion object {
