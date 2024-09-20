@@ -1,6 +1,6 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.controller
 
-import com.amazonaws.services.sqs.AmazonSQSAsync
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -12,12 +12,13 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import reactor.core.publisher.Mono
+import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryService
 import java.io.File
-import java.util.concurrent.TimeUnit
 
 @ActiveProfiles("test")
 class EventControllerIntTest : IntegrationTestBase() {
@@ -25,18 +26,15 @@ class EventControllerIntTest : IntegrationTestBase() {
   lateinit var hearingEvent: HearingEvent
 
   @Autowired
-  lateinit var mapper: ObjectMapper
-
-  @Autowired
-  lateinit var sqs: AmazonSQSAsync
+  lateinit var objectMapper: ObjectMapper
 
   @MockBean
   lateinit var telemetryService: TelemetryService
 
   @BeforeEach
-  fun beforeEach() {
+  override fun beforeEach() {
     val str = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
-    hearingEvent = mapper.readValue(str, HearingEvent::class.java)
+    hearingEvent = objectMapper.readValue(str, HearingEvent::class.java)
   }
 
   @Nested
@@ -51,12 +49,17 @@ class EventControllerIntTest : IntegrationTestBase() {
         .exchange()
         .expectStatus().isOk
 
-      // Verify new thing received at topic
-      val messages = sqs.receiveMessageAsync("http://localhost:4566/000000000000/test-queue")
-        .get(5, TimeUnit.SECONDS)
-      assertThat(messages.messages.size).isEqualTo(1)
-      assertThat(messages.messages[0].body).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
-      assertThat(messages.messages[0].body).contains("Adjournment")
+      val messages = courtCaseEventsQueue?.sqsClient?.receiveMessage(ReceiveMessageRequest.builder().queueUrl(courtCaseEventsQueue?.queueUrl!!).build())!!.get()
+      assertThat(messages.messages().size).isEqualTo(1)
+      val message: SQSMessage = objectMapper.readValue(messages.messages()[0].body(), SQSMessage::class.java)
+
+      assertThat(message.message).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2") // this is the hearing ID
+      assertThat(message.message).contains("Adjournment")
+
+      assertThat(message.messageAttributes.messageType.type).isEqualTo("String")
+      assertThat(message.messageAttributes.messageType.value).isEqualTo("COMMON_PLATFORM_HEARING")
+
+      assertThat(message.messageAttributes.hearingEventType.value).isEqualTo(HearingEventType.CONFIRMED_OR_UPDATED.description)
 
       val expectedMap = mapOf(
         "courtCode" to "B10JQ",
@@ -95,11 +98,11 @@ class EventControllerIntTest : IntegrationTestBase() {
         .exchange()
         .expectStatus().isOk
 
-      // Verify new thing received at topic
-      val messages = sqs.receiveMessageAsync("http://localhost:4566/000000000000/test-queue")
-        .get(5, TimeUnit.SECONDS)
-      assertThat(messages.messages.size).isEqualTo(1)
-      assertThat(messages.messages[0].body).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
+      val messages = courtCaseEventsQueue?.sqsClient?.receiveMessage(ReceiveMessageRequest.builder().queueUrl(courtCaseEventsQueue?.queueUrl!!).build())!!.get()
+      assertThat(messages.messages().size).isEqualTo(1)
+      val message: SQSMessage = objectMapper.readValue(messages.messages()[0].body(), SQSMessage::class.java)
+
+      assertThat(message.message).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
 
       val expectedMap = mapOf(
         "courtCode" to "B10JQ",
@@ -204,4 +207,22 @@ class EventControllerIntTest : IntegrationTestBase() {
     const val RESULT_PATH: String = "/hearing/%s/result"
     const val DELETE_PATH: String = "/hearing/%s/delete"
   }
+
+  data class SQSMessage(
+    @JsonProperty("Message")
+    val message: String,
+    @JsonProperty("MessageAttributes")
+    val messageAttributes: MessageAttributes,
+  )
+  data class MessageAttributes(
+    val messageType: MessageAttribute,
+    val hearingEventType: MessageAttribute,
+  )
+
+  data class MessageAttribute(
+    @JsonProperty("Type")
+    val type: String,
+    @JsonProperty("Value")
+    val value: String,
+  )
 }

@@ -5,18 +5,22 @@ management.endpoint:
   health.cache.time-to-live: 0
   info.cache.time-to-live: 0
 
+hmpps.sqs:
+  enabled: true
+  provider: localstack
+  queues:
+    courtcaseeventsqueue:
+      queueName: court_case_events_queue
+      subscribeTopicId: courtcaseeventstopic
+      dlqName: cpr_court_case_events_queue_dlq
+      dlqMaxReceiveCount: 1
+  topics:
+    courtcaseeventstopic:
+      arn: "arn:aws:sns:eu-west-2:000000000000:court-case-events-topic"
+
 # Localstack settings
 aws:
   region_name: eu-west-2
-  sns:
-    topic_arn: "arn:aws:sns:eu-west-2:000000000000:court-case-events-topic"
-    access_key_id: foobar
-    secret_access_key: foobar
-  sqs:
-    endpoint_url: "http://localhost:4566"
-    queue_name: "test-queue"
-    access_key_id: foobar
-    secret_access_key: foobar
   s3:
     access_key_id: foobar
     secret_access_key: foobar

@@ -3,7 +3,7 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.service
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class MessageTypeTest {
+internal class MessageAttributeTest {
 
   @Test
   fun `when there is a result path return RESULT as type`() {

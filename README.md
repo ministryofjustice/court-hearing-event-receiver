@@ -13,13 +13,12 @@ This section contains the bare minimum you need to do to get the app running aga
 ---
 
 ## Prerequisites
-- Java 16
+- Java 21
 - Docker
 
 We also use:
-- `kubectl`,`minikube`,`helm` - For testing and managing k8s deployments
+- `kubectl`,`helm` - For testing and managing k8s deployments
 - `circleci` cli - For validating the circle configs
-- `snyk` cli - For vulnerability checking
 
 ---
 
@@ -36,10 +35,11 @@ These files can be downloaded either using the AWS CLI or using the [`./copy-s3.
 
 ---
 
-## Running integration tests
+## Running tests
 
-To run the Integration tests :
-- Run `docker compose up localstack-cher` to start  localstack with SNS, S3 and any other dependent AWS services
+To run the  tests :
+- Run `docker compose up localstack-cher` to start  localstack with SNS, S3, SQS and any other dependent AWS services
+- Run `./gradlew check`
 - Run `./gradlew integrationTest` 
 
 

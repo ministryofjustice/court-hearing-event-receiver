@@ -39,7 +39,7 @@ generic-service:
     court-hearing-event-receiver:
       APPINSIGHTS_INSTRUMENTATIONKEY: "APPINSIGHTS_INSTRUMENTATIONKEY"
     court-case-events-topic:
-      aws_sns_topic_arn: topic_arn
+      HMPPS_SQS_TOPICS_COURTCASEEVENTSTOPIC_ARN: topic_arn
     crime-portal-gateway-s3-credentials:
       aws_s3_bucket_name: bucket_name
 
