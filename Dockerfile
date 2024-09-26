@@ -1,4 +1,4 @@
-FROM openjdk:21-slim AS builder
+FROM openjdk:21-jdk-slim-buster AS builder
 
 ARG BUILD_NUMBER
 ENV BUILD_NUMBER ${BUILD_NUMBER:-1_0_0}
