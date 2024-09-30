@@ -192,6 +192,7 @@ class EventControllerIntTest : IntegrationTestBase() {
         .exchange()
         .expectStatus().isBadRequest
     }
+
     @Test
     fun whenPostToEventEndpointWithTrailingSlashAndRequiredRole_thenReturn200NoContent_andPushToTopic() {
       val courtCentre = hearingEvent.hearing.courtCentre.copy(id = "", code = "   ")
@@ -201,12 +202,11 @@ class EventControllerIntTest : IntegrationTestBase() {
       postEvent(
         invalidHearingEvent,
         jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
-        UPDATE_PATH_WITH_TRAILING_SLASH
+        UPDATE_PATH_WITH_TRAILING_SLASH,
       )
         .exchange()
         .expectStatus().isBadRequest
     }
-
   }
 
   private fun postEvent(hearingEvent: HearingEvent, token: String, pathFormat: String = UPDATE_PATH) =

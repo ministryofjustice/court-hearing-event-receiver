@@ -31,7 +31,7 @@ class EventController(
   private val useIncludedCourtsList: Boolean = false,
 ) {
 
-  @RequestMapping(value = ["/hearing/{id}","/hearing/{id}/"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+  @RequestMapping(value = ["/hearing/{id}", "/hearing/{id}/"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
   @ResponseStatus(HttpStatus.OK)
   fun postEvent(
     @PathVariable(required = false) id: String,
