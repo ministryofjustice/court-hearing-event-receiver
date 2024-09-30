@@ -1,7 +1,7 @@
 generic-service:
   nameOverride: court-hearing-event-receiver
 
-  serviceAccountName: "court-facing-api"
+  serviceAccountName: "court-case-service"
 
   image:
     repository: quay.io/hmpps/court-hearing-event-receiver
