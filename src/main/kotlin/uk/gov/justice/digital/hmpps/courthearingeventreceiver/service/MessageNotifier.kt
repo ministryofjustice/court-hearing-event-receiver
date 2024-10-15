@@ -33,7 +33,7 @@ class MessageNotifier(
         .stringValue(hearingEventType.description)
         .build()
 
-    val publishResult = topic.publish("commonplatform.case.received", objectMapper.writeValueAsString(hearingEvent), mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue))
+    val publishResult = topic.publish(eventType = "commonplatform.case.received", event = objectMapper.writeValueAsString(hearingEvent), attributes = mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue))
     log.info("Published message with message Id {}", publishResult.messageId())
   }
 
