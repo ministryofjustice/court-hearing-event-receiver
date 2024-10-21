@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration
       email = "",
       url = "https://moj.enterprise.slack.com/archives/C01FR4HKS3A",
     ),
-    license = License(name = "The MIT License (MIT)", url = "https://github.com/ministryofjustice/court-case-service/blob/main/LICENSE"),
+    license = License(name = "The MIT License (MIT)", url = "https://github.com/ministryofjustice/court-hearing-event-receiver/blob/main/LICENSE"),
     version = "1.0",
   ),
 )
