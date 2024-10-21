@@ -28,7 +28,7 @@ class ResourceServerConfiguration {
           "/swagger-ui.html",
           "/swagger-ui/**",
           "/v3/api-docs/**",
-          "/v3/swagger-ui.html"
+          "/v3/swagger-ui.html",
         ).permitAll()
         it.anyRequest()
           .hasRole("COURT_HEARING_EVENT_WRITE")

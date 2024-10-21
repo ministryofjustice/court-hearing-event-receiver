@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Configuration
     contact = io.swagger.v3.oas.annotations.info.Contact(
       name = "Probation In Court Team",
       email = "",
-      url = "https://moj.enterprise.slack.com/archives/C01FR4HKS3A", // #pic-mafia Slack channel
+      url = "https://moj.enterprise.slack.com/archives/C01FR4HKS3A",
     ),
     license = License(name = "The MIT License (MIT)", url = "https://github.com/ministryofjustice/court-case-service/blob/main/LICENSE"),
     version = "1.0",
-  )
+  ),
 )
 class OpenAPIConfiguration
