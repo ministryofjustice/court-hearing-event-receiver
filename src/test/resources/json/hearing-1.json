@@ -27,6 +27,7 @@
           },
           "id": "0ab7c3e5-eb4c-4e3f-b9e6-b9e78d3ea199",
           "masterDefendantId": "0ab7c3e5-eb4c-4e3f-b9e6-b9e78d3ea199",
+          "isYouth": false,
           "offences": [
             {
               "allocationDecision": {
@@ -125,6 +126,7 @@
           },
           "id": "903c4c54-f667-4770-8fdf-1adbb5957c25",
           "masterDefendantId": "903c4c54-f667-4770-8fdf-1adbb5957c25",
+          "isYouth": true,
           "offences": [
             {
               "allocationDecision": {
