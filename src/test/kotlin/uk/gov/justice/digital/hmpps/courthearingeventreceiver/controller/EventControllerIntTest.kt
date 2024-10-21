@@ -55,6 +55,7 @@ class EventControllerIntTest : IntegrationTestBase() {
 
       assertThat(message.message).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2") // this is the hearing ID
       assertThat(message.message).contains("Adjournment")
+      assertThat(message.message).contains("isYouth")
 
       assertThat(message.messageAttributes.messageType.type).isEqualTo("String")
       assertThat(message.messageAttributes.messageType.value).isEqualTo("COMMON_PLATFORM_HEARING")
