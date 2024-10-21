@@ -42,5 +42,5 @@ data class Defendant(
   val croNumber: String?,
 
   @JsonProperty("isYouth")
-  val isYouth: Boolean,
+  val isYouth: boolean,
 )
