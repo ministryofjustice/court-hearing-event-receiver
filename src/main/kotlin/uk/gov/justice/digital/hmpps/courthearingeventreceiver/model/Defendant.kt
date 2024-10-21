@@ -40,4 +40,7 @@ data class Defendant(
 
   @JsonProperty("croNumber")
   val croNumber: String?,
+
+  @JsonProperty("isYouth")
+  val isYouth: Boolean,
 )

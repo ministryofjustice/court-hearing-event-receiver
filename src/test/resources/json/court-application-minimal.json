@@ -33,6 +33,7 @@
           {
             "id": "ac24a1be-939b-49a4-a524-21a3d228f8bc",
             "masterDefendantId": "ac24a1be-939b-49a4-a524-21a3d228f8bc",
+            "isYouth": false,
             "offences":
             [
               {
