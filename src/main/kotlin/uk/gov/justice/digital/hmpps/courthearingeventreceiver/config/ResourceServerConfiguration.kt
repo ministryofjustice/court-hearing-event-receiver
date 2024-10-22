@@ -25,11 +25,10 @@ class ResourceServerConfiguration {
           "/info",
           "/health",
           "/ping",
-          "/swagger-resources/**",
-          "/v2/api-docs",
           "/swagger-ui.html",
           "/swagger-ui/**",
-          "/webjars/springfox-swagger-ui/**",
+          "/v3/api-docs/**",
+          "/v3/swagger-ui.html",
         ).permitAll()
         it.anyRequest()
           .hasRole("COURT_HEARING_EVENT_WRITE")
