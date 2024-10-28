@@ -34,6 +34,5 @@ data class CourtCentre(
   val address: Address?,
 
   @JsonProperty("lja")
-  val lja: LJA,
+  val lja: LJA?,
 )
-

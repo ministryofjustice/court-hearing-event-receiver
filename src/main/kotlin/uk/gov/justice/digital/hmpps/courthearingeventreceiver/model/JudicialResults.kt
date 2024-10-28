@@ -25,5 +25,3 @@ data class JudicialResults(
   @JsonProperty("judicialResultPrompts")
   val judicialResultPrompts: List<JudicialResultsPrompt> = emptyList(),
 )
-
-

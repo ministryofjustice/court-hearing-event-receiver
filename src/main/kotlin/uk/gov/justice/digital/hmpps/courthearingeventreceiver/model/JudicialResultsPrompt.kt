@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class JudicialResultsPrompt(
 
-  val courtExtract:String?,
+  val courtExtract: String?,
 
   @JsonProperty("isDurationEndDate")
   val isDurationEndDate: Boolean?,

@@ -6,5 +6,5 @@ data class LJA(
   @JsonProperty("ljaCode")
   val ljaCode: String?,
   @JsonProperty("ljaName")
-  val ljaName: String,
+  val ljaName: String?,
 )
