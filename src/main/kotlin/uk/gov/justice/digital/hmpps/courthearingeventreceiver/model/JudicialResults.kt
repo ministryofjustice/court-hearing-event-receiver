@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
+import java.time.LocalDate
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class JudicialResults(
@@ -17,4 +18,10 @@ data class JudicialResults(
 
   @JsonProperty("resultText")
   val resultText: String?,
+
+  @JsonProperty("orderedDate")
+  val orderedDate: LocalDate?,
+
+  @JsonProperty("judicialResultPrompts")
+  val judicialResultPrompts: List<JudicialResultsPrompt> = emptyList(),
 )
