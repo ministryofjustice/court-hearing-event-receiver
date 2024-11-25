@@ -13,6 +13,7 @@ import uk.gov.justice.digital.hmpps.courthearingeventreceiver.extensions.findUui
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import java.lang.RuntimeException
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 @Component
 class S3Service(
@@ -23,12 +24,16 @@ class S3Service(
   fun uploadMessage(uriPath: String, messageContent: String): String? {
     val s3Key = buildS3Key(
       courtCode = getCourtCode(messageContent),
-      receiptTime = LocalDateTime.now(),
+      receiptTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
       messageType = getMessageType(uriPath),
       hearingEventId = findUuid(uriPath),
     )
 
     return try {
+      if (amazonS3Client.doesObjectExist(bucketName, s3Key)) {
+        log.warn("File {} already exists in S3 bucket", s3Key)
+        return null
+      }
       val putResult = amazonS3Client.putObject(bucketName, s3Key, messageContent)
       log.info("File {} saved to S3 bucket {} with expiration date of {}, eTag {}", s3Key, bucketName, putResult.expirationTime, putResult.eTag)
       putResult.eTag
