@@ -32,7 +32,6 @@ class S3Service(
     return try {
       if (amazonS3Client.doesObjectExist(bucketName, s3Key)) {
         log.warn("File {} already exists in S3 bucket", s3Key)
-        return null
       }
       val putResult = amazonS3Client.putObject(bucketName, s3Key, messageContent)
       log.info("File {} saved to S3 bucket {} with expiration date of {}, eTag {}", s3Key, bucketName, putResult.expirationTime, putResult.eTag)

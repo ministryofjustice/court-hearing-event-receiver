@@ -47,6 +47,7 @@ internal class S3ServiceTest {
       expirationTime = Date()
       eTag = "ETAG"
     }
+    whenever(amazonS3Client.doesObjectExist(eq("bucket-name"), any())).thenReturn(false)
     whenever(amazonS3Client.putObject(eq("bucket-name"), argForWhich { startsWith("cp/RESULT/UNKNOWN_COURT/") }, eq("message")))
       .thenReturn(putResult)
 
@@ -63,6 +64,7 @@ internal class S3ServiceTest {
       expirationTime = Date()
       eTag = "ETAG"
     }
+    whenever(amazonS3Client.doesObjectExist(eq("bucket-name"), any())).thenReturn(false)
     whenever(amazonS3Client.putObject(eq("bucket-name"), argForWhich { startsWith("cp/CONFIRM_UPDATE/B10JQ00/") }, any<String>()))
       .thenReturn(putResult)
 
