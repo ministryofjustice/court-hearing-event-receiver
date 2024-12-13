@@ -35,14 +35,14 @@ abstract class IntegrationTestBase {
 
   @Autowired
   lateinit var hmppsQueueService: HmppsQueueService
-  val courtCaseEventsQueue by lazy {
-    hmppsQueueService.findByQueueId("courtcaseeventsqueue")
+  val courtCasesQueue by lazy {
+    hmppsQueueService.findByQueueId("courtcasesqueue")
   }
 
   @BeforeEach
   fun beforeEach() {
-    courtCaseEventsQueue!!.sqsClient.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCaseEventsQueue!!.queueUrl).build())
-    courtCaseEventsQueue!!.sqsDlqClient?.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCaseEventsQueue!!.dlqUrl).build())
+    courtCasesQueue!!.sqsClient.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCasesQueue!!.queueUrl).build())
+    courtCasesQueue!!.sqsDlqClient?.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCasesQueue!!.dlqUrl).build())
   }
 
   @TestConfiguration
