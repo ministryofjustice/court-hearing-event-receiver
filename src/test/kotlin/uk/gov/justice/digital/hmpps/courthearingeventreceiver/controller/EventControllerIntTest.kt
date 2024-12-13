@@ -142,7 +142,7 @@ class EventControllerIntTest : IntegrationTestBase() {
   @Nested
   inner class DeleteEndpoint {
     @Test
-    fun whenPostToHearingDeleteEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
+    fun whenPostToHearingDeleteEndpointWithRequiredRole_thenReturn200NoContent_andDoNotPushToTopic() {
       deleteEvent(
         jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
         hearingEvent.hearing.id,
@@ -151,6 +151,9 @@ class EventControllerIntTest : IntegrationTestBase() {
         .expectStatus().isOk
 
       // TODO - when we understand the nature of the DELETE message to be posted, then verify the SNS posting
+
+      val messages = courtCaseEventsQueue?.sqsClient?.receiveMessage(ReceiveMessageRequest.builder().queueUrl(courtCaseEventsQueue?.queueUrl!!).build())!!.get()
+      assertThat(messages.messages().size).isEqualTo(0)
 
       val expectedMap = mapOf("id" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
       verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_DELETE_EVENT_RECEIVED, expectedMap)
