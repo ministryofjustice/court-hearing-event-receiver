@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import reactor.core.publisher.Mono
+import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest
 import software.amazon.awssdk.services.sqs.model.PurgeQueueRequest
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.integration.IntegrationTestBase
@@ -115,6 +116,10 @@ class EventControllerIntTest : IntegrationTestBase() {
         "caseId" to "1d1861ed-e18c-429d-bad0-671802f9cdba",
         "caseUrn" to "80GD8183221",
       )
+
+      courtCasesQueue?.sqsClient?.deleteMessage(DeleteMessageRequest.builder().queueUrl(courtCasesQueue?.queueUrl!!).receiptHandle(messages.messages()[0].receiptHandle()).build())
+
+      await().until { countMessagesOnQueue() == 0 }
       verify(telemetryService, times(2)).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, expectedMap)
     }
 
