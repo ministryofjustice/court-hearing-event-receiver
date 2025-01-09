@@ -5,14 +5,14 @@ hmpps.sqs:
   enabled: true
   provider: localstack
   queues:
-    courtcaseeventsqueue:
-      queueName: court_case_events_queue
-      subscribeTopicId: courtcaseeventstopic
-      dlqName: cpr_court_case_events_queue_dlq
+    courtcasesqueue:
+      queueName: court_cases_queue.fifo
+      subscribeTopicId: courtcasestopic
+      dlqName: court_cases_queue_dlq.fifo
       dlqMaxReceiveCount: 1
   topics:
-    courtcaseeventstopic:
-      arn: "arn:aws:sns:eu-west-2:000000000000:court-case-events-topic"
+    courtcasestopic:
+      arn: "arn:aws:sns:eu-west-2:000000000000:court-cases-topic.fifo"
 
 # Localstack settings
 aws:

@@ -11,6 +11,7 @@ import uk.gov.justice.hmpps.sqs.MissingTopicException
 import uk.gov.justice.hmpps.sqs.publish
 
 private const val MESSAGE_TYPE = "COMMON_PLATFORM_HEARING"
+private const val MESSAGE_GROUP_ID = "COURT_HEARING_EVENT_RECEIVER"
 
 @Component
 class MessageNotifier(
@@ -18,7 +19,7 @@ class MessageNotifier(
   private val hmppsQueueService: HmppsQueueService,
 ) {
   private val topic =
-    hmppsQueueService.findByTopicId("courtcaseeventstopic")
+    hmppsQueueService.findByTopicId("courtcasestopic")
       ?: throw MissingTopicException("Could not find topic ")
   fun send(hearingEventType: HearingEventType, hearingEvent: HearingEvent) {
     val messageTypeValue =
@@ -33,7 +34,7 @@ class MessageNotifier(
         .stringValue(hearingEventType.description)
         .build()
 
-    val publishResult = topic.publish(eventType = "commonplatform.case.received", event = objectMapper.writeValueAsString(hearingEvent), attributes = mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue))
+    val publishResult = topic.publish(eventType = "commonplatform.case.received", event = objectMapper.writeValueAsString(hearingEvent), attributes = mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue), messageGroupId = MESSAGE_GROUP_ID)
     log.info("Published message with message Id {}", publishResult.messageId())
   }
 

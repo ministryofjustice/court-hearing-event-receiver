@@ -38,8 +38,8 @@ generic-service:
   namespace_secrets:
     court-hearing-event-receiver:
       APPINSIGHTS_INSTRUMENTATIONKEY: "APPINSIGHTS_INSTRUMENTATIONKEY"
-    court-case-events-topic:
-      HMPPS_SQS_TOPICS_COURTCASEEVENTSTOPIC_ARN: topic_arn
+    court-cases-topic:
+      HMPPS_SQS_TOPICS_COURTCASESTOPIC_ARN: topic_arn
     crime-portal-gateway-s3-credentials:
       aws_s3_bucket_name: bucket_name
 
