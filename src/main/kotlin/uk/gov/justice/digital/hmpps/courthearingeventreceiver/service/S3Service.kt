@@ -31,7 +31,7 @@ class S3Service(
     )
 
     return try {
-      val putResult = amazonS3AsyncClient.putObject(PutObjectRequest.builder().bucket(bucketName).key(s3Key).build(), AsyncRequestBody.fromString(messageContent)).get();
+      val putResult = amazonS3AsyncClient.putObject(PutObjectRequest.builder().bucket(bucketName).key(s3Key).build(), AsyncRequestBody.fromString(messageContent)).get()
       log.info("File {} saved to S3 bucket {} with expiration date of {}, eTag {}", s3Key, bucketName, putResult.expiration(), putResult.eTag())
       putResult.eTag()
     } catch (ex: RuntimeException) {

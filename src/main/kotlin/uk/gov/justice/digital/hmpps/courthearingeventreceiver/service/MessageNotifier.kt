@@ -16,7 +16,6 @@ import uk.gov.justice.hmpps.sqs.HmppsQueueService
 import uk.gov.justice.hmpps.sqs.MissingTopicException
 import uk.gov.justice.hmpps.sqs.publish
 
-
 private const val MESSAGE_TYPE = "COMMON_PLATFORM_HEARING"
 private const val MESSAGE_GROUP_ID = "COURT_HEARING_EVENT_RECEIVER"
 
@@ -31,10 +30,10 @@ class MessageNotifier(
     hmppsQueueService.findByTopicId("courtcasestopic")
       ?: throw MissingTopicException("Could not find topic ")
 
-  private val MAX_MESSAGE_SIZE = 256 * 1024;
+  private val maxMessageSize = 256 * 1024
 
   @Value("\${aws.s3.bucket_name}")
-  private val bucket_name: String = ""
+  private val bucketName: String = ""
 
   fun send(hearingEventType: HearingEventType, hearingEvent: HearingEvent) {
     val messageTypeValue =
@@ -49,7 +48,7 @@ class MessageNotifier(
         .stringValue(hearingEventType.description)
         .build()
 
-    if (sizeOfMessage(hearingEvent) >= MAX_MESSAGE_SIZE) {
+    if (sizeOfMessage(hearingEvent) >= maxMessageSize) {
       publishLargeMessage(hearingEventType = hearingEventType, hearingEvent = hearingEvent)
       return
     }
@@ -68,19 +67,19 @@ class MessageNotifier(
 
     // hmpps.topic library returns SNSAsyncClient which requires S3AsyncClient
     val snsExtendedAsyncClientConfiguration: SNSExtendedAsyncClientConfiguration = SNSExtendedAsyncClientConfiguration()
-      .withPayloadSupportEnabled(amazonS3AsyncClient, bucket_name)
+      .withPayloadSupportEnabled(amazonS3AsyncClient, bucketName)
 
     val snsExtendedClient = AmazonSNSExtendedAsyncClient(
       topic.snsClient,
       snsExtendedAsyncClientConfiguration,
     )
     // Publish message via SNS with storage in S3
-    val publishResult =  snsExtendedClient.publish(
+    val publishResult = snsExtendedClient.publish(
       PublishRequest.builder().topicArn(topic.arn).messageAttributes(
         mapOf(
           "messageType" to MessageAttributeValue.builder().dataType("String").stringValue(MESSAGE_TYPE).build(),
           "hearingEventType" to hearingEventTypeValue,
-          "eventType" to MessageAttributeValue.builder().dataType("String").stringValue("commonplatform.case.received").build()
+          "eventType" to MessageAttributeValue.builder().dataType("String").stringValue("commonplatform.case.received").build(),
         ),
       ).messageGroupId(MESSAGE_GROUP_ID).message(objectMapper.writeValueAsString(hearingEvent))
         .build(),

@@ -57,7 +57,7 @@ class EventControllerIntTest : IntegrationTestBase() {
   @AfterEach
   fun afterEach() {
     val objectListing = amazonS3.listObjects(ListObjectsRequest.builder().bucket(bucketName).build()).get()
-    objectListing.contents().forEach() {
+    objectListing.contents().forEach {
       amazonS3.deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(it.key()).build())
     }
     amazonS3.deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build())

@@ -12,7 +12,10 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.*
+import org.mockito.kotlin.any
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 import software.amazon.awssdk.core.async.AsyncRequestBody
 import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
@@ -22,7 +25,6 @@ import java.nio.ByteBuffer
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
-
 
 @ExtendWith(MockitoExtension::class)
 internal class S3ServiceTest {
@@ -35,10 +37,10 @@ internal class S3ServiceTest {
   private lateinit var s3Service: S3Service
 
   @Captor
-  lateinit var putObjectRequestCaptor: ArgumentCaptor<PutObjectRequest>;
+  lateinit var putObjectRequestCaptor: ArgumentCaptor<PutObjectRequest>
 
   @Captor
-  lateinit var requestBodyCaptor: ArgumentCaptor<AsyncRequestBody>;
+  lateinit var requestBodyCaptor: ArgumentCaptor<AsyncRequestBody>
 
   @BeforeEach
   fun setUp() {
@@ -56,7 +58,7 @@ internal class S3ServiceTest {
       PutObjectResponse.builder().expiration(Date().toString()).eTag("ETAG").build()
     }
 
-    whenever(amazonS3Client.putObject(any<PutObjectRequest>(),any<AsyncRequestBody>())).thenReturn(CompletableFuture.completedFuture(putResult))
+    whenever(amazonS3Client.putObject(any<PutObjectRequest>(), any<AsyncRequestBody>())).thenReturn(CompletableFuture.completedFuture(putResult))
 
     val eTag = s3Service.uploadMessage("/hearing/$UUID/result", "message")
 
@@ -84,7 +86,7 @@ internal class S3ServiceTest {
       PutObjectResponse.builder().expiration(Date().toString()).eTag("ETAG").build()
     }
 
-    whenever(amazonS3Client.putObject(any<PutObjectRequest>(),any<AsyncRequestBody>())).thenReturn(CompletableFuture.completedFuture(putResult))
+    whenever(amazonS3Client.putObject(any<PutObjectRequest>(), any<AsyncRequestBody>())).thenReturn(CompletableFuture.completedFuture(putResult))
 
     val eTag = s3Service.uploadMessage("/hearing/$UUID", minimalJson)
 
