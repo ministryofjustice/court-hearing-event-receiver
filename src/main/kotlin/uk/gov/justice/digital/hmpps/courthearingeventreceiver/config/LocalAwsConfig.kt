@@ -12,7 +12,7 @@ import java.net.URI
 @Profile("local")
 @Configuration
 class LocalAwsConfig(
-  @Value("\${aws.region-name}")
+  @Value("\${aws.region_name}")
   var regionName: String,
 ) {
   @Value("\${aws.localstack-endpoint-url}")
