@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.awaitility.Awaitility.await
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -14,6 +15,11 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import reactor.core.publisher.Mono
+import software.amazon.awssdk.services.s3.S3AsyncClient
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest
+import software.amazon.awssdk.services.s3.model.DeleteBucketRequest
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
+import software.amazon.awssdk.services.s3.model.ListObjectsRequest
 import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest
 import software.amazon.awssdk.services.sqs.model.PurgeQueueRequest
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest
@@ -33,6 +39,9 @@ class EventControllerIntTest : IntegrationTestBase() {
   @Autowired
   lateinit var objectMapper: ObjectMapper
 
+  @Autowired
+  lateinit var amazonS3: S3AsyncClient
+
   @MockBean
   lateinit var telemetryService: TelemetryService
 
@@ -41,6 +50,17 @@ class EventControllerIntTest : IntegrationTestBase() {
     courtCasesQueue?.sqsClient?.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCasesQueue!!.queueUrl).build())
     val str = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
     hearingEvent = objectMapper.readValue(str, HearingEvent::class.java)
+//    "eu-west-2"
+    amazonS3.createBucket(CreateBucketRequest.builder().bucket(bucketName).build())
+  }
+
+  @AfterEach
+  fun afterEach() {
+    val objectListing = amazonS3.listObjects(ListObjectsRequest.builder().bucket(bucketName).build()).get()
+    objectListing.contents().forEach() {
+      amazonS3.deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(it.key()).build())
+    }
+    amazonS3.deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build())
   }
 
   @Nested
@@ -74,6 +94,41 @@ class EventControllerIntTest : IntegrationTestBase() {
         "hearingId" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2",
         "caseId" to "1d1861ed-e18c-429d-bad0-671802f9cdba",
         "caseUrn" to "80GD8183221",
+      )
+      verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, expectedMap)
+    }
+
+    @Test
+    fun whenLargeMessagePostToEventEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
+      val str = File("src/test/resources/json/large-hearing-update.json").readText(Charsets.UTF_8)
+      hearingEvent = objectMapper.readValue(str, HearingEvent::class.java)
+
+      postEvent(
+        hearingEvent,
+        jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
+      )
+        .exchange()
+        .expectStatus().isOk
+
+      val messages = courtCasesQueue?.sqsClient?.receiveMessage(ReceiveMessageRequest.builder().queueUrl(courtCasesQueue?.queueUrl!!).build())!!.get()
+      assertThat(messages.messages().size).isEqualTo(1)
+      val message: SQSMessage = objectMapper.readValue(messages.messages()[0].body(), SQSMessage::class.java)
+
+      val s3Reference: java.util.ArrayList<*> = objectMapper.readValue(message.message, ArrayList::class.java)
+      val mapper = ObjectMapper()
+      val s3Pointer = mapper.readValue(mapper.writeValueAsString(s3Reference.get(1)), LinkedHashMap::class.java)
+      assertThat(s3Pointer.get("s3BucketName")).isEqualTo(bucketName)
+      assertThat(s3Pointer.keys).contains("s3Key")
+      assertThat(message.messageAttributes.messageType.type).isEqualTo("String")
+      assertThat(message.messageAttributes.messageType.value).isEqualTo("COMMON_PLATFORM_HEARING")
+
+      assertThat(message.messageAttributes.hearingEventType.value).isEqualTo(HearingEventType.CONFIRMED_OR_UPDATED.description)
+
+      val expectedMap = mapOf(
+        "courtCode" to "B10JQ",
+        "hearingId" to "472b27a8-5bff-4f1c-9f66-2dde8f60b3e3",
+        "caseId" to "6501585f-08c6-4bd3-84b3-177b44dd6af4",
+        "caseUrn" to "01MP1097424",
       )
       verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, expectedMap)
     }
