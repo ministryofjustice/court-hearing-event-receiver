@@ -50,7 +50,6 @@ class EventControllerIntTest : IntegrationTestBase() {
     courtCasesQueue?.sqsClient?.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCasesQueue!!.queueUrl).build())
     val str = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
     hearingEvent = objectMapper.readValue(str, HearingEvent::class.java)
-//    "eu-west-2"
     amazonS3.createBucket(CreateBucketRequest.builder().bucket(bucketName).build())
   }
 

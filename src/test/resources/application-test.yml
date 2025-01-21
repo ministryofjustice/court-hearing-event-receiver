@@ -21,6 +21,16 @@ hmpps.sqs:
 # Localstack settings
 aws:
   region_name: eu-west-2
+  sqs:
+    access_key_id: foobar
+    secret: foobar
+    queue_name: "court_cases_queue.fifo"
+    dlq_name: "court_cases_queue_dlq.fifo"
+  sns:
+    access_key_id: foobar
+    secret: foobar
+    topic_arn: "arn:aws:sns:eu-west-2:000000000000:court-cases-topic.fifo"
+    topic_name: court-cases-topic
   s3:
     localstack-endpoint-url: "http://localhost:4566"
     access_key_id: foobar
