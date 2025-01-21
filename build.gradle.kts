@@ -19,8 +19,10 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("uk.gov.justice.service.hmpps:hmpps-sqs-spring-boot-starter:5.2.1")
 
-  implementation("com.amazonaws:aws-java-sdk-s3:$awsSdkVersion")
+  testImplementation("software.amazon.awssdk:s3:2.30.0")
   implementation("com.amazonaws:aws-java-sdk-sts:$awsSdkVersion")
+  implementation("software.amazon.sns:sns-extended-client:2.1.0")
+
   implementation("com.jayway.jsonpath:json-path:2.9.0")
 
   // Open API Documentation (swagger)
