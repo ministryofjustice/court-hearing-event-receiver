@@ -12,7 +12,7 @@ import java.net.URI
 @Profile("local")
 @Configuration
 class LocalAwsConfig(
-  @Value("\${aws.region_name}")
+  @Value("\${aws.region-name}")
   var regionName: String,
 ) {
   @Value("\${aws.localstack-endpoint-url}")
@@ -21,7 +21,6 @@ class LocalAwsConfig(
   @Bean
   fun awsS3LocalStackAsyncClient(): S3AsyncClient {
     return S3AsyncClient.builder().endpointOverride(URI(endpointUrl))
-      .endpointOverride(URI.create(endpointUrl))
       .forcePathStyle(true).credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("any", "any")))
       .region(software.amazon.awssdk.regions.Region.of(regionName)).build()
   }

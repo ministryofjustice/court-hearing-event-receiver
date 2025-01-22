@@ -48,11 +48,13 @@ class MessageNotifier(
         .stringValue(hearingEventType.description)
         .build()
 
-    if (sizeOfMessage(hearingEvent) >= maxMessageSize) {
-      publishLargeMessage(hearingEventType = hearingEventType, hearingEvent = hearingEvent)
-      return
+    when {
+      messageLargerThanThreshold(hearingEvent) -> publishLargeMessage(hearingEventType = hearingEventType, hearingEvent = hearingEvent)
+      else -> publishMessage(hearingEvent, messageTypeValue, hearingEventTypeValue)
     }
+  }
 
+  private fun publishMessage(hearingEvent: HearingEvent, messageTypeValue: MessageAttributeValue, hearingEventTypeValue: MessageAttributeValue) {
     val publishResult = topic.publish(eventType = "commonplatform.case.received", event = objectMapper.writeValueAsString(hearingEvent), attributes = mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue), messageGroupId = MESSAGE_GROUP_ID)
 
     log.info("Published message with message Id {}", publishResult.messageId())
@@ -87,8 +89,8 @@ class MessageNotifier(
     log.info("Published large message with message Id {}", publishResult.get().messageId())
   }
 
-  fun sizeOfMessage(hearingEvent: HearingEvent): Int {
-    return hearingEvent.toString().toByteArray().size
+  fun messageLargerThanThreshold(hearingEvent: HearingEvent): Boolean {
+    return hearingEvent.toString().toByteArray().size >= maxMessageSize
   }
 
   companion object {
