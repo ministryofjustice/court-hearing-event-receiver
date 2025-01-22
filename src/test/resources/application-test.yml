@@ -20,11 +20,11 @@ hmpps.sqs:
 
 # Localstack settings
 aws:
-  region_name: eu-west-2
+  region-name: eu-west-2
   s3:
     localstack-endpoint-url: "http://localhost:4566"
     access_key_id: foobar
     secret_access_key: foobar
-    bucket_name: local-644707540a8083b7b15a77f51641f634
+    bucket_name: local-644707540a8083b7b15a77f51641f632
 
 included-court-codes: "B10JQ,B33HU,B14LO"

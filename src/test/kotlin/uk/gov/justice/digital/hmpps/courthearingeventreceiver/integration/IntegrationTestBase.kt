@@ -47,7 +47,7 @@ abstract class IntegrationTestBase {
   @TestConfiguration
   class AwsTestConfig(
 
-    @Value("\${aws.region_name}")
+    @Value("\${aws.region-name}")
     var regionName: String,
     @Value("\${aws.s3.localstack-endpoint-url}")
     var endpointUrl: String,
