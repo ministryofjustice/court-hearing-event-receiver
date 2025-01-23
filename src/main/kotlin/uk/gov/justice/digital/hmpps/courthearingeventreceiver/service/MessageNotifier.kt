@@ -33,13 +33,15 @@ class MessageNotifier(
   private val maxMessageSize = 256 * 1024
 
   fun send(hearingEventType: HearingEventType, hearingEvent: HearingEvent) {
-    when {
-      messageLargerThanThreshold(hearingEvent) -> publishLargeMessage(hearingEventType = hearingEventType, hearingEvent = hearingEvent)
+    val messageId = when {
+      messageLargerThanThreshold(hearingEvent) -> publishLargeMessage(hearingEvent, hearingEventType)
       else -> publishMessage(hearingEvent, hearingEventType)
     }
+
+    log.info("Published message with message Id {}", messageId)
   }
 
-  private fun publishMessage(hearingEvent: HearingEvent, hearingEventType: HearingEventType) {
+  private fun publishMessage(hearingEvent: HearingEvent, hearingEventType: HearingEventType): String? {
     val messageTypeValue =
       MessageAttributeValue.builder()
         .dataType("String")
@@ -54,11 +56,10 @@ class MessageNotifier(
 
     val publishResult = topic.publish(eventType = "commonplatform.case.received", event = objectMapper.writeValueAsString(hearingEvent), attributes = mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue), messageGroupId = MESSAGE_GROUP_ID)
 
-    log.info("Published message with message Id {}", publishResult.messageId())
+    return publishResult.messageId()
   }
 
-  fun publishLargeMessage(hearingEventType: HearingEventType, hearingEvent: HearingEvent) {
-    // hmpps.topic library returns SNSAsyncClient which requires S3AsyncClient
+  fun publishLargeMessage(hearingEvent: HearingEvent, hearingEventType: HearingEventType): String? {
     val snsExtendedAsyncClientConfiguration: SNSExtendedAsyncClientConfiguration = SNSExtendedAsyncClientConfiguration()
       .withPayloadSupportEnabled(amazonS3AsyncClient, bucketName)
 
@@ -77,7 +78,7 @@ class MessageNotifier(
       ).messageGroupId(MESSAGE_GROUP_ID).message(objectMapper.writeValueAsString(hearingEvent))
         .build(),
     )
-    log.info("Published large message with message Id {}", publishResult.get().messageId())
+    return publishResult.get().messageId()
   }
 
   fun messageLargerThanThreshold(hearingEvent: HearingEvent): Boolean {
