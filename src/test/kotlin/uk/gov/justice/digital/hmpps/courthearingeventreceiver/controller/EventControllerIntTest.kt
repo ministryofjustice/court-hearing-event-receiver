@@ -85,6 +85,8 @@ class EventControllerIntTest : IntegrationTestBase() {
       assertThat(message.message).contains("\"judicialResultPrompts\":[{\"courtExtract\":\"Y\",\"isDurationEndDate\":true,\"isFinancialImposition\":false,\"judicialResultPromptTypeId\":\"20fe3e69-c7d6-4f72-8b77-13c70c1f986d\",\"label\":\"Number of days to abstain from consuming any alcohol\",\"promptReference\":\"numberOfDaysToAbstainFromConsumingAnyAlcohol\",\"promptSequence\":100,\"type\":\"INT\",\"value\":\"120\"}]}]")
       assertThat(message.messageAttributes.messageType.type).isEqualTo("String")
       assertThat(message.messageAttributes.messageType.value).isEqualTo("COMMON_PLATFORM_HEARING")
+      assertThat(message.messageAttributes.eventType.type).isEqualTo("String")
+      assertThat(message.messageAttributes.eventType.value).isEqualTo("commonplatform.case.received")
 
       assertThat(message.messageAttributes.hearingEventType.value).isEqualTo(HearingEventType.CONFIRMED_OR_UPDATED.description)
 
@@ -118,6 +120,8 @@ class EventControllerIntTest : IntegrationTestBase() {
       val s3Pointer = mapper.readValue(mapper.writeValueAsString(s3Reference.get(1)), LinkedHashMap::class.java)
       assertThat(s3Pointer.get("s3BucketName")).isEqualTo(bucketName)
       assertThat(s3Pointer.keys).contains("s3Key")
+      assertThat(message.messageAttributes.eventType.type).isEqualTo("String")
+      assertThat(message.messageAttributes.eventType.value).isEqualTo("commonplatform.large.case.received")
       assertThat(message.messageAttributes.messageType.type).isEqualTo("String")
       assertThat(message.messageAttributes.messageType.value).isEqualTo("COMMON_PLATFORM_HEARING")
 
@@ -343,6 +347,7 @@ class EventControllerIntTest : IntegrationTestBase() {
     val messageAttributes: MessageAttributes,
   )
   data class MessageAttributes(
+    val eventType: MessageAttribute,
     val messageType: MessageAttribute,
     val hearingEventType: MessageAttribute,
   )

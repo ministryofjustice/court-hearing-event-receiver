@@ -73,7 +73,7 @@ class MessageNotifier(
         mapOf(
           "messageType" to MessageAttributeValue.builder().dataType("String").stringValue(MESSAGE_TYPE).build(),
           "hearingEventType" to MessageAttributeValue.builder().dataType("String").stringValue(hearingEventType.description).build(),
-          "eventType" to MessageAttributeValue.builder().dataType("String").stringValue("commonplatform.case.received").build(),
+          "eventType" to MessageAttributeValue.builder().dataType("String").stringValue("commonplatform.large.case.received").build(),
         ),
       ).messageGroupId(MESSAGE_GROUP_ID).message(objectMapper.writeValueAsString(hearingEvent))
         .build(),
