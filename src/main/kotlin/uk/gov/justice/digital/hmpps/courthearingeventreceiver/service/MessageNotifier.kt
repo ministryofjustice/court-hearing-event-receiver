@@ -23,7 +23,7 @@ class MessageNotifier(
   private val objectMapper: ObjectMapper,
   private val hmppsQueueService: HmppsQueueService,
   private val amazonS3AsyncClient: S3AsyncClient,
-  @Value("\${aws.s3.bucket_name}") private val bucketName: String,
+  @Value("\${aws.s3.largecases.bucket_name}") private val bucketName: String,
 ) {
 
   private val topic =

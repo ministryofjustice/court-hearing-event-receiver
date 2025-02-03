@@ -32,6 +32,9 @@ abstract class IntegrationTestBase {
   @Value("\${aws.s3.bucket_name}")
   lateinit var bucketName: String
 
+  @Value("\${aws.s3.largecases.bucket_name}")
+  lateinit var largeCasesBucketName: String
+
   @Autowired
   lateinit var hmppsQueueService: HmppsQueueService
   val courtCasesQueue by lazy {

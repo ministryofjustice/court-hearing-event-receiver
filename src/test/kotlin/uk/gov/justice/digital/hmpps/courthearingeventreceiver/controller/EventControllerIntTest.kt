@@ -51,6 +51,7 @@ class EventControllerIntTest : IntegrationTestBase() {
     val str = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
     hearingEvent = objectMapper.readValue(str, HearingEvent::class.java)
     amazonS3.createBucket(CreateBucketRequest.builder().bucket(bucketName).build())
+    amazonS3.createBucket(CreateBucketRequest.builder().bucket(largeCasesBucketName).build())
   }
 
   @AfterEach
@@ -60,6 +61,7 @@ class EventControllerIntTest : IntegrationTestBase() {
       amazonS3.deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(it.key()).build())
     }
     amazonS3.deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build())
+    amazonS3.deleteBucket(DeleteBucketRequest.builder().bucket(largeCasesBucketName).build())
   }
 
   @Nested
@@ -118,7 +120,7 @@ class EventControllerIntTest : IntegrationTestBase() {
       val s3Reference: java.util.ArrayList<*> = objectMapper.readValue(message.message, ArrayList::class.java)
       val mapper = ObjectMapper()
       val s3Pointer = mapper.readValue(mapper.writeValueAsString(s3Reference.get(1)), LinkedHashMap::class.java)
-      assertThat(s3Pointer.get("s3BucketName")).isEqualTo(bucketName)
+      assertThat(s3Pointer.get("s3BucketName")).isEqualTo(largeCasesBucketName)
       assertThat(s3Pointer.keys).contains("s3Key")
       assertThat(message.messageAttributes.eventType.type).isEqualTo("String")
       assertThat(message.messageAttributes.eventType.value).isEqualTo("commonplatform.large.case.received")

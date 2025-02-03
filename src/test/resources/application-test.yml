@@ -26,5 +26,7 @@ aws:
     access_key_id: foobar
     secret_access_key: foobar
     bucket_name: cpg-s3-bucket
+    largecases:
+      bucket_name: s3-large-cases-bucket
 
 included-court-codes: "B10JQ,B33HU,B14LO"

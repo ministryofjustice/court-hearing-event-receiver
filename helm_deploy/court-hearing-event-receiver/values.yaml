@@ -42,6 +42,8 @@ generic-service:
       HMPPS_SQS_TOPICS_COURTCASESTOPIC_ARN: topic_arn
     crime-portal-gateway-s3-credentials:
       aws_s3_bucket_name: bucket_name
+    large-court-cases-s3-credentials:
+      AWS_S3_LARGECASES_BUCKET_NAME: bucket_name
 
   allowlist:
     groups:
