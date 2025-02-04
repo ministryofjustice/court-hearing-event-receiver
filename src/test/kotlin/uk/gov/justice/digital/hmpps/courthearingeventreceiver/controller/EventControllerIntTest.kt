@@ -103,8 +103,7 @@ class EventControllerIntTest : IntegrationTestBase() {
       val message: SQSMessage = objectMapper.readValue(messages.messages()[0].body(), SQSMessage::class.java)
 
       val s3Reference: java.util.ArrayList<*> = objectMapper.readValue(message.message, ArrayList::class.java)
-      val mapper = ObjectMapper()
-      val s3Pointer = mapper.readValue(mapper.writeValueAsString(s3Reference.get(1)), LinkedHashMap::class.java)
+      val s3Pointer = objectMapper.readValue(objectMapper.writeValueAsString(s3Reference.get(1)), LinkedHashMap::class.java)
       assertThat(s3Pointer.get("s3BucketName")).isEqualTo(largeCasesBucketName)
       assertThat(s3Pointer.keys).contains("s3Key")
       assertThat(message.messageAttributes.eventType.type).isEqualTo("String")

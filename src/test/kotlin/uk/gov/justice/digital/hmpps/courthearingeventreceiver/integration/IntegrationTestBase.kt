@@ -58,7 +58,6 @@ abstract class IntegrationTestBase {
     @Bean
     fun awsS3LocalStackAsyncClient(): S3AsyncClient {
       return S3AsyncClient.builder().endpointOverride(URI(endpointUrl))
-        .endpointOverride(URI.create(endpointUrl))
         .forcePathStyle(true).credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("any", "any")))
         .region(software.amazon.awssdk.regions.Region.of(regionName)).build()
     }
