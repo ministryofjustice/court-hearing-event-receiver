@@ -52,7 +52,7 @@ abstract class IntegrationTestBase {
 
     @Value("\${aws.region-name}")
     var regionName: String,
-    @Value("\${aws.s3.localstack-endpoint-url}")
+    @Value("\${aws.localstack-endpoint-url}")
     var endpointUrl: String,
   ) {
     @Bean

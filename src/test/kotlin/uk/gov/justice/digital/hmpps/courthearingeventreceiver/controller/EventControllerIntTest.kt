@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.awaitility.Awaitility.await
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -15,11 +14,9 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import reactor.core.publisher.Mono
+import software.amazon.awssdk.core.async.AsyncResponseTransformer
 import software.amazon.awssdk.services.s3.S3AsyncClient
-import software.amazon.awssdk.services.s3.model.CreateBucketRequest
-import software.amazon.awssdk.services.s3.model.DeleteBucketRequest
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
-import software.amazon.awssdk.services.s3.model.ListObjectsRequest
+import software.amazon.awssdk.services.s3.model.GetObjectRequest
 import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest
 import software.amazon.awssdk.services.sqs.model.PurgeQueueRequest
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest
@@ -50,18 +47,6 @@ class EventControllerIntTest : IntegrationTestBase() {
     courtCasesQueue?.sqsClient?.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCasesQueue!!.queueUrl).build())
     val str = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
     hearingEvent = objectMapper.readValue(str, HearingEvent::class.java)
-    amazonS3.createBucket(CreateBucketRequest.builder().bucket(bucketName).build())
-    amazonS3.createBucket(CreateBucketRequest.builder().bucket(largeCasesBucketName).build())
-  }
-
-  @AfterEach
-  fun afterEach() {
-    val objectListing = amazonS3.listObjects(ListObjectsRequest.builder().bucket(bucketName).build()).get()
-    objectListing.contents().forEach {
-      amazonS3.deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(it.key()).build())
-    }
-    amazonS3.deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build())
-    amazonS3.deleteBucket(DeleteBucketRequest.builder().bucket(largeCasesBucketName).build())
   }
 
   @Nested
@@ -126,8 +111,15 @@ class EventControllerIntTest : IntegrationTestBase() {
       assertThat(message.messageAttributes.eventType.value).isEqualTo("commonplatform.large.case.received")
       assertThat(message.messageAttributes.messageType.type).isEqualTo("String")
       assertThat(message.messageAttributes.messageType.value).isEqualTo("COMMON_PLATFORM_HEARING")
-
       assertThat(message.messageAttributes.hearingEventType.value).isEqualTo(HearingEventType.CONFIRMED_OR_UPDATED.description)
+
+      val s3Object = amazonS3.getObject(
+        GetObjectRequest.builder().bucket(largeCasesBucketName).key(s3Pointer.get("s3Key").toString()).build(),
+        AsyncResponseTransformer.toBytes(),
+      ).join()
+
+      assertThat(s3Object.asUtf8String()).contains("472b27a8-5bff-4f1c-9f66-2dde8f60b3e3")
+      assertThat(s3Object.asUtf8String()).contains("CROWN")
 
       val expectedMap = mapOf(
         "courtCode" to "B10JQ",
