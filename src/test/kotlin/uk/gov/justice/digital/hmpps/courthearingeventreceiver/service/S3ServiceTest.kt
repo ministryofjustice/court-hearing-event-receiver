@@ -102,7 +102,7 @@ internal class S3ServiceTest {
     byteBuffer.flip()
     val contentOfBody: String = Charsets.UTF_8.decode(byteBuffer).toString()
 
-    assertThat(contentOfBody).isEqualTo(contentOfBody)
+    assertThat(contentOfBody).isEqualTo(minimalJson)
 
     verifyNoMoreInteractions(amazonS3Client)
     assertThat(eTag).isEqualTo("ETAG")
