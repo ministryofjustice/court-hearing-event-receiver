@@ -1,10 +1,5 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.integration
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider
-import com.amazonaws.auth.BasicAWSCredentials
-import com.amazonaws.client.builder.AwsClientBuilder
-import com.amazonaws.services.s3.AmazonS3
-import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -15,9 +10,13 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
+import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.sqs.model.PurgeQueueRequest
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.JwtAuthenticationHelper
 import uk.gov.justice.hmpps.sqs.HmppsQueueService
+import java.net.URI
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
@@ -32,6 +31,9 @@ abstract class IntegrationTestBase {
 
   @Value("\${aws.s3.bucket_name}")
   lateinit var bucketName: String
+
+  @Value("\${aws.s3.large_cases.bucket_name}")
+  lateinit var largeCasesBucketName: String
 
   @Autowired
   lateinit var hmppsQueueService: HmppsQueueService
@@ -50,20 +52,14 @@ abstract class IntegrationTestBase {
 
     @Value("\${aws.region-name}")
     var regionName: String,
-    @Value("\${aws.localstack_endpoint_url}")
+    @Value("\${aws.localstack-endpoint-url}")
     var endpointUrl: String,
   ) {
-
     @Bean
-    fun amazonS3LocalStackClient(): AmazonS3 {
-      val endpointConfiguration = AwsClientBuilder.EndpointConfiguration(endpointUrl, regionName)
-
-      return AmazonS3ClientBuilder
-        .standard()
-        .withPathStyleAccessEnabled(true)
-        .withEndpointConfiguration(endpointConfiguration)
-        .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials("any", "any")))
-        .build()
+    fun awsS3LocalStackAsyncClient(): S3AsyncClient {
+      return S3AsyncClient.builder().endpointOverride(URI(endpointUrl))
+        .forcePathStyle(true).credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("any", "any")))
+        .region(software.amazon.awssdk.regions.Region.of(regionName)).build()
     }
   }
 }

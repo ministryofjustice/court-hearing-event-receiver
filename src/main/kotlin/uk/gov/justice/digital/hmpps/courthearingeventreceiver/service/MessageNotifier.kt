@@ -2,8 +2,13 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.sns.model.MessageAttributeValue
+import software.amazon.awssdk.services.sns.model.PublishRequest
+import software.amazon.sns.AmazonSNSExtendedAsyncClient
+import software.amazon.sns.SNSExtendedAsyncClientConfiguration
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 import uk.gov.justice.hmpps.sqs.HmppsQueueService
@@ -17,11 +22,26 @@ private const val MESSAGE_GROUP_ID = "COURT_HEARING_EVENT_RECEIVER"
 class MessageNotifier(
   private val objectMapper: ObjectMapper,
   private val hmppsQueueService: HmppsQueueService,
+  private val amazonS3AsyncClient: S3AsyncClient,
+  @Value("\${aws.s3.large_cases.bucket_name}") private val bucketName: String,
 ) {
+
   private val topic =
     hmppsQueueService.findByTopicId("courtcasestopic")
       ?: throw MissingTopicException("Could not find topic ")
+
+  private val maxMessageSize = 256 * 1024
+
   fun send(hearingEventType: HearingEventType, hearingEvent: HearingEvent) {
+    val messageId = when {
+      messageLargerThanThreshold(hearingEvent) -> publishLargeMessage(hearingEvent, hearingEventType)
+      else -> publishMessage(hearingEvent, hearingEventType)
+    }
+
+    log.info("Published message with message Id {}", messageId)
+  }
+
+  private fun publishMessage(hearingEvent: HearingEvent, hearingEventType: HearingEventType): String? {
     val messageTypeValue =
       MessageAttributeValue.builder()
         .dataType("String")
@@ -35,7 +55,34 @@ class MessageNotifier(
         .build()
 
     val publishResult = topic.publish(eventType = "commonplatform.case.received", event = objectMapper.writeValueAsString(hearingEvent), attributes = mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue), messageGroupId = MESSAGE_GROUP_ID)
-    log.info("Published message with message Id {}", publishResult.messageId())
+
+    return publishResult.messageId()
+  }
+
+  fun publishLargeMessage(hearingEvent: HearingEvent, hearingEventType: HearingEventType): String? {
+    val snsExtendedAsyncClientConfiguration: SNSExtendedAsyncClientConfiguration = SNSExtendedAsyncClientConfiguration()
+      .withPayloadSupportEnabled(amazonS3AsyncClient, bucketName)
+
+    val snsExtendedClient = AmazonSNSExtendedAsyncClient(
+      topic.snsClient,
+      snsExtendedAsyncClientConfiguration,
+    )
+    // Publish message via SNS with storage in S3
+    val publishResult = snsExtendedClient.publish(
+      PublishRequest.builder().topicArn(topic.arn).messageAttributes(
+        mapOf(
+          "messageType" to MessageAttributeValue.builder().dataType("String").stringValue(MESSAGE_TYPE).build(),
+          "hearingEventType" to MessageAttributeValue.builder().dataType("String").stringValue(hearingEventType.description).build(),
+          "eventType" to MessageAttributeValue.builder().dataType("String").stringValue("commonplatform.large.case.received").build(),
+        ),
+      ).messageGroupId(MESSAGE_GROUP_ID).message(objectMapper.writeValueAsString(hearingEvent))
+        .build(),
+    )
+    return publishResult.get().messageId()
+  }
+
+  fun messageLargerThanThreshold(hearingEvent: HearingEvent): Boolean {
+    return hearingEvent.toString().toByteArray().size >= maxMessageSize
   }
 
   companion object {
