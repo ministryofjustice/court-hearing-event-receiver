@@ -1,7 +1,6 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver
 
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.context.annotation.Bean
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
@@ -15,7 +14,7 @@ import java.util.UUID
 
 @Component
 class JwtAuthenticationHelper {
-  private val keyPair: KeyPair
+  private lateinit var keyPair: KeyPair
 
   init {
     val gen = KeyPairGenerator.getInstance("RSA")
@@ -38,11 +37,11 @@ class JwtAuthenticationHelper {
     roles?.let { claims["authorities"] = roles }
     scope?.let { claims["scope"] = scope }
     return Jwts.builder()
-      .setId(jwtId)
-      .setSubject(subject)
-      .addClaims(claims)
-      .setExpiration(Date(System.currentTimeMillis() + expiryTime.toMillis()))
-      .signWith(keyPair.private, SignatureAlgorithm.RS256)
+      .id(jwtId)
+      .subject(subject)
+      .claims(claims)
+      .expiration(Date(System.currentTimeMillis() + expiryTime.toMillis()))
+      .signWith(keyPair.private, Jwts.SIG.RS256)
       .compact()
   }
 }

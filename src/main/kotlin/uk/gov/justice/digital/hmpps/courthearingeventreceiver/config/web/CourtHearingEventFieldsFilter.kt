@@ -70,13 +70,11 @@ class CourtHearingEventFieldsFilter(
     return eventDetails
   }
 
-  private fun getPathValues(jsonDocument: DocumentContext, jsonpath: String?): List<Map<String, String>>? {
-    return try {
-      jsonDocument.read(jsonpath)
-    } catch (exception: PathNotFoundException) {
-      log.info(exception.message)
-      emptyList()
-    }
+  private fun getPathValues(jsonDocument: DocumentContext, jsonpath: String?): List<Map<String, String>>? = try {
+    jsonDocument.read(jsonpath)
+  } catch (exception: PathNotFoundException) {
+    log.info(exception.message)
+    emptyList()
   }
 
   companion object {

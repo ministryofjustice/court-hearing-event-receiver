@@ -7,10 +7,8 @@ enum class HearingEventType(val description: String) {
   RESULTED("Resulted"),
   ;
 
-  fun getTelemetryEventType(): TelemetryEventType {
-    return when (this) {
-      CONFIRMED_OR_UPDATED -> TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED
-      RESULTED -> TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED
-    }
+  fun getTelemetryEventType(): TelemetryEventType = when (this) {
+    CONFIRMED_OR_UPDATED -> TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED
+    RESULTED -> TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED
   }
 }

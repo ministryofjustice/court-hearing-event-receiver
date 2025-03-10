@@ -19,28 +19,20 @@ class CustomHttpRequestWrapper(request: HttpServletRequest) : HttpServletRequest
     requestBody = readInputStreamInStringFormat(request.inputStream, Charset.forName(request.characterEncoding))
   }
 
-  private fun readInputStreamInStringFormat(inputStream: InputStream, charset: Charset): String {
-    return String(inputStream.readAllBytes(), charset)
-  }
+  private fun readInputStreamInStringFormat(inputStream: InputStream, charset: Charset): String = String(inputStream.readAllBytes(), charset)
 
   @Throws(IOException::class)
-  override fun getReader(): BufferedReader {
-    return BufferedReader(InputStreamReader(this.getInputStream()))
-  }
+  override fun getReader(): BufferedReader = BufferedReader(InputStreamReader(this.getInputStream()))
 
   @Throws(IOException::class)
   override fun getInputStream(): ServletInputStream {
     val byteArrayInputStream = ByteArrayInputStream(requestBody.encodeToByteArray())
     return object : ServletInputStream() {
       private var finished = false
-      override fun isFinished(): Boolean {
-        return finished
-      }
+      override fun isFinished(): Boolean = finished
 
       @Throws(IOException::class)
-      override fun available(): Int {
-        return byteArrayInputStream.available()
-      }
+      override fun available(): Int = byteArrayInputStream.available()
 
       @Throws(IOException::class)
       override fun close() {
@@ -48,13 +40,9 @@ class CustomHttpRequestWrapper(request: HttpServletRequest) : HttpServletRequest
         byteArrayInputStream.close()
       }
 
-      override fun isReady(): Boolean {
-        return true
-      }
+      override fun isReady(): Boolean = true
 
-      override fun setReadListener(readListener: ReadListener) {
-        throw UnsupportedOperationException()
-      }
+      override fun setReadListener(readListener: ReadListener): Unit = throw UnsupportedOperationException()
 
       @Throws(IOException::class)
       override fun read(): Int {

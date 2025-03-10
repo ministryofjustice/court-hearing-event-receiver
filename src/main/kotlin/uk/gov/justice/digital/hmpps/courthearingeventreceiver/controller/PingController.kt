@@ -10,7 +10,5 @@ class PingController {
 
   @CrossOrigin
   @RequestMapping(value = ["/ping"], method = [RequestMethod.GET], produces = ["text/plain"])
-  fun ping(): String {
-    return "pong"
-  }
+  fun ping(): String = "pong"
 }
