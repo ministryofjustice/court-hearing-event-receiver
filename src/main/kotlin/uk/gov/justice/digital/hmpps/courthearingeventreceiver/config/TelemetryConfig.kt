@@ -14,13 +14,9 @@ class TelemetryConfig {
 
   @Bean
   @Conditional(AppInsightKeyAbsentCondition::class)
-  fun getTelemetryClient(): TelemetryClient {
-    return TelemetryClient()
-  }
+  fun getTelemetryClient(): TelemetryClient = TelemetryClient()
 
   private class AppInsightKeyAbsentCondition : Condition {
-    override fun matches(@NonNull context: ConditionContext, @NonNull metadata: AnnotatedTypeMetadata): Boolean {
-      return context.environment.getProperty("application.insights.ikey").isNullOrEmpty()
-    }
+    override fun matches(@NonNull context: ConditionContext, @NonNull metadata: AnnotatedTypeMetadata): Boolean = context.environment.getProperty("application.insights.ikey").isNullOrEmpty()
   }
 }

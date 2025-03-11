@@ -10,7 +10,5 @@ import software.amazon.awssdk.services.s3.S3AsyncClient
 @Configuration
 class AwsConfig {
   @Bean
-  fun awsS3AsyncClient(@Value("\${aws.region_name}") regionName: String): S3AsyncClient {
-    return S3AsyncClient.builder().region(software.amazon.awssdk.regions.Region.of(regionName)).build()
-  }
+  fun awsS3AsyncClient(@Value("\${aws.region_name}") regionName: String): S3AsyncClient = S3AsyncClient.builder().region(software.amazon.awssdk.regions.Region.of(regionName)).build()
 }

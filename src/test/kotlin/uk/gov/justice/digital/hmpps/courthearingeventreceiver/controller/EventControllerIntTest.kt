@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import reactor.core.publisher.Mono
 import software.amazon.awssdk.core.async.AsyncResponseTransformer
 import software.amazon.awssdk.services.s3.S3AsyncClient
@@ -39,7 +39,7 @@ class EventControllerIntTest : IntegrationTestBase() {
   @Autowired
   lateinit var amazonS3: S3AsyncClient
 
-  @MockBean
+  @MockitoBean
   lateinit var telemetryService: TelemetryService
 
   @BeforeEach
@@ -232,13 +232,12 @@ class EventControllerIntTest : IntegrationTestBase() {
         .expectStatus().isUnauthorized
     }
 
-    private fun postEvent(hearingEvent: HearingEvent, token: String) =
-      webTestClient
-        .post()
-        .uri(String.format(UPDATE_PATH, hearingEvent.hearing.id))
-        .contentType(MediaType.APPLICATION_JSON)
-        .header("Authorization", "Bearer $token")
-        .body(Mono.just(hearingEvent), HearingEvent::class.java)
+    private fun postEvent(hearingEvent: HearingEvent, token: String) = webTestClient
+      .post()
+      .uri(String.format(UPDATE_PATH, hearingEvent.hearing.id))
+      .contentType(MediaType.APPLICATION_JSON)
+      .header("Authorization", "Bearer $token")
+      .body(Mono.just(hearingEvent), HearingEvent::class.java)
   }
 
   @Nested
@@ -276,11 +275,10 @@ class EventControllerIntTest : IntegrationTestBase() {
         .expectStatus().isUnauthorized
     }
 
-    private fun deleteEvent(token: String, id: String) =
-      webTestClient
-        .delete()
-        .uri(String.format(DELETE_PATH, id))
-        .header("Authorization", "Bearer $token")
+    private fun deleteEvent(token: String, id: String) = webTestClient
+      .delete()
+      .uri(String.format(DELETE_PATH, id))
+      .header("Authorization", "Bearer $token")
   }
 
   @Nested
@@ -318,13 +316,12 @@ class EventControllerIntTest : IntegrationTestBase() {
 
   private fun countMessagesOnQueue() = courtCasesQueue?.sqsClient?.countMessagesOnQueue(courtCasesQueue?.queueUrl!!)!!.get()
 
-  private fun postEvent(hearingEvent: HearingEvent, token: String, pathFormat: String = UPDATE_PATH) =
-    webTestClient
-      .post()
-      .uri(String.format(pathFormat, hearingEvent.hearing.id))
-      .contentType(MediaType.APPLICATION_JSON)
-      .header("Authorization", "Bearer $token")
-      .body(Mono.just(hearingEvent), HearingEvent::class.java)
+  private fun postEvent(hearingEvent: HearingEvent, token: String, pathFormat: String = UPDATE_PATH) = webTestClient
+    .post()
+    .uri(String.format(pathFormat, hearingEvent.hearing.id))
+    .contentType(MediaType.APPLICATION_JSON)
+    .header("Authorization", "Bearer $token")
+    .body(Mono.just(hearingEvent), HearingEvent::class.java)
 
   companion object {
     const val UPDATE_PATH: String = "/hearing/%s"

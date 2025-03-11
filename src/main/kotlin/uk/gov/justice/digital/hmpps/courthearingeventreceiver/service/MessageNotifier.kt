@@ -81,9 +81,7 @@ class MessageNotifier(
     return publishResult.get().messageId()
   }
 
-  fun messageLargerThanThreshold(hearingEvent: HearingEvent): Boolean {
-    return hearingEvent.toString().toByteArray().size >= maxMessageSize
-  }
+  fun messageLargerThanThreshold(hearingEvent: HearingEvent): Boolean = hearingEvent.toString().toByteArray().size >= maxMessageSize
 
   companion object {
     private val log = LoggerFactory.getLogger(MessageNotifier::class.java)

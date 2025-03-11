@@ -19,9 +19,7 @@ class LocalAwsConfig(
   lateinit var endpointUrl: String
 
   @Bean
-  fun awsS3LocalStackAsyncClient(): S3AsyncClient {
-    return S3AsyncClient.builder().endpointOverride(URI(endpointUrl))
-      .forcePathStyle(true).credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("any", "any")))
-      .region(software.amazon.awssdk.regions.Region.of(regionName)).build()
-  }
+  fun awsS3LocalStackAsyncClient(): S3AsyncClient = S3AsyncClient.builder().endpointOverride(URI(endpointUrl))
+    .forcePathStyle(true).credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("any", "any")))
+    .region(software.amazon.awssdk.regions.Region.of(regionName)).build()
 }
