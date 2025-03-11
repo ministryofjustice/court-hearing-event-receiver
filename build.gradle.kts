@@ -1,6 +1,6 @@
 plugins {
   id("uk.gov.justice.hmpps.gradle-spring-boot") version "7.1.3"
-  kotlin("plugin.spring") version "2.0.21"
+  kotlin("plugin.spring") version "2.1.10"
 }
 
 java {
@@ -53,7 +53,7 @@ tasks {
         when (result.resultType) {
           TestResult.ResultType.FAILURE -> failedTests.add(testDescriptor)
           TestResult.ResultType.SKIPPED -> skippedTests.add(testDescriptor)
-          else -> null
+          else -> {}
         }
       }
 

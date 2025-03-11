@@ -16,9 +16,12 @@ class ResourceServerConfiguration {
   @Bean
   fun filterChain(http: HttpSecurity): SecurityFilterChain {
     http
-      .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      .and().csrf().disable()
+      .sessionManagement {
+        it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      }
+      .csrf {
+        it.disable()
+      }
       .authorizeHttpRequests {
         it.requestMatchers(
           "/health/**",
@@ -33,7 +36,9 @@ class ResourceServerConfiguration {
         it.anyRequest()
           .hasRole("COURT_HEARING_EVENT_WRITE")
       }
-      .oauth2ResourceServer().jwt().jwtAuthenticationConverter(AuthAwareTokenConverter())
+      .oauth2ResourceServer {
+        it.jwt { config -> config.jwtAuthenticationConverter(AuthAwareTokenConverter()) }
+      }
     return http.build()
   }
 }
