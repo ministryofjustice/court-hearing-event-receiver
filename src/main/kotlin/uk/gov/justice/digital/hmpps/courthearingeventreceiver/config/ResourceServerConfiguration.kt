@@ -24,9 +24,7 @@ class ResourceServerConfiguration {
       }
       .authorizeHttpRequests {
         it.requestMatchers(
-          "/health/**",
           "/info",
-          "/health",
           "/ping",
           "/swagger-ui.html",
           "/swagger-ui/**",
