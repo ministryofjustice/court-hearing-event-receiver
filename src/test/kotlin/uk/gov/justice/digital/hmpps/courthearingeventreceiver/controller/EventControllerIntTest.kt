@@ -67,7 +67,8 @@ class EventControllerIntTest : IntegrationTestBase() {
 
       assertThat(message.message).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2") // this is the hearing ID
       assertThat(message.message).contains("Adjournment")
-      assertThat(message.message).contains("isYouth")
+      assertThat(message.message).contains("\"isYouth\":false")
+      assertThat(message.message).contains("\"isYouthMissing\":false")
       assertThat(message.message).contains("\"lja\":{\"ljaCode\":\"2577\",\"ljaName\":\"South West London Magistrates' Court\"}}")
       assertThat(message.message).contains("\"judicialResultPrompts\":[{\"courtExtract\":\"Y\",\"isDurationEndDate\":true,\"isFinancialImposition\":false,\"judicialResultPromptTypeId\":\"20fe3e69-c7d6-4f72-8b77-13c70c1f986d\",\"label\":\"Number of days to abstain from consuming any alcohol\",\"promptReference\":\"numberOfDaysToAbstainFromConsumingAnyAlcohol\",\"promptSequence\":100,\"type\":\"INT\",\"value\":\"120\"}]}]")
       assertThat(message.messageAttributes.messageType.type).isEqualTo("String")
