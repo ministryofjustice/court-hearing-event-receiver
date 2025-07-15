@@ -16,6 +16,9 @@ generic-service:
     hosts:
       - app-hostname.local    # override per environment
     path: /
+    contextColour: green
+    annotations:
+      external-dns.alpha.kubernetes.io/aws-weight: "100"
 
   autoscaling:
     enabled: true
