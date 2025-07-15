@@ -89,10 +89,10 @@ observe:
       path: "hearing.prosecutionCases[*].defendants[*].personDefendant.personDetails.ethnicity.observedEthnicityDescription"
       printValue: true
     plea:
-      path: "hearing.prosecutionCases[*].defendants[*].offences[*].plea.pleaValue"
+      Path: "hearing.prosecutionCases[*].defendants[*].offences[*].plea.pleaValue"
       printValue: true
     verdict:
-      path: "hearing.prosecutionCases[*].defendants[*].offences[*].verdict.verdictType.description"
+      Path: "hearing.prosecutionCases[*].defendants[*].offences[*].verdict.verdictType.description"
       printValue: true
     altCourtCode:
       path: "hearing.courtCentre.code"
