@@ -4,7 +4,7 @@ generic-service:
   serviceAccountName: "court-facing-api"
 
   image:
-    repository: quay.io/hmpps/court-hearing-event-receiver
+    repository: ghcr.io/ministryofjustice/court-hearing-event-receiver
     tag: app_version # override at deployment time
     port: 8080
 
