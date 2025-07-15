@@ -20,10 +20,6 @@ generic-service:
     annotations:
       external-dns.alpha.kubernetes.io/aws-weight: "100"
 
-  autoscaling:
-    enabled: true
-    targetCPUUtilizationPercentage: 100
-
   # Environment variables to load into the deployment
   env:
     JAVA_OPTS: "-Xmx512m"
