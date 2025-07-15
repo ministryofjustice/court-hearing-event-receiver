@@ -93,11 +93,11 @@ internal class S3ServiceTest {
     verify(amazonS3Client).putObject(putObjectRequestCaptor.capture(), requestBodyCaptor.capture())
     assertThat(putObjectRequestCaptor.value.bucket()).isEqualTo("bucket-name")
     assertThat(putObjectRequestCaptor.value.key()).startsWith("cp/CONFIRM_UPDATE/B10JQ00/")
-    assertThat(requestBodyCaptor.value.contentLength().get()).isEqualTo(4655L)
+    assertThat(requestBodyCaptor.value.contentLength().get()).isEqualTo(4733L)
 
     // Check the content of the body
     val capturedBody: AsyncRequestBody = requestBodyCaptor.value
-    val byteBuffer: ByteBuffer = ByteBuffer.allocate(4655)
+    val byteBuffer: ByteBuffer = ByteBuffer.allocate(4733)
     capturedBody.subscribe(Consumer { byteBuffer.put(it) })
     byteBuffer.flip()
     val contentOfBody: String = Charsets.UTF_8.decode(byteBuffer).toString()

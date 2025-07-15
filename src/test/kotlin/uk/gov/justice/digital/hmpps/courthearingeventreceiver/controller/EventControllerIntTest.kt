@@ -67,7 +67,12 @@ class EventControllerIntTest : IntegrationTestBase() {
 
       assertThat(message.message).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2") // this is the hearing ID
       assertThat(message.message).contains("Adjournment")
-      assertThat(message.message).contains("isYouth")
+      assertThat(message.message).contains("\"isYouth\":false")
+      assertThat(message.message).contains("\"isYouthMissing\":false")
+      assertThat(message.message).contains("\"pncId\":\"20020073319Z\"")
+      assertThat(message.message).contains("\"isPncMissing\":false")
+      assertThat(message.message).contains("\"croNumber\":\"SF05/482703J\"")
+      assertThat(message.message).contains("\"isCroMissing\":false")
       assertThat(message.message).contains("\"lja\":{\"ljaCode\":\"2577\",\"ljaName\":\"South West London Magistrates' Court\"}}")
       assertThat(message.message).contains("\"judicialResultPrompts\":[{\"courtExtract\":\"Y\",\"isDurationEndDate\":true,\"isFinancialImposition\":false,\"judicialResultPromptTypeId\":\"20fe3e69-c7d6-4f72-8b77-13c70c1f986d\",\"label\":\"Number of days to abstain from consuming any alcohol\",\"promptReference\":\"numberOfDaysToAbstainFromConsumingAnyAlcohol\",\"promptSequence\":100,\"type\":\"INT\",\"value\":\"120\"}]}]")
       assertThat(message.messageAttributes.messageType.type).isEqualTo("String")
@@ -84,6 +89,29 @@ class EventControllerIntTest : IntegrationTestBase() {
         "caseUrn" to "80GD8183221",
       )
       verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED, expectedMap)
+    }
+
+    @Test
+    fun whenPostToEventEndpointWithRequiredRoleAndMissingPncCroAndIsYouth_thenReturn200NoContent_andPushToTopicWithAdditionalFields() {
+      val str = File("src/test/resources/json/court-application-missing-fields.json").readText(Charsets.UTF_8)
+      hearingEvent = objectMapper.readValue(str, HearingEvent::class.java)
+      postEvent(
+        hearingEvent,
+        jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
+      )
+        .exchange()
+        .expectStatus().isOk
+
+      val messages = courtCasesQueue?.sqsClient?.receiveMessage(ReceiveMessageRequest.builder().queueUrl(courtCasesQueue?.queueUrl!!).build())!!.get()
+      assertThat(messages.messages().size).isEqualTo(1)
+      val message: SQSMessage = objectMapper.readValue(messages.messages()[0].body(), SQSMessage::class.java)
+
+      assertThat(message.message).contains("e4b03ae1-7a37-446e-8199-81f42d3b6395") // this is the hearing ID
+      assertThat(message.message).contains("\"isYouthMissing\":true")
+      assertThat(message.message).contains("\"isPncMissing\":true")
+      assertThat(message.message).contains("\"isCroMissing\":true")
+
+      assertThat(message.messageAttributes.hearingEventType.value).isEqualTo(HearingEventType.CONFIRMED_OR_UPDATED.description)
     }
 
     @Test
