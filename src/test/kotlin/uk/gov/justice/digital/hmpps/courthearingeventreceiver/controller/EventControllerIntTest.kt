@@ -87,6 +87,29 @@ class EventControllerIntTest : IntegrationTestBase() {
     }
 
     @Test
+    fun whenPostToEventEndpointWithRequiredRoleAndMissingPncCroAndIsYouth_thenReturn200NoContent_andPushToTopicWithAdditionalFields() {
+      val str = File("src/test/resources/json/court-application-missing-fields.json").readText(Charsets.UTF_8)
+      hearingEvent = objectMapper.readValue(str, HearingEvent::class.java)
+      postEvent(
+        hearingEvent,
+        jwtHelper.createJwt("common-platform-events", roles = listOf("ROLE_COURT_HEARING_EVENT_WRITE")),
+      )
+        .exchange()
+        .expectStatus().isOk
+
+      val messages = courtCasesQueue?.sqsClient?.receiveMessage(ReceiveMessageRequest.builder().queueUrl(courtCasesQueue?.queueUrl!!).build())!!.get()
+      assertThat(messages.messages().size).isEqualTo(1)
+      val message: SQSMessage = objectMapper.readValue(messages.messages()[0].body(), SQSMessage::class.java)
+
+      assertThat(message.message).contains("e4b03ae1-7a37-446e-8199-81f42d3b6395") // this is the hearing ID
+      assertThat(message.message).contains("\"isYouthMissing\":true")
+      assertThat(message.message).contains("\"isPncMissing\":true")
+      assertThat(message.message).contains("\"isCroMissing\":true")
+
+      assertThat(message.messageAttributes.hearingEventType.value).isEqualTo(HearingEventType.CONFIRMED_OR_UPDATED.description)
+    }
+
+    @Test
     fun whenLargeMessagePostToEventEndpointWithRequiredRole_thenReturn200NoContent_andPushToTopic() {
       val str = File("src/test/resources/json/large-hearing-update.json").readText(Charsets.UTF_8)
       hearingEvent = objectMapper.readValue(str, HearingEvent::class.java)
