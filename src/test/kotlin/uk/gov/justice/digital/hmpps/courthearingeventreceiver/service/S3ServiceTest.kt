@@ -97,7 +97,7 @@ internal class S3ServiceTest {
 
     // Check the content of the body
     val capturedBody: AsyncRequestBody = requestBodyCaptor.value
-    val byteBuffer: ByteBuffer = ByteBuffer.allocate(4655)
+    val byteBuffer: ByteBuffer = ByteBuffer.allocate(4733)
     capturedBody.subscribe(Consumer { byteBuffer.put(it) })
     byteBuffer.flip()
     val contentOfBody: String = Charsets.UTF_8.decode(byteBuffer).toString()
