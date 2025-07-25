@@ -19,12 +19,9 @@ import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.TelemetryS
 import java.io.File
 
 const val NORTH_TYNESIDE = "B10JQ"
-const val LEICESTER = "B33HU"
 
 @ExtendWith(MockitoExtension::class)
 internal class EventControllerTest {
-
-  val includedCourts = setOf(NORTH_TYNESIDE, LEICESTER)
   private lateinit var hearingEvent: HearingEvent
   private lateinit var eventController: EventController
   private val mapper by lazy {
@@ -53,7 +50,7 @@ internal class EventControllerTest {
     val str = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
     hearingEvent = mapper.readValue(str, HearingEvent::class.java)
     eventController =
-      EventController(messageNotifier, telemetryService, includedCourts = includedCourts, useIncludedCourtsList = true)
+      EventController(messageNotifier, telemetryService)
   }
 
   @Test
@@ -88,20 +85,6 @@ internal class EventControllerTest {
   }
 
   @Test
-  fun `when receive update message for excluded court then do not send message`() {
-    eventController =
-      EventController(messageNotifier, telemetryService, includedCourts = emptySet(), useIncludedCourtsList = true)
-
-    eventController.postEvent(hearingId, hearingEvent)
-
-    verify(telemetryService).trackEvent(
-      TelemetryEventType.COURT_HEARING_UPDATE_EVENT_RECEIVED,
-      expectedProperties,
-    )
-    verifyNoMoreInteractions(telemetryService, messageNotifier)
-  }
-
-  @Test
   fun `when receive result message for included court then send message`() {
     eventController.postResultEvent(hearingId, hearingEvent)
 
@@ -116,7 +99,7 @@ internal class EventControllerTest {
   @Test
   fun `when receive result message for included court and allow list disabled then send message`() {
     eventController =
-      EventController(messageNotifier, telemetryService, includedCourts = includedCourts, useIncludedCourtsList = false)
+      EventController(messageNotifier, telemetryService)
 
     eventController.postResultEvent(hearingId, hearingEvent)
 
@@ -129,23 +112,9 @@ internal class EventControllerTest {
   }
 
   @Test
-  fun `when receive result message for excluded court then do not send message`() {
-    eventController =
-      EventController(messageNotifier, telemetryService, includedCourts = emptySet(), useIncludedCourtsList = true)
-
-    eventController.postResultEvent(hearingId, hearingEvent)
-
-    verify(telemetryService).trackEvent(
-      TelemetryEventType.COURT_HEARING_RESULT_EVENT_RECEIVED,
-      expectedProperties,
-    )
-    verifyNoMoreInteractions(telemetryService, messageNotifier)
-  }
-
-  @Test
   fun `when receive result message for excluded court and allow list disabled then send message`() {
     eventController =
-      EventController(messageNotifier, telemetryService, includedCourts = emptySet(), useIncludedCourtsList = false)
+      EventController(messageNotifier, telemetryService)
 
     eventController.postResultEvent(hearingId, hearingEvent)
 
