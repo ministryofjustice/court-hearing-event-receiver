@@ -3,7 +3,6 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.controller
 import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -25,10 +24,6 @@ class EventController(
   private val messageNotifier: MessageNotifier,
   @Autowired
   private val telemetryService: TelemetryService,
-  @Value("#{'\${included-court-codes}'.split(',')}")
-  private val includedCourts: Set<String> = emptySet(),
-  @Value("\${feature.use-included-courts-list}")
-  private val useIncludedCourtsList: Boolean = false,
 ) {
 
   @RequestMapping(value = ["/hearing/{id}", "/hearing/{id}/"], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
@@ -76,9 +71,7 @@ class EventController(
         "caseUrn" to hearing.prosecutionCases.getOrNull(0)?.prosecutionCaseIdentifier?.caseURN,
       ),
     )
-    if (!useIncludedCourtsList || includedCourts.contains(courtCode)) {
-      messageNotifier.send(hearingEventType, hearingEvent)
-    }
+    messageNotifier.send(hearingEventType, hearingEvent)
   }
 
   companion object {
