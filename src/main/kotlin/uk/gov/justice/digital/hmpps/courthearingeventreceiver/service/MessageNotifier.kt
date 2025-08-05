@@ -59,7 +59,7 @@ class MessageNotifier(
       "commonplatform.case.deleted",
       objectMapper.writeValueAsString(hde),
       attributes = mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue),
-      messageGroupId = MESSAGE_GROUP_ID
+      messageGroupId = MESSAGE_GROUP_ID,
     ).messageId()
 
     log.info("Published deleted message with id {}", messageId)
