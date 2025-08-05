@@ -9,6 +9,7 @@ import software.amazon.awssdk.services.sns.model.MessageAttributeValue
 import software.amazon.awssdk.services.sns.model.PublishRequest
 import software.amazon.sns.AmazonSNSExtendedAsyncClient
 import software.amazon.sns.SNSExtendedAsyncClientConfiguration
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingDeletedEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 import uk.gov.justice.hmpps.sqs.HmppsQueueService
@@ -39,6 +40,29 @@ class MessageNotifier(
     }
 
     log.info("Published message with message Id {}", messageId)
+  }
+
+  fun send(hde: HearingDeletedEvent) {
+    val messageTypeValue =
+      MessageAttributeValue.builder()
+        .dataType("String")
+        .stringValue("COMMON_PLATFORM_HEARING_DELETED")
+        .build()
+
+    val hearingEventTypeValue =
+      MessageAttributeValue.builder()
+        .dataType("String")
+        .stringValue(HearingEventType.DELETED.description)
+        .build()
+
+    val messageId = topic.publish(
+      "commonplatform.case.deleted",
+      objectMapper.writeValueAsString(hde),
+      attributes = mapOf("messageType" to messageTypeValue, "hearingEventType" to hearingEventTypeValue),
+      messageGroupId = MESSAGE_GROUP_ID,
+    ).messageId()
+
+    log.info("Published deleted message with id {}", messageId)
   }
 
   private fun publishMessage(hearingEvent: HearingEvent, hearingEventType: HearingEventType): String? {

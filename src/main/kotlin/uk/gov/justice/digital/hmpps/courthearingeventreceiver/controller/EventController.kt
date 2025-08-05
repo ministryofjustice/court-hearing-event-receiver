@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingDeletedEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.MessageNotifier
@@ -52,11 +53,7 @@ class EventController(
   @ResponseStatus(HttpStatus.OK)
   fun deleteEvent(@PathVariable(required = false) id: String) {
     log.info("Received hearing delete request id: %s".format(id))
-    telemetryService.trackEvent(
-      TelemetryEventType.COURT_HEARING_DELETE_EVENT_RECEIVED,
-      mapOf("id" to id),
-    )
-    // TODO - how to send a delete event for a hearing ?
+    trackAndSendEvent(HearingDeletedEvent(id))
   }
 
   private fun trackAndSendEvent(hearingEventType: HearingEventType, hearingEvent: HearingEvent) {
@@ -72,6 +69,14 @@ class EventController(
       ),
     )
     messageNotifier.send(hearingEventType, hearingEvent)
+  }
+
+  private fun trackAndSendEvent(hearingDeletedEvent: HearingDeletedEvent) {
+    telemetryService.trackEvent(
+      TelemetryEventType.COURT_HEARING_DELETE_EVENT_RECEIVED,
+      mapOf("id" to hearingDeletedEvent.hearingId),
+    )
+    messageNotifier.send(hearingDeletedEvent)
   }
 
   companion object {

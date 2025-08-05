@@ -12,3 +12,5 @@ data class HearingEvent(
   @JsonProperty("hearing")
   var hearing: Hearing,
 )
+
+data class HearingDeletedEvent(val hearingId: String)
