@@ -19,9 +19,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 ENV TZ=Europe/London
-RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone &&\
-    addgroup --gid 2000 --system appgroup && \
-    adduser --uid 2000 --system appuser --gid 2000
+RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
+    addgroup --gid 2000 --system appgroup && adduser --uid 2000 --system appuser --gid 2000
 
 WORKDIR /app
 COPY --from=builder --chown=appuser:appgroup /app/build/libs/court-hearing-event-receiver*.jar /app/app.jar
