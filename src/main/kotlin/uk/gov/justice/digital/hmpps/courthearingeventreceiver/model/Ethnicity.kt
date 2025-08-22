@@ -8,4 +8,7 @@ data class Ethnicity(
   val observedEthnicityDescription: String?,
 
   val selfDefinedEthnicityDescription: String?,
+
+  val selfDefinedEthnicityCode: String?,
+
 )
