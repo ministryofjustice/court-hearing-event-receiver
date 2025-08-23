@@ -25,7 +25,7 @@ services:
       - DEBUG=${DEBUG- }
       - PERSISTENCE=1
       - DOCKER_HOST=unix:///var/run/docker.sock
-      - HOSTNAME_EXTERNAL=localhost
+      - LOCALSTACK_HOST=localhost
     volumes:
       - "$PWD/src/test/resources/localstack/setup-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
 networks:

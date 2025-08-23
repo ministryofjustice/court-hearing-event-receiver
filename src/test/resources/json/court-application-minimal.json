@@ -101,7 +101,12 @@
                 "gender": "MALE",
                 "hearingLanguageNeeds": "ENGLISH",
                 "lastName": "Klingon",
-                "title": "Mr"
+                "title": "Mr",
+                "ethnicity": {
+                  "observedEthnicityDescription": "observedEthnicityDescription",
+                  "selfDefinedEthnicityDescription": "selfDefinedEthnicityDescription",
+                  "selfDefinedEthnicityCode": "A4"
+                }
               }
             },
             "prosecutionAuthorityReference": "TFL",
