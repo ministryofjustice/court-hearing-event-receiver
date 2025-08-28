@@ -100,7 +100,9 @@ tasks.register<Test>("integrationTest") {
   include("**/*IntTest*")
   testClassesDirs = files(test.map { it.sources.output.classesDirs })
   classpath = files(test.map { it.sources.runtimeClasspath })
+  dependsOn(test)
 }
+
 
 tasks.register<Copy>("installGitHooks") {
   from(layout.projectDirectory.dir("hooks"))
