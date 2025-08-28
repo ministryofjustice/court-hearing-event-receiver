@@ -90,12 +90,16 @@ tasks {
   }
 }
 
-task<Test>("integrationTest") {
+val test by testing.suites.existing(JvmTestSuite::class)
+
+tasks.register<Test>("integrationTest") {
   description = "Runs the integration tests"
   group = "verification"
   testLogging.showExceptions = true
   testLogging.showStackTraces = true
   include("**/*IntTest*")
+  testClassesDirs = files(test.map { it.sources.output.classesDirs })
+  classpath = files(test.map { it.sources.runtimeClasspath })
 }
 
 tasks.register<Copy>("installGitHooks") {
