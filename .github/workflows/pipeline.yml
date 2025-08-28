@@ -38,6 +38,7 @@ jobs:
     with:
       localstack-services: "sns,sqs,s3"
       localstack-tag: "4"
+      gradle-command: "./gradlew integrationTest"
   build:
     name: Build docker image from hmpps-github-actions
     if: github.ref == 'refs/heads/main'
