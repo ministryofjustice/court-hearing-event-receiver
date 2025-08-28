@@ -68,6 +68,7 @@ class EventControllerIntTest : IntegrationTestBase() {
       assertThat(message.message).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2") // this is the hearing ID
       assertThat(message.message).contains("Adjournment")
       assertThat(message.message).contains("\"isYouth\":false")
+      assertThat(message.message).contains("\"title\":\"Mr\"")
       assertThat(message.message).contains("\"isYouthMissing\":false")
       assertThat(message.message).contains("\"pncId\":\"20020073319Z\"")
       assertThat(message.message).contains("\"isPncMissing\":false")
