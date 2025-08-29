@@ -36,8 +36,6 @@ class EventControllerIntTest : IntegrationTestBase() {
   @Autowired
   lateinit var objectMapper: ObjectMapper
 
-
-
   @MockitoBean
   lateinit var telemetryService: TelemetryService
 
