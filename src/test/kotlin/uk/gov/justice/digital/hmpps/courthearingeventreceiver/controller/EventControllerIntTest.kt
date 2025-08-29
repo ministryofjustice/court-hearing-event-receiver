@@ -36,8 +36,7 @@ class EventControllerIntTest : IntegrationTestBase() {
   @Autowired
   lateinit var objectMapper: ObjectMapper
 
-  @Autowired
-  lateinit var amazonS3: S3AsyncClient
+
 
   @MockitoBean
   lateinit var telemetryService: TelemetryService
