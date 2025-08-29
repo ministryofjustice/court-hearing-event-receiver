@@ -106,7 +106,10 @@
                   "observedEthnicityDescription": "observedEthnicityDescription",
                   "selfDefinedEthnicityDescription": "selfDefinedEthnicityDescription",
                   "selfDefinedEthnicityCode": "A4"
-                }
+                },
+                "nationalityCode": "GBR",
+                "nationalityDescription": "British",
+                "nationalityId": "49433158-3542-49c8-a9af-581a0e746152"
               }
             },
             "prosecutionAuthorityReference": "TFL",

@@ -39,4 +39,6 @@ data class PersonDetails(
   val contact: Contact?,
 
   val ethnicity: Ethnicity?,
+
+  val nationalityCode: String?
 )
