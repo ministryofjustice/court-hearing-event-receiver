@@ -15,7 +15,6 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import reactor.core.publisher.Mono
 import software.amazon.awssdk.core.async.AsyncResponseTransformer
-import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest
 import software.amazon.awssdk.services.sqs.model.PurgeQueueRequest
@@ -35,9 +34,6 @@ class EventControllerIntTest : IntegrationTestBase() {
 
   @Autowired
   lateinit var objectMapper: ObjectMapper
-
-  @Autowired
-  lateinit var amazonS3: S3AsyncClient
 
   @MockitoBean
   lateinit var telemetryService: TelemetryService
@@ -68,11 +64,14 @@ class EventControllerIntTest : IntegrationTestBase() {
       assertThat(message.message).contains("59cb14a6-e8de-4615-9c9d-94fa5ef81ad2") // this is the hearing ID
       assertThat(message.message).contains("Adjournment")
       assertThat(message.message).contains("\"isYouth\":false")
+      assertThat(message.message).contains("\"title\":\"Mr\"")
       assertThat(message.message).contains("\"isYouthMissing\":false")
       assertThat(message.message).contains("\"pncId\":\"20020073319Z\"")
       assertThat(message.message).contains("\"isPncMissing\":false")
       assertThat(message.message).contains("\"croNumber\":\"SF05/482703J\"")
       assertThat(message.message).contains("\"isCroMissing\":false")
+      assertThat(message.message).contains("\"nationalityCode\":\"GBR\"")
+      assertThat(message.message).contains("\"additionalNationalityCode\":\"PAK\"")
       assertThat(message.message).contains("\"selfDefinedEthnicityCode\":\"A4\"")
       assertThat(message.message).contains("\"lja\":{\"ljaCode\":\"2577\",\"ljaName\":\"South West London Magistrates' Court\"}}")
       assertThat(message.message).contains("\"judicialResultPrompts\":[{\"courtExtract\":\"Y\",\"isDurationEndDate\":true,\"isFinancialImposition\":false,\"judicialResultPromptTypeId\":\"20fe3e69-c7d6-4f72-8b77-13c70c1f986d\",\"label\":\"Number of days to abstain from consuming any alcohol\",\"promptReference\":\"numberOfDaysToAbstainFromConsumingAnyAlcohol\",\"promptSequence\":100,\"type\":\"INT\",\"value\":\"120\"}]}]")
@@ -283,7 +282,7 @@ class EventControllerIntTest : IntegrationTestBase() {
       val messages = courtCasesQueue?.sqsClient?.receiveMessage(ReceiveMessageRequest.builder().queueUrl(courtCasesQueue?.queueUrl!!).build())!!.get()
       assertThat(messages.messages().size).isEqualTo(1)
       val message: SQSMessage = objectMapper.readValue(messages.messages()[0].body(), SQSMessage::class.java)
-      assertThat(message.message).contains("\"hearingId\": \"59cb14a6-e8de-4615-9c9d-94fa5ef81ad2\"")
+      assertThat(message.message).contains("\"hearingId\":\"59cb14a6-e8de-4615-9c9d-94fa5ef81ad2\"")
 
       val expectedMap = mapOf("id" to "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2")
       verify(telemetryService).trackEvent(TelemetryEventType.COURT_HEARING_DELETE_EVENT_RECEIVED, expectedMap)
