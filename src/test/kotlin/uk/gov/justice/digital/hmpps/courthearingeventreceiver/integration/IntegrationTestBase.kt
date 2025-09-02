@@ -1,6 +1,5 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.integration
 
-import org.apache.coyote.http11.Constants.a
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
