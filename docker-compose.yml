@@ -26,7 +26,5 @@ services:
       - PERSISTENCE=1
       - DOCKER_HOST=unix:///var/run/docker.sock
       - LOCALSTACK_HOST=localhost
-    volumes:
-      - "$PWD/src/test/resources/localstack/setup-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
 networks:
   hmpps:
