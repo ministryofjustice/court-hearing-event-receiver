@@ -109,7 +109,8 @@
                 },
                 "nationalityCode": "GBR",
                 "nationalityDescription": "British",
-                "nationalityId": "49433158-3542-49c8-a9af-581a0e746152"
+                "nationalityId": "49433158-3542-49c8-a9af-581a0e746152",
+                "additionalNationalityCode": "PAK"
               }
             },
             "prosecutionAuthorityReference": "TFL",
