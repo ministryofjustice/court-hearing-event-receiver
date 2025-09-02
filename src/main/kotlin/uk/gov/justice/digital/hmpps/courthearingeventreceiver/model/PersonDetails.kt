@@ -25,6 +25,9 @@ data class PersonDetails(
   @JsonProperty("firstName")
   val firstName: String?,
 
+  @JsonProperty("title")
+  val title: String?,
+
   @JsonProperty("dateOfBirth")
   val dateOfBirth: LocalDate?,
 
@@ -36,4 +39,8 @@ data class PersonDetails(
   val contact: Contact?,
 
   val ethnicity: Ethnicity?,
+
+  val nationalityCode: String?,
+
+  val additionalNationalityCode: String?,
 )

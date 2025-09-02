@@ -26,9 +26,9 @@ dependencies {
 
   // Open API Documentation (swagger)
   // Must implement springdoc-openapi-starter-webmvc-api to support Kotlin https://springdoc.org/#kotlin-support
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.10")
-  testImplementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.8.10")
-  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.32") {
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.12")
+  testImplementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.8.12")
+  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.33") {
     exclude(group = "io.swagger.core.v3")
   }
   testImplementation("io.jsonwebtoken:jjwt:0.13.0")
@@ -90,12 +90,17 @@ tasks {
   }
 }
 
-task<Test>("integrationTest") {
+val test by testing.suites.existing(JvmTestSuite::class)
+
+tasks.register<Test>("integrationTest") {
   description = "Runs the integration tests"
   group = "verification"
   testLogging.showExceptions = true
   testLogging.showStackTraces = true
   include("**/*IntTest*")
+  testClassesDirs = files(test.map { it.sources.output.classesDirs })
+  classpath = files(test.map { it.sources.runtimeClasspath })
+  dependsOn(test)
 }
 
 tasks.register<Copy>("installGitHooks") {

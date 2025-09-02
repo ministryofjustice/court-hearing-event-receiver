@@ -13,6 +13,7 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.services.s3.S3AsyncClient
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest
 import software.amazon.awssdk.services.sqs.model.PurgeQueueRequest
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.JwtAuthenticationHelper
 import uk.gov.justice.hmpps.sqs.HmppsQueueService
@@ -36,6 +37,9 @@ abstract class IntegrationTestBase {
   lateinit var largeCasesBucketName: String
 
   @Autowired
+  lateinit var amazonS3: S3AsyncClient
+
+  @Autowired
   lateinit var hmppsQueueService: HmppsQueueService
   val courtCasesQueue by lazy {
     hmppsQueueService.findByQueueId("courtcasesqueue")
@@ -45,6 +49,8 @@ abstract class IntegrationTestBase {
   fun beforeEach() {
     courtCasesQueue!!.sqsClient.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCasesQueue!!.queueUrl).build())
     courtCasesQueue!!.sqsDlqClient?.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCasesQueue!!.dlqUrl).build())
+    amazonS3.createBucket(CreateBucketRequest.builder().bucket(bucketName).build())
+    amazonS3.createBucket(CreateBucketRequest.builder().bucket(largeCasesBucketName).build())
   }
 
   @TestConfiguration
