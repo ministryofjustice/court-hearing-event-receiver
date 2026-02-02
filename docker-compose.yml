@@ -13,7 +13,7 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
 
   localstack-cher:
-    image: localstack/localstack:4.0.3
+    image: localstack/localstack:4.13.1
     networks:
       - hmpps
     container_name: localstack-cher
