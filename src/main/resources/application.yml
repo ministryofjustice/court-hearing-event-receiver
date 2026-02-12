@@ -24,10 +24,6 @@ spring:
           issuer-uri: ${hmppsauth.baseurl}/issuer
           jwk-set-uri: ${hmppsauth.baseurl}/.well-known/jwks.json
 
-springdoc:
-  swagger-ui:
-    version: 5.20.0
-
 server:
   port: 8080
   servlet:
