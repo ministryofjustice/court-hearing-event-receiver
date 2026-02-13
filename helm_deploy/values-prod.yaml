@@ -18,6 +18,7 @@ generic-service:
 
   env:
     HMPPSAUTH_BASEURL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
+    SENTRY_ENVIRONMENT: prod
 
   allowlist:
     hmcts-2: 51.140.52.246/32

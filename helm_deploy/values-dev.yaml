@@ -22,6 +22,7 @@ generic-service:
 
   env:
     HMPPSAUTH_BASEURL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
+    SENTRY_ENVIRONMENT: dev
 
 generic-prometheus-alerts:
   alertSeverity: probation_in_court_alerts_dev
