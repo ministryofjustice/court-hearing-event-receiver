@@ -28,6 +28,7 @@ generic-service:
     APPLICATIONINSIGHTS_CONNECTION_STRING: "InstrumentationKey=$(APPINSIGHTS_INSTRUMENTATIONKEY)"
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.json
     AWS_REGION_NAME: "eu-west-2"
+    SENTRY_TRACES_SAMPLE_RATE: "0.05"
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
@@ -43,6 +44,8 @@ generic-service:
       aws_s3_bucket_name: bucket_name
     large-court-cases-s3-credentials:
       AWS_S3_LARGE_CASES_BUCKET_NAME: bucket_name
+    court-hearing-event-receiver-sentry:
+      SENTRY_DSN: SENTRY_DSN
 
   allowlist:
     groups:
