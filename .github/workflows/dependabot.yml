@@ -1,7 +1,8 @@
 # Automated management of Dependabot PRs
 name: Dependabot
-on: pull_request_target
-    workflow_dispatch
+on:
+  pull_request_target:
+  workflow_dispatch:
 
 permissions:
   contents: write
