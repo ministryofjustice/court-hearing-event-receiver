@@ -1,6 +1,6 @@
 # Automated management of Dependabot PRs
 name: Dependabot
-on: pull_request
+on: pull_request_target
 
 permissions:
   contents: write
@@ -11,13 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     steps:
-      - name: debug secret presence
-        run: |
-          echo "BOT_APP_ID length: ${#BOT_APP_ID}"
-          echo "BOT_APP_PRIVATE_KEY set?: $([ -n "$BOT_APP_PRIVATE_KEY" ] && echo yes || echo no)"
-        env:
-          BOT_APP_ID: ${{ secrets.BOT_APP_ID }}
-          BOT_APP_PRIVATE_KEY: ${{ secrets.BOT_APP_PRIVATE_KEY }}
       - uses: actions/create-github-app-token@v2
         id: app-token
         with:
