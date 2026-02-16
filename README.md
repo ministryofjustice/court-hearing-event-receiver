@@ -13,7 +13,7 @@ This section contains the bare minimum you need to do to get the app running aga
 ---
 
 ## Prerequisites
-- Java 21
+- Java 25
 - Docker
 
 We also use:
