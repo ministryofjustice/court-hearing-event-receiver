@@ -17,7 +17,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-  implementation("uk.gov.justice.service.hmpps:hmpps-sqs-spring-boot-starter:5.6.3")
+  implementation("uk.gov.justice.service.hmpps:hmpps-sqs-spring-boot-starter:7.0.1")
 
   implementation("com.amazonaws:aws-java-sdk-sts:$awsSdkVersion")
   implementation("software.amazon.sns:sns-extended-client:2.1.0")
