@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
@@ -24,7 +25,9 @@ import java.net.URI
 @Import(IntegrationTestBase.AwsTestConfig::class)
 abstract class IntegrationTestBase {
 
-  @Autowired
+  @LocalServerPort
+  private var port: Int = 0
+
   lateinit var webTestClient: WebTestClient
 
   @Autowired
@@ -47,6 +50,7 @@ abstract class IntegrationTestBase {
 
   @BeforeEach
   fun beforeEach() {
+    webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:$port").build()
     courtCasesQueue!!.sqsClient.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCasesQueue!!.queueUrl).build())
     courtCasesQueue!!.sqsDlqClient?.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCasesQueue!!.dlqUrl).build())
     amazonS3.createBucket(CreateBucketRequest.builder().bucket(bucketName).build())
@@ -55,7 +59,6 @@ abstract class IntegrationTestBase {
 
   @TestConfiguration
   class AwsTestConfig(
-
     @Value("\${aws.region-name}")
     var regionName: String,
     @Value("\${aws.localstack-endpoint-url}")

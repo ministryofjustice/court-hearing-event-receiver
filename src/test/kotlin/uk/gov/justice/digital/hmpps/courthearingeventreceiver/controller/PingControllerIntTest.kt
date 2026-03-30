@@ -9,14 +9,16 @@ class PingControllerIntTest : IntegrationTestBase() {
   @Test
   fun whenPing_thenPong() {
     // The BodyContentSpec has built-in functions for looking at JSON and XML but not sure for strings
-    val str = String(
-      bytes = webTestClient.get().uri("/ping")
+    val str = webTestClient.get().uri("/ping")
         .exchange()
         .expectStatus().isOk
         .expectBody()
         .returnResult()
-        .responseBodyContent,
-    )
+        .responseBodyContent?.let {
+        String(
+          bytes = it,
+        )
+      }
     assertThat(str).isEqualTo("pong")
   }
 }

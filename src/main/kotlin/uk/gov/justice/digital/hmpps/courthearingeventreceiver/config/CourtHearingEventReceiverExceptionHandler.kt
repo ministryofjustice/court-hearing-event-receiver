@@ -33,7 +33,7 @@ class CourtHearingEventReceiverExceptionHandler : ResponseEntityExceptionHandler
   }
 
   @ExceptionHandler(java.lang.Exception::class)
-  fun handleException(e: java.lang.Exception): ResponseEntity<ErrorResponse?>? {
+  fun handleException(e: java.lang.Exception): ResponseEntity<ErrorResponse> {
     log.error("Unexpected exception", e)
     return ResponseEntity
       .status(INTERNAL_SERVER_ERROR)
@@ -46,13 +46,13 @@ class CourtHearingEventReceiverExceptionHandler : ResponseEntityExceptionHandler
       )
   }
 
-  public override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException, headers: HttpHeaders, status: HttpStatusCode, request: WebRequest): ResponseEntity<Any?> {
+  public override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException, headers: HttpHeaders, status: HttpStatusCode, request: WebRequest): ResponseEntity<Any>? {
     log.error("Unexpected exception", ex)
     val response = ErrorResponse(status = 400, developerMessage = ex.message, userMessage = ex.message)
     return ResponseEntity(response, BAD_REQUEST)
   }
 
-  public override fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException, headers: HttpHeaders, status: HttpStatusCode, request: WebRequest): ResponseEntity<Any?> {
+  public override fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException, headers: HttpHeaders, status: HttpStatusCode, request: WebRequest): ResponseEntity<Any>? {
     log.error("Unexpected exception", ex)
     val response = ErrorResponse(status = 400, developerMessage = ex.message, userMessage = ex.message)
     return ResponseEntity(response, BAD_REQUEST)

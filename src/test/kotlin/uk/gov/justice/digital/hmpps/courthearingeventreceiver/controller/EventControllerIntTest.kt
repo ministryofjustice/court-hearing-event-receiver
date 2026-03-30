@@ -40,6 +40,7 @@ class EventControllerIntTest : IntegrationTestBase() {
 
   @BeforeEach
   override fun beforeEach() {
+    super.beforeEach()
     courtCasesQueue?.sqsClient?.purgeQueue(PurgeQueueRequest.builder().queueUrl(courtCasesQueue!!.queueUrl).build())
     val str = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
     hearingEvent = objectMapper.readValue(str, HearingEvent::class.java)
