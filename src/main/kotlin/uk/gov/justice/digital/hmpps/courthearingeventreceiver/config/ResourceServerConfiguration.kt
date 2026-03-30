@@ -30,6 +30,7 @@ class ResourceServerConfiguration {
           "/ping",
           "/swagger-ui.html",
           "/swagger-ui/**",
+          "/webjars/swagger-ui/**",
           "/v3/api-docs/**",
           "/v3/swagger-ui.html",
         ).permitAll()

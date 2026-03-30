@@ -38,8 +38,8 @@ internal class CourtHearingEventReceiverExceptionHandlerTest {
 
     val response = exceptionHandler.handleMethodArgumentNotValid(methodArgumentNotValidException, headers, HttpStatus.INTERNAL_SERVER_ERROR, ServletWebRequest(MockHttpServletRequest()))
 
-    assertThat(response.body.toString()).contains("MESSAGE")
-    assertThat(response.statusCode.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+    assertThat(response?.body.toString()).contains("MESSAGE")
+    assertThat(response?.statusCode?.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
   }
 
   @Test
