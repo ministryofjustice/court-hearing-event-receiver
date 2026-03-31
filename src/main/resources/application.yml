@@ -52,8 +52,6 @@ management:
       cache:
         time-to-live: 2000ms
 
-sentry:
-  enable-tracing: false
 
 observe:
   fields:
