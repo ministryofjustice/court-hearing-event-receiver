@@ -7,8 +7,6 @@ spring:
     name: court-hearing-event-receiver
   codec:
     max-in-memory-size: 10MB
-
-sentry:
   profiles:
     group:
       test:
