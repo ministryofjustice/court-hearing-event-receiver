@@ -1,10 +1,11 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver
 
+import io.sentry.spring.boot.jakarta.SentryAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
-@SpringBootApplication
+@SpringBootApplication(exclude = [SentryAutoConfiguration::class])
 @ConfigurationPropertiesScan
 class CourtHearingEventReceiver
 
