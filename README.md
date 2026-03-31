@@ -10,6 +10,16 @@ This section contains the bare minimum you need to do to get the app running aga
 - Run `./gradlew clean build` to build the application
 - Optional: Run `./gradlew installGitHooks` to install Git hooks from `./hooks` directory. Note these require localstack to be running to pass.
 
+### Sentry Configuration (Optional)
+Sentry error tracking is disabled by default for local development. If not configured, the application will run normally without Sentry.
+
+To enable Sentry locally for testing:
+1. Get your Sentry DSN from the Sentry dashboard
+2. Uncomment the `SENTRY_DSN` and `SENTRY_ENVIRONMENT` lines in `docker-compose.yml`
+3. Or set environment variables when running: `export SENTRY_DSN=https://your-dsn@sentry.io/project-id`
+
+In deployed environments (dev/preprod/prod), Sentry is automatically configured via Kubernetes secrets.
+
 ---
 
 ## Prerequisites
