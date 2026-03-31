@@ -9,9 +9,6 @@ spring:
     max-in-memory-size: 10MB
 
 sentry:
-  dsn: ${SENTRY_DSN:}
-  environment: ${SENTRY_ENVIRONMENT:local}
-
   profiles:
     group:
       test:
