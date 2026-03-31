@@ -10,6 +10,21 @@ This section contains the bare minimum you need to do to get the app running aga
 - Run `./gradlew clean build` to build the application
 - Optional: Run `./gradlew installGitHooks` to install Git hooks from `./hooks` directory. Note these require localstack to be running to pass.
 
+### Sentry Configuration (Optional)
+Sentry error tracking is disabled by default for local development. The application uses `sentry-spring-boot-4-starter` which is fully compatible with Spring Boot 4 and requires no custom configuration.
+
+**Local Development:**
+- Sentry is automatically disabled when `SENTRY_DSN` is not set
+- The application runs normally without any Sentry-related errors
+
+**To enable Sentry locally for testing:**
+1. Get your Sentry DSN from the Sentry dashboard
+2. Set the environment variable: `export SENTRY_DSN=https://your-dsn@sentry.io/project-id`
+3. Optionally set: `export SENTRY_ENVIRONMENT=local`
+
+**Production:**
+Sentry is automatically configured via Kubernetes secrets in deployed environments (dev/preprod/prod).
+
 ---
 
 ## Prerequisites
