@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
 import tools.jackson.databind.DeserializationFeature
 import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import tools.jackson.module.kotlin.kotlinModule
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.Gender
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.InitiationCode
@@ -20,15 +21,7 @@ import java.time.Month
 @ExtendWith(MockitoExtension::class)
 internal class ModelParserTest {
 
-  private lateinit var mapper: JsonMapper
-
-  @BeforeEach
-  fun beforeEach() {
-    mapper = JsonMapper.builder()
-      .addModule(kotlinModule())
-      .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-      .build()
-  }
+  private val mapper = jacksonObjectMapper()
 
   @Test
   fun `tests the parsing of JSON to the model`() {

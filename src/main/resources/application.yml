@@ -117,3 +117,21 @@ observe:
       path: ".hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].resultText"
       printValue: false
 
+sentry:
+  dsn: ${SENTRY_DSN:}
+  environment: ${SENTRY_ENVIRONMENT:local}
+  release: ${SENTRY_RELEASE:unknown}
+  # Capture all exceptions, including handled ones in RestControllerAdvice
+  exception-resolver-order: -2147483647
+  traces-sample-rate: ${SENTRY_TRACES_SAMPLE_RATE:0.0}
+  # Send error events (separate from performance tracing)
+  send-default-pii: false
+  enable-tracing: true
+  # Capture handled exceptions by setting this to true
+  logging:
+    minimum-event-level: error
+    minimum-breadcrumb-level: info
+  # Ensure Spring MVC errors are captured
+  enable-spring-mvc: true
+  # Capture all HTTP requests for context
+  send-default-request-data: true

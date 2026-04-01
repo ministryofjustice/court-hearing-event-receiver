@@ -14,6 +14,7 @@ data class ProsecutionCaseIdentifier(
   @JsonProperty("prosecutionAuthorityId")
   val prosecutionAuthorityId: String,
 
+  @field:NotBlank
   @JsonProperty("caseURN")
-  val caseURN: String?,
+  val caseURN: String,
 )

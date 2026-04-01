@@ -38,7 +38,7 @@ internal class CourtHearingEventReceiverExceptionHandlerTest {
   }
 
   @Test
-  fun `given Jackson MismatchedInputException when handleJacksonMismatchedInputException then return BAD_REQUEST with detailed message`() {
+  fun `given Jackson MismatchedInputException when handleJacksonMismatchedInputException then return INTERNAL_SERVER_ERROR with message`() {
     val mismatchedException = MismatchedInputException.from(
       jsonParser,
       String::class.java,
@@ -47,10 +47,9 @@ internal class CourtHearingEventReceiverExceptionHandlerTest {
 
     val response = exceptionHandler.handleJacksonMismatchedInputException(mismatchedException)
 
-    assertThat(response.statusCode.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
-    assertThat(response.body?.userMessage).contains("Invalid JSON structure")
-    assertThat(response.body?.developerMessage).contains("Jackson deserialization failed")
-    assertThat(response.body?.moreInfo).contains("required fields")
+    assertThat(response.statusCode.value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value())
+    assertThat(response.body?.userMessage).isEqualTo("Invalid JSON structure")
+    assertThat(response.body?.developerMessage).contains("Missing required creator property 'isPncMissing'")
   }
 
   @Test
@@ -64,7 +63,7 @@ internal class CourtHearingEventReceiverExceptionHandlerTest {
   }
 
   @Test
-  fun `given message not readable with Jackson cause when get message then return BAD_REQUEST with detailed error`() {
+  fun `given message not readable with Jackson cause when get message then return INTERNAL_SERVER_ERROR with error`() {
     val mismatchedException = MismatchedInputException.from(
       jsonParser,
       String::class.java,
@@ -80,17 +79,17 @@ internal class CourtHearingEventReceiverExceptionHandlerTest {
       ServletWebRequest(MockHttpServletRequest()),
     )
 
-    assertThat(response?.body.toString()).contains("Invalid JSON structure")
-    assertThat(response?.statusCode?.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+    assertThat(response?.body.toString()).contains("Invalid request body")
+    assertThat(response?.statusCode?.value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value())
   }
 
   @Test
-  fun `given message not readable when get message then return BAD_REQUEST`() {
+  fun `given message not readable when get message then return INTERNAL_SERVER_ERROR`() {
     whenever(messageNotReadableException.message).thenReturn("MESSAGE")
 
     val response = exceptionHandler.handleHttpMessageNotReadable(messageNotReadableException, headers, HttpStatus.INTERNAL_SERVER_ERROR, ServletWebRequest(MockHttpServletRequest()))
 
     assertThat(response?.body.toString()).contains("MESSAGE")
-    assertThat(response?.statusCode?.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+    assertThat(response?.statusCode?.value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value())
   }
 }

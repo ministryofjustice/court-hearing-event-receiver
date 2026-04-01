@@ -9,8 +9,8 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 import tools.jackson.databind.DeserializationFeature
 import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import tools.jackson.module.kotlin.kotlinModule
-import tools.jackson.module.kotlin.readValue
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.MessageNotifier
@@ -24,10 +24,7 @@ const val NORTH_TYNESIDE = "B10JQ"
 internal class EventControllerTest {
   private lateinit var hearingEvent: HearingEvent
   private lateinit var eventController: EventController
-  private val mapper = JsonMapper.builder()
-    .addModule(kotlinModule())
-    .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-    .build()
+  private val mapper = jacksonObjectMapper()
 
   private val hearingId = "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2"
   private val expectedProperties = mapOf(

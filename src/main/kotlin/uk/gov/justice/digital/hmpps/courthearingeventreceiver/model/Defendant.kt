@@ -58,7 +58,7 @@ data class Defendant(
 class DefendantDeserializer : StdDeserializer<Defendant>(Defendant::class.java) {
   override fun deserialize(parser: JsonParser, context: DeserializationContext): Defendant {
     val node: JsonNode = parser.readValueAsTree()
-    val id = node.get("id").textValue()
+    val id = node.get("id").stringValue("")
     val offences: List<Offence> =
       if (!node.has("offences") || node.get("offences").isNull) {
         emptyList()
@@ -66,61 +66,29 @@ class DefendantDeserializer : StdDeserializer<Defendant>(Defendant::class.java) 
         node.get("offences").toList().map { context.readTreeAsValue(it, Offence::class.java) }
       }
 
-    val prosecutionCaseId = node.get("prosecutionCaseId").textValue()
+    val prosecutionCaseId = node.get("prosecutionCaseId").stringValue()
+    
+    val personDefendant =
+      node.optional("personDefendant").map { context.readTreeAsValue(it, PersonDefendant::class.java) }.orElse(null)
+    val legalEntityDefendant =
+      node.optional("legalEntityDefendant").map { context.readTreeAsValue(it, LegalEntityDefendant::class.java) }
+        .orElse(null)
+    val masterDefendantId = node.optional("masterDefendantId").map { if (it.isNull) null else it.asString() }.orElse(null)
 
-    val personDefendant = if (node.has("personDefendant") && !node.get("personDefendant").isNull) {
-      context.readTreeAsValue(node.get("personDefendant"), PersonDefendant::class.java)
-    } else {
-      null
-    }
-
-    val legalEntityDefendant = if (node.has("legalEntityDefendant") && !node.get("legalEntityDefendant").isNull) {
-      context.readTreeAsValue(node.get("legalEntityDefendant"), LegalEntityDefendant::class.java)
-    } else {
-      null
-    }
-
-    val masterDefendantId = if (node.has("masterDefendantId") && !node.get("masterDefendantId").isNull) {
-      node.get("masterDefendantId").textValue()
-    } else {
-      null
-    }
-
-    val isYouthMissing = if (node.has("isYouthMissing")) {
-      node.get("isYouthMissing").booleanValue()
-    } else {
-      !node.has("isYouth") || node.get("isYouth").isNull
-    }
-
-    val isYouth = if (node.has("isYouth") && !node.get("isYouth").isNull) {
-      node.get("isYouth").booleanValue()
-    } else {
-      null
-    }
-
-    val isPncMissing = if (node.has("isPncMissing")) {
-      node.get("isPncMissing").booleanValue()
-    } else {
-      !node.has("pncId") || node.get("pncId").isNull
-    }
-
-    val pncId = if (node.has("pncId") && !node.get("pncId").isNull) {
-      node.get("pncId").textValue()
-    } else {
-      null
-    }
-
-    val isCroMissing = if (node.has("isCroMissing")) {
-      node.get("isCroMissing").booleanValue()
-    } else {
-      !node.has("croNumber") || node.get("croNumber").isNull
-    }
-
-    val croNumber = if (node.has("croNumber") && !node.get("croNumber").isNull) {
-      node.get("croNumber").textValue()
-    } else {
-      null
-    }
+    val isYouthNode = node.optional("isYouth")
+    val isYouthMissing = node.optional("isYouthMissing").map { it.asBoolean() }
+      .orElse(isYouthNode.isEmpty || isYouthNode.map { it.isNull }.orElse(false))
+    val isYouth = isYouthNode.map { if (it.isNull) null else it.asBoolean() }.orElse(null)
+    
+    val pncIdNode = node.optional("pncId")
+    val isPncMissing = node.optional("isPncMissing").map { it.asBoolean() }
+      .orElse(pncIdNode.isEmpty || pncIdNode.map { it.isNull }.orElse(false))
+    val pncId = pncIdNode.map { if (it.isNull) null else it.asString() }.orElse(null)
+    
+    val croNumberNode = node.optional("croNumber")
+    val isCroMissing = node.optional("isCroMissing").map { it.asBoolean() }
+      .orElse(croNumberNode.isEmpty || croNumberNode.map { it.isNull }.orElse(false))
+    val croNumber = croNumberNode.map { if (it.isNull) null else it.asString() }.orElse(null)
 
     return Defendant(
       id,

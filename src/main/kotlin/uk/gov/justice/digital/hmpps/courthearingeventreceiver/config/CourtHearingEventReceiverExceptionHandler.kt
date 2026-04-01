@@ -1,5 +1,7 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.config
 
+import io.sentry.Sentry
+import io.sentry.SentryLevel
 import jakarta.validation.ValidationException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
@@ -21,25 +23,15 @@ class CourtHearingEventReceiverExceptionHandler : ResponseEntityExceptionHandler
 
   @ExceptionHandler(MismatchedInputException::class)
   fun handleJacksonMismatchedInputException(e: MismatchedInputException): ResponseEntity<ErrorResponse> {
-    val missingProperty = e.path.lastOrNull()?.from()?.toString() ?: "unknown"
-    val targetType = e.targetType?.simpleName ?: "unknown type"
-
-    log.error(
-      "Jackson deserialization error - Missing property '{}' in type '{}'. This may indicate a version mismatch in JSON structure or incorrect field mapping. Path: {}",
-      missingProperty,
-      targetType,
-      e.pathReference,
-      e,
-    )
-
+    log.error("Jackson deserialization failed", e)
+    
     return ResponseEntity
-      .status(BAD_REQUEST)
+      .status(INTERNAL_SERVER_ERROR)
       .body(
         ErrorResponse(
-          status = BAD_REQUEST,
-          userMessage = "Invalid JSON structure: missing required field '$missingProperty' in $targetType",
-          developerMessage = "Jackson deserialization failed: ${e.message}. Path: ${e.pathReference}",
-          moreInfo = "Check that all required fields are present and the JSON structure matches the expected schema",
+          status = INTERNAL_SERVER_ERROR,
+          userMessage = "Invalid JSON structure",
+          developerMessage = e.message,
         ),
       )
   }
@@ -61,6 +53,15 @@ class CourtHearingEventReceiverExceptionHandler : ResponseEntityExceptionHandler
   @ExceptionHandler(java.lang.Exception::class)
   fun handleException(e: java.lang.Exception): ResponseEntity<ErrorResponse> {
     log.error("Unexpected exception", e)
+
+    // Capture all unexpected exceptions to Sentry
+    Sentry.withScope { scope ->
+      scope.setTag("error.type", "unexpected_exception")
+      scope.setTag("exception.class", e.javaClass.simpleName)
+      scope.level = SentryLevel.ERROR
+      Sentry.captureException(e)
+    }
+
     return ResponseEntity
       .status(INTERNAL_SERVER_ERROR)
       .body(
@@ -74,42 +75,29 @@ class CourtHearingEventReceiverExceptionHandler : ResponseEntityExceptionHandler
 
   public override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException, headers: HttpHeaders, status: HttpStatusCode, request: WebRequest): ResponseEntity<Any>? {
     log.error("Unexpected exception", ex)
+
+    // Capture validation errors to Sentry
+    Sentry.withScope { scope ->
+      scope.setTag("error.type", "method_argument_not_valid")
+      scope.level = SentryLevel.WARNING
+      Sentry.captureException(ex)
+    }
+
     val response = ErrorResponse(status = 400, developerMessage = ex.message, userMessage = ex.message)
     return ResponseEntity(response, BAD_REQUEST)
   }
 
   public override fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException, headers: HttpHeaders, status: HttpStatusCode, request: WebRequest): ResponseEntity<Any>? {
-    // Check if this is a Jackson deserialization error
-    val cause = ex.cause
-    if (cause is MismatchedInputException) {
-      // Extract property name from error message as Jackson 3.x API has changed
-      val missingProperty = cause.message?.let { msg ->
-        val match = Regex("property '([^']+)'").find(msg)
-        match?.groupValues?.getOrNull(1)
-      } ?: "unknown"
-      val targetType = cause.targetType?.simpleName ?: "unknown type"
-
-      log.error(
-        "HTTP message not readable due to Jackson deserialization error - Missing property '{}' in type '{}'. Path: {}",
-        missingProperty,
-        targetType,
-        cause.pathReference,
-        ex,
-      )
-
-      val response = ErrorResponse(
-        status = 400,
-        developerMessage = "Jackson deserialization failed: ${cause.message}. Path: ${cause.pathReference}",
-        userMessage = "Invalid JSON structure: missing required field '$missingProperty' in $targetType",
-        moreInfo = "Check that all required fields are present and the JSON structure matches the expected schema",
-      )
-      return ResponseEntity(response, BAD_REQUEST)
-    }
-
     log.error("HTTP message not readable", ex)
-    val response = ErrorResponse(status = 400, developerMessage = ex.message, userMessage = ex.message)
-    return ResponseEntity(response, BAD_REQUEST)
+
+    val response = ErrorResponse(
+      status = INTERNAL_SERVER_ERROR,
+      userMessage = "Invalid request body",
+      developerMessage = ex.message,
+    )
+    return ResponseEntity(response, INTERNAL_SERVER_ERROR)
   }
+
 
   companion object {
     private val log = LoggerFactory.getLogger(CourtHearingEventReceiverExceptionHandler::class.java)
