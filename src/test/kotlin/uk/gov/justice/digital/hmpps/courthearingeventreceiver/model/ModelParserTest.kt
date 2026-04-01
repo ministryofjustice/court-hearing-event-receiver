@@ -1,14 +1,13 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
+import tools.jackson.databind.DeserializationFeature
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.kotlinModule
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.Gender
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.InitiationCode
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.JurisdictionType
@@ -21,14 +20,14 @@ import java.time.Month
 @ExtendWith(MockitoExtension::class)
 internal class ModelParserTest {
 
-  private lateinit var mapper: ObjectMapper
+  private lateinit var mapper: JsonMapper
 
   @BeforeEach
   fun beforeEach() {
-    mapper = ObjectMapper()
-    mapper.registerModule(JavaTimeModule())
-    mapper.registerModule(KotlinModule.Builder().build())
-    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    mapper = JsonMapper.builder()
+      .addModule(kotlinModule())
+      .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+      .build()
   }
 
   @Test

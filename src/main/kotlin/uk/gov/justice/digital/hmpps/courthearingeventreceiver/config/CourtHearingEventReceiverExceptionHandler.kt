@@ -14,9 +14,35 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import tools.jackson.databind.exc.MismatchedInputException
 
 @RestControllerAdvice
 class CourtHearingEventReceiverExceptionHandler : ResponseEntityExceptionHandler() {
+
+  @ExceptionHandler(MismatchedInputException::class)
+  fun handleJacksonMismatchedInputException(e: MismatchedInputException): ResponseEntity<ErrorResponse> {
+    val missingProperty = e.path.lastOrNull()?.from()?.toString() ?: "unknown"
+    val targetType = e.targetType?.simpleName ?: "unknown type"
+
+    log.error(
+      "Jackson deserialization error - Missing property '{}' in type '{}'. This may indicate a version mismatch in JSON structure or incorrect field mapping. Path: {}",
+      missingProperty,
+      targetType,
+      e.pathReference,
+      e,
+    )
+
+    return ResponseEntity
+      .status(BAD_REQUEST)
+      .body(
+        ErrorResponse(
+          status = BAD_REQUEST,
+          userMessage = "Invalid JSON structure: missing required field '$missingProperty' in $targetType",
+          developerMessage = "Jackson deserialization failed: ${e.message}. Path: ${e.pathReference}",
+          moreInfo = "Check that all required fields are present and the JSON structure matches the expected schema",
+        ),
+      )
+  }
 
   @ExceptionHandler(ValidationException::class)
   fun handleValidationException(e: Exception): ResponseEntity<ErrorResponse> {
@@ -53,7 +79,34 @@ class CourtHearingEventReceiverExceptionHandler : ResponseEntityExceptionHandler
   }
 
   public override fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException, headers: HttpHeaders, status: HttpStatusCode, request: WebRequest): ResponseEntity<Any>? {
-    log.error("Unexpected exception", ex)
+    // Check if this is a Jackson deserialization error
+    val cause = ex.cause
+    if (cause is MismatchedInputException) {
+      // Extract property name from error message as Jackson 3.x API has changed
+      val missingProperty = cause.message?.let { msg ->
+        val match = Regex("property '([^']+)'").find(msg)
+        match?.groupValues?.getOrNull(1)
+      } ?: "unknown"
+      val targetType = cause.targetType?.simpleName ?: "unknown type"
+
+      log.error(
+        "HTTP message not readable due to Jackson deserialization error - Missing property '{}' in type '{}'. Path: {}",
+        missingProperty,
+        targetType,
+        cause.pathReference,
+        ex,
+      )
+
+      val response = ErrorResponse(
+        status = 400,
+        developerMessage = "Jackson deserialization failed: ${cause.message}. Path: ${cause.pathReference}",
+        userMessage = "Invalid JSON structure: missing required field '$missingProperty' in $targetType",
+        moreInfo = "Check that all required fields are present and the JSON structure matches the expected schema",
+      )
+      return ResponseEntity(response, BAD_REQUEST)
+    }
+
+    log.error("HTTP message not readable", ex)
     val response = ErrorResponse(status = 400, developerMessage = ex.message, userMessage = ex.message)
     return ResponseEntity(response, BAD_REQUEST)
   }

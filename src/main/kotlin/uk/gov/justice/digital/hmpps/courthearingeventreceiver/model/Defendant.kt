@@ -2,15 +2,14 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.DeserializationContext
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer
-import com.fasterxml.jackson.databind.node.ArrayNode
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
+import tools.jackson.core.JsonParser
+import tools.jackson.databind.DeserializationContext
+import tools.jackson.databind.JsonNode
+import tools.jackson.databind.annotation.JsonDeserialize
+import tools.jackson.databind.deser.std.StdDeserializer
 
 @JsonDeserialize(using = DefendantDeserializer::class)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -57,31 +56,71 @@ data class Defendant(
 )
 
 class DefendantDeserializer : StdDeserializer<Defendant>(Defendant::class.java) {
-  override fun deserialize(parser: JsonParser, context: DeserializationContext): Defendant? {
-    val node = parser.codec.readTree<JsonNode>(parser)
-    val id = node.get("id").asText()
+  override fun deserialize(parser: JsonParser, context: DeserializationContext): Defendant {
+    val node: JsonNode = parser.readValueAsTree()
+    val id = node.get("id").textValue()
     val offences: List<Offence> =
       if (!node.has("offences") || node.get("offences").isNull) {
         emptyList()
       } else {
-        (node.get("offences") as ArrayNode)
-          .map { parser.codec.treeToValue(it, Offence::class.java) }
+        node.get("offences").toList().map { context.readTreeAsValue(it, Offence::class.java) }
       }
 
-    val prosecutionCaseId = node.get("prosecutionCaseId").asText()
+    val prosecutionCaseId = node.get("prosecutionCaseId").textValue()
 
-    val personDefendant =
-      node.optional("personDefendant").map { parser.codec.treeToValue(it, PersonDefendant::class.java) }.orElse(null)
-    val legalEntityDefendant =
-      node.optional("legalEntityDefendant").map { parser.codec.treeToValue(it, LegalEntityDefendant::class.java) }
-        .orElse(null)
-    val masterDefendantId = node.optional("masterDefendantId").map { it.asText() }.orElse(null)
-    val isYouthMissing = node.optional("isYouthMissing").map { it.asBoolean() }.orElse(!node.has("isYouth"))
-    val isYouth = node.optional("isYouth").map { it.asBoolean() }.orElse(null)
-    val isPncMissing = node.optional("isPncMissing").map { it.asBoolean() }.orElse(!node.has("pncId"))
-    val pncId = node.optional("pncId").map { it.asText() }.orElse(null)
-    val isCroMissing = node.optional("isCroMissing").map { it.asBoolean() }.orElse(!node.has("croNumber"))
-    val croNumber = node.optional("croNumber").map { it.asText() }.orElse(null)
+    val personDefendant = if (node.has("personDefendant") && !node.get("personDefendant").isNull) {
+      context.readTreeAsValue(node.get("personDefendant"), PersonDefendant::class.java)
+    } else {
+      null
+    }
+
+    val legalEntityDefendant = if (node.has("legalEntityDefendant") && !node.get("legalEntityDefendant").isNull) {
+      context.readTreeAsValue(node.get("legalEntityDefendant"), LegalEntityDefendant::class.java)
+    } else {
+      null
+    }
+
+    val masterDefendantId = if (node.has("masterDefendantId") && !node.get("masterDefendantId").isNull) {
+      node.get("masterDefendantId").textValue()
+    } else {
+      null
+    }
+
+    val isYouthMissing = if (node.has("isYouthMissing")) {
+      node.get("isYouthMissing").booleanValue()
+    } else {
+      !node.has("isYouth") || node.get("isYouth").isNull
+    }
+
+    val isYouth = if (node.has("isYouth") && !node.get("isYouth").isNull) {
+      node.get("isYouth").booleanValue()
+    } else {
+      null
+    }
+
+    val isPncMissing = if (node.has("isPncMissing")) {
+      node.get("isPncMissing").booleanValue()
+    } else {
+      !node.has("pncId") || node.get("pncId").isNull
+    }
+
+    val pncId = if (node.has("pncId") && !node.get("pncId").isNull) {
+      node.get("pncId").textValue()
+    } else {
+      null
+    }
+
+    val isCroMissing = if (node.has("isCroMissing")) {
+      node.get("isCroMissing").booleanValue()
+    } else {
+      !node.has("croNumber") || node.get("croNumber").isNull
+    }
+
+    val croNumber = if (node.has("croNumber") && !node.get("croNumber").isNull) {
+      node.get("croNumber").textValue()
+    } else {
+      null
+    }
 
     return Defendant(
       id,
