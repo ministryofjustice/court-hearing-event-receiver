@@ -7,10 +7,7 @@ import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
-import tools.jackson.databind.DeserializationFeature
-import tools.jackson.databind.json.JsonMapper
 import tools.jackson.module.kotlin.jacksonObjectMapper
-import tools.jackson.module.kotlin.kotlinModule
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.MessageNotifier

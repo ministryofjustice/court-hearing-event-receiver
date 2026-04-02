@@ -16,10 +16,6 @@ import software.amazon.awssdk.core.async.AsyncRequestBody
 import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.model.PutObjectResponse
-import tools.jackson.databind.DeserializationFeature
-import tools.jackson.databind.json.JsonMapper
-import tools.jackson.module.kotlin.jacksonObjectMapper
-import tools.jackson.module.kotlin.kotlinModule
 import java.io.File
 import java.nio.ByteBuffer
 import java.util.*
@@ -44,8 +40,7 @@ internal class S3ServiceTest {
 
   @BeforeEach
   fun setUp() {
-    val mapper = jacksonObjectMapper()
-    s3Service = S3Service("bucket-name", amazonS3Client, mapper)
+    s3Service = S3Service("bucket-name", amazonS3Client)
     minimalJson = File("src/test/resources/json/court-application-minimal.json").readText(Charsets.UTF_8)
   }
 
