@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -47,6 +48,13 @@ class CourtHearingEventReceiverExceptionHandler : ResponseEntityExceptionHandler
           developerMessage = e.message,
         ),
       )
+  }
+
+  public override fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException, headers: HttpHeaders, status: HttpStatusCode, request: WebRequest): ResponseEntity<Any>? {
+    log.error("Unexpected exception", ex)
+    Sentry.captureException(ex)
+    val response = ErrorResponse(status = 400, developerMessage = ex.message, userMessage = ex.message)
+    return ResponseEntity(response, BAD_REQUEST)
   }
 
   public override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException, headers: HttpHeaders, status: HttpStatusCode, request: WebRequest): ResponseEntity<Any>? {

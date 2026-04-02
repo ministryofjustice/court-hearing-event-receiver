@@ -86,9 +86,8 @@ class JacksonSerializationIntTest : IntegrationTestBase() {
   }
 
   @Test
-  fun `should handle explicit isPncMissing flag in JSON`() {
-    // Test case where JSON explicitly sets isPncMissing=true even though pncId is present
-    val json = """
+  fun `should handle croNumber missing in JSON`() {
+     val json = """
       {
         "id": "test-id",
         "prosecutionCaseId": "case-id",
@@ -97,18 +96,13 @@ class JacksonSerializationIntTest : IntegrationTestBase() {
         "legalEntityDefendant": null,
         "masterDefendantId": null,
         "pncId": "12345",
-        "isPncMissing": true,
-        "croNumber": null,
-        "isCroMissing": true,
-        "isYouth": false,
-        "isYouthMissing": false
+        "isYouth": false
       }
     """.trimIndent()
 
     val defendant = objectMapper.readValue(json, Defendant::class.java)
 
-    // When explicit flag is provided, it should be respected
-    assertThat(defendant.isPncMissing).isTrue()
+    assertThat(defendant.isPncMissing).isFalse()
     assertThat(defendant.isCroMissing).isTrue()
     assertThat(defendant.isYouthMissing).isFalse()
     assertThat(defendant.pncId).isEqualTo("12345")
@@ -134,8 +128,6 @@ class JacksonSerializationIntTest : IntegrationTestBase() {
 
     assertThat(defendant.personDefendant).isNull()
     assertThat(defendant.legalEntityDefendant).isNull()
-    // When fields are present but null, the missing flags should be FALSE
-    // because node.has() returns true (the field exists in JSON)
     assertThat(defendant.isPncMissing).isFalse()
     assertThat(defendant.isCroMissing).isFalse()
     assertThat(defendant.isYouthMissing).isFalse()

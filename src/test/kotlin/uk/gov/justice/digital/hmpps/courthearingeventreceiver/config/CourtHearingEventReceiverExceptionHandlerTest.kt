@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.context.request.ServletWebRequest
@@ -23,6 +24,9 @@ internal class CourtHearingEventReceiverExceptionHandlerTest {
   @Mock
   lateinit var methodArgumentNotValidException: MethodArgumentNotValidException
 
+  @Mock
+  lateinit var httpMessageNotReadableException: HttpMessageNotReadableException
+
   @BeforeEach
   fun beforeEach() {
     exceptionHandler = CourtHearingEventReceiverExceptionHandler()
@@ -35,6 +39,16 @@ internal class CourtHearingEventReceiverExceptionHandlerTest {
     val response = exceptionHandler.handleMethodArgumentNotValid(methodArgumentNotValidException, headers, HttpStatus.INTERNAL_SERVER_ERROR, ServletWebRequest(MockHttpServletRequest()))
 
     assertThat(response?.body.toString()).contains("MESSAGE")
+    assertThat(response?.statusCode?.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+  }
+
+  @Test
+  fun `given message not readable when handleHttpMessageNotReadable then return BAD_REQUEST`() {
+    whenever(httpMessageNotReadableException.message).thenReturn("HTTP message not readable")
+
+    val response = exceptionHandler.handleHttpMessageNotReadable(httpMessageNotReadableException, headers, HttpStatus.INTERNAL_SERVER_ERROR, ServletWebRequest(MockHttpServletRequest()))
+
+    assertThat(response?.body.toString()).contains("HTTP message not readable")
     assertThat(response?.statusCode?.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
   }
 }
