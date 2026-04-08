@@ -1,6 +1,14 @@
 server:
   shutdown: immediate
 
+spring:
+  autoconfigure:
+    exclude:
+      - io.sentry.spring.boot.jakarta.SentryAutoConfiguration
+
+sentry:
+  dsn: ""  # Disable Sentry in tests
+
 management.endpoint:
   health.cache.time-to-live: 0
   info.cache.time-to-live: 0

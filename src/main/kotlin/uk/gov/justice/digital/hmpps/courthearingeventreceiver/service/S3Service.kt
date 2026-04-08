@@ -1,8 +1,5 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.service
 
-import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -10,6 +7,8 @@ import org.springframework.stereotype.Component
 import software.amazon.awssdk.core.async.AsyncRequestBody
 import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
+import tools.jackson.databind.ObjectMapper
+import tools.jackson.module.kotlin.readValue
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.extensions.buildS3Key
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.extensions.findUuid
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
@@ -20,7 +19,7 @@ import java.time.LocalDateTime
 class S3Service(
   @Value("\${aws.s3.bucket_name}") private val bucketName: String,
   @Autowired private val amazonS3AsyncClient: S3AsyncClient,
-  @Autowired private val mapper: ObjectMapper,
+  @Autowired private val mapper: ObjectMapper
 ) {
   fun uploadMessage(uriPath: String, messageContent: String): String? {
     val s3Key = buildS3Key(
@@ -44,7 +43,7 @@ class S3Service(
   fun getCourtCode(messageContent: String): String = try {
     val hearingEvent = mapper.readValue<HearingEvent>(messageContent)
     hearingEvent.hearing.courtCentre.code
-  } catch (ex: JsonProcessingException) {
+  } catch (ex: Exception) {
     log.error("Failed to parse ", ex)
     "UNKNOWN_COURT"
   }

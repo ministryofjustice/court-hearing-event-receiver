@@ -115,3 +115,4 @@ observe:
       path: ".hearing.prosecutionCases[*].defendants[*].offences[*].judicialResults[*].resultText"
       printValue: false
 
+springdoc.swagger-ui.version: 5.32.1

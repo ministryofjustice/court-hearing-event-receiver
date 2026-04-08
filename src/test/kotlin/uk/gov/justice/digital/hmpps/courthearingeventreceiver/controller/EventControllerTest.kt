@@ -1,9 +1,5 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.controller
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -11,6 +7,7 @@ import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.HearingEvent
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.HearingEventType
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.service.MessageNotifier
@@ -24,12 +21,7 @@ const val NORTH_TYNESIDE = "B10JQ"
 internal class EventControllerTest {
   private lateinit var hearingEvent: HearingEvent
   private lateinit var eventController: EventController
-  private val mapper by lazy {
-    ObjectMapper()
-      .registerModule(JavaTimeModule())
-      .registerModule(KotlinModule.Builder().build())
-      .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-  }
+  private val mapper = jacksonObjectMapper()
 
   private val hearingId = "59cb14a6-e8de-4615-9c9d-94fa5ef81ad2"
   private val expectedProperties = mapOf(

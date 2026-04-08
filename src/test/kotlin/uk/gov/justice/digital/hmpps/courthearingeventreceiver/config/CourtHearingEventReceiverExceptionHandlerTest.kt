@@ -25,7 +25,7 @@ internal class CourtHearingEventReceiverExceptionHandlerTest {
   lateinit var methodArgumentNotValidException: MethodArgumentNotValidException
 
   @Mock
-  lateinit var messageNotReadableException: HttpMessageNotReadableException
+  lateinit var httpMessageNotReadableException: HttpMessageNotReadableException
 
   @BeforeEach
   fun beforeEach() {
@@ -43,12 +43,12 @@ internal class CourtHearingEventReceiverExceptionHandlerTest {
   }
 
   @Test
-  fun `given message not readable when get message then return BAD_REQUEST`() {
-    whenever(messageNotReadableException.message).thenReturn("MESSAGE")
+  fun `given message not readable when handleHttpMessageNotReadable then return BAD_REQUEST`() {
+    whenever(httpMessageNotReadableException.message).thenReturn("HTTP message not readable")
 
-    val response = exceptionHandler.handleHttpMessageNotReadable(messageNotReadableException, headers, HttpStatus.INTERNAL_SERVER_ERROR, ServletWebRequest(MockHttpServletRequest()))
+    val response = exceptionHandler.handleHttpMessageNotReadable(httpMessageNotReadableException, headers, HttpStatus.INTERNAL_SERVER_ERROR, ServletWebRequest(MockHttpServletRequest()))
 
-    assertThat(response?.body.toString()).contains("MESSAGE")
+    assertThat(response?.body.toString()).contains("HTTP message not readable")
     assertThat(response?.statusCode?.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
   }
 }
