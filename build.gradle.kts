@@ -21,7 +21,7 @@ dependencies {
 
   implementation("com.amazonaws:aws-java-sdk-sts:$awsSdkVersion")
   implementation("software.amazon.sns:sns-extended-client:2.1.0")
-  implementation("io.sentry:sentry-spring-boot-4-starter:8.37.1")
+  implementation("io.sentry:sentry-spring-boot-4-starter:8.38.0")
 
   implementation("com.jayway.jsonpath:json-path:3.0.0")
 
