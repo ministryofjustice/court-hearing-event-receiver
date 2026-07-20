@@ -1,6 +1,6 @@
 plugins {
   id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.5.7"
-  kotlin("plugin.spring") version "2.4.0"
+  kotlin("plugin.spring") version "2.4.10"
 }
 
 java {
@@ -21,7 +21,7 @@ dependencies {
 
   implementation("com.amazonaws:aws-java-sdk-sts:$awsSdkVersion")
   implementation("software.amazon.sns:sns-extended-client:2.1.0")
-  implementation("io.sentry:sentry-spring-boot-4-starter:8.48.0")
+  implementation("io.sentry:sentry-spring-boot-4-starter:8.49.0")
 
   implementation("com.jayway.jsonpath:json-path:3.0.0")
 
