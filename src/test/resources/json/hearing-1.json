@@ -123,6 +123,15 @@
               "wording": "on 01/08/2009 at  the County public house, unlawfully and maliciously wounded, John Smith"
             }
           ],
+          "aliases": [
+            {
+              "title": "MR",
+              "firstName": "John",
+              "middleName": "Smith",
+              "lastName": "Doe",
+              "legalEntityName": "John Smith Co"
+            }
+          ],
           "personDefendant": {
             "bailStatus": {
               "code": "U",
