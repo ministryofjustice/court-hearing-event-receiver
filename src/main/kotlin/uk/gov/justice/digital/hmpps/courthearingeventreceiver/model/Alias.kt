@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Alias(
   @JsonProperty("title")
-  val title: String,
+  val title: String?,
   @JsonProperty("firstName")
   val firstName: String?,
   @JsonProperty("middleName")
