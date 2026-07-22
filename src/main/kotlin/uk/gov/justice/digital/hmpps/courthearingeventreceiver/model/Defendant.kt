@@ -41,6 +41,9 @@ data class Defendant(
   @JsonProperty("masterDefendantId")
   val masterDefendantId: String?,
 
+  @JsonProperty("aliases")
+  val aliases: List<Alias>?,
+
   @JsonProperty("pncId")
   val pncId: String?,
 
@@ -78,6 +81,10 @@ class DefendantDeserializer : StdDeserializer<Defendant>(Defendant::class.java) 
     val isYouthMissing = node.optional("isYouthMissing").map { it.asBoolean() }.orElse(!node.has("isYouth"))
     val isYouth = node.optional("isYouth").map { it.asBoolean() }.orElse(null)
     val isPncMissing = node.optional("isPncMissing").map { it.asBoolean() }.orElse(!node.has("pncId"))
+    val aliases = node.optional("aliases")
+      .filter { !it.isNull }
+      .map { it.toList().map { node -> context.readTreeAsValue(node, Alias::class.java) } }
+      .orElse(null)
     val pncId = node.optional("pncId").map { it.asString() }.orElse(null)
     val isCroMissing = node.optional("isCroMissing").map { it.asBoolean() }.orElse(!node.has("croNumber"))
     val croNumber = node.optional("croNumber").map { it.asString() }.orElse(null)
@@ -89,6 +96,7 @@ class DefendantDeserializer : StdDeserializer<Defendant>(Defendant::class.java) 
       personDefendant,
       legalEntityDefendant,
       masterDefendantId,
+      aliases,
       pncId,
       croNumber,
       isYouth,

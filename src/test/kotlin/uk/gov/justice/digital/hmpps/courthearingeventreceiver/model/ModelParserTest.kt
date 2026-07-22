@@ -83,6 +83,12 @@ internal class ModelParserTest {
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.lastName).isEqualTo("McCullough")
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.gender).isSameAs(Gender.MALE)
     assertThat(hearing.prosecutionCases[0].defendants[0].personDefendant?.personDetails?.dateOfBirth).isEqualTo(LocalDate.of(1983, Month.FEBRUARY, 28))
+    assertThat(hearing.prosecutionCases[0].defendants[0].aliases).hasSize(1)
+    assertThat(hearing.prosecutionCases[0].defendants[0].aliases?.get(0)?.title).isEqualTo("MR")
+    assertThat(hearing.prosecutionCases[0].defendants[0].aliases?.get(0)?.firstName).isEqualTo("John")
+    assertThat(hearing.prosecutionCases[0].defendants[0].aliases?.get(0)?.middleName).isEqualTo("Smith")
+    assertThat(hearing.prosecutionCases[0].defendants[0].aliases?.get(0)?.lastName).isEqualTo("Doe")
+    assertThat(hearing.prosecutionCases[0].defendants[0].aliases?.get(0)?.legalEntityName).isEqualTo("John Smith Co")
     assertThat(hearing.prosecutionCases[0].defendants[1].personDefendant?.personDetails?.ethnicity?.observedEthnicityDescription).isEqualTo("observedEthnicityDescription")
     assertThat(hearing.prosecutionCases[0].defendants[1].personDefendant?.personDetails?.ethnicity?.selfDefinedEthnicityDescription).isEqualTo("selfDefinedEthnicityDescription")
   }
