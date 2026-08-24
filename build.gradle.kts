@@ -1,5 +1,5 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.2"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.6"
   kotlin("plugin.spring") version "2.4.10"
 }
 
@@ -108,3 +108,4 @@ tasks.register<Copy>("installGitHooks") {
   from(layout.projectDirectory.dir("hooks"))
   into(layout.projectDirectory.dir(".git/hooks"))
 }
+
