@@ -21,15 +21,15 @@ dependencies {
 
   implementation("com.amazonaws:aws-java-sdk-sts:$awsSdkVersion")
   implementation("software.amazon.sns:sns-extended-client:2.1.0")
-  implementation("io.sentry:sentry-spring-boot-4-starter:8.51.0")
+  implementation("io.sentry:sentry-spring-boot-4-starter:8.53.0")
 
   implementation("com.jayway.jsonpath:json-path:3.0.0")
 
   // Open API Documentation (swagger)
   // Must implement springdoc-openapi-starter-webmvc-api to support Kotlin https://springdoc.org/#kotlin-support
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
-  testImplementation("org.springdoc:springdoc-openapi-starter-webmvc-api:3.0.3")
-  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.45") {
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
+  testImplementation("org.springdoc:springdoc-openapi-starter-webmvc-api:3.1.0")
+  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.47") {
     exclude(group = "io.swagger.core.v3")
   }
   testImplementation("io.jsonwebtoken:jjwt:0.13.0")
