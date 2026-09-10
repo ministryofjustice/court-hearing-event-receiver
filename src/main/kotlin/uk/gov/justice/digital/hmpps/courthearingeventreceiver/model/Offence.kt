@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
+import java.time.LocalDate
 
 data class Offence(
 
@@ -41,4 +42,7 @@ data class Offence(
 
   val verdict: Verdict?,
 
-)
+  @JsonProperty("startDate")
+  val startDate: LocalDate?,
+
+  )
