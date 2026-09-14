@@ -61,6 +61,7 @@ internal class ModelParserTest {
     assertThat(hearing.prosecutionCases[0].defendants[1].isYouth).isEqualTo(true)
     assertThat(hearing.prosecutionCases[0].defendants[0].offences.size).isEqualTo(2)
     assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].offenceLegislation).isEqualTo("Contrary to section 20 of the Offences Against the    Person Act 1861.")
+    assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].startDate).isEqualTo(LocalDate.of(2010, Month.AUGUST, 1))
     assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].judicialResults[0].isConvictedResult).isEqualTo(false)
     assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].judicialResults[0].label).isEqualTo("Adjournment")
     assertThat(hearing.prosecutionCases[0].defendants[0].offences[0].judicialResults[0].judicialResultTypeId).isEqualTo("06b0c2bf-3f98-46ed-ab7e-56efaf9ecced")
