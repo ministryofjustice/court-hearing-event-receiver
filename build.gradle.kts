@@ -1,6 +1,6 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.7"
-  kotlin("plugin.spring") version "2.4.10"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.8"
+  kotlin("plugin.spring") version "2.4.20"
 }
 
 java {
@@ -21,14 +21,14 @@ dependencies {
 
   implementation("com.amazonaws:aws-java-sdk-sts:$awsSdkVersion")
   implementation("software.amazon.sns:sns-extended-client:2.1.0")
-  implementation("io.sentry:sentry-spring-boot-4-starter:8.55.0")
+  implementation("io.sentry:sentry-spring-boot-4-starter:8.56.0")
 
   implementation("com.jayway.jsonpath:json-path:3.0.0")
 
   // Open API Documentation (swagger)
   // Must implement springdoc-openapi-starter-webmvc-api to support Kotlin https://springdoc.org/#kotlin-support
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
-  testImplementation("org.springdoc:springdoc-openapi-starter-webmvc-api:3.1.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1")
+  testImplementation("org.springdoc:springdoc-openapi-starter-webmvc-api:3.1.1")
   testImplementation("io.swagger.parser.v3:swagger-parser:2.1.48") {
     exclude(group = "io.swagger.core.v3")
   }
