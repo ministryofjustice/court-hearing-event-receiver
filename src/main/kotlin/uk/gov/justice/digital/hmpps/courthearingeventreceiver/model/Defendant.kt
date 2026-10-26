@@ -70,7 +70,7 @@ class DefendantDeserializer : StdDeserializer<Defendant>(Defendant::class.java) 
       }
 
     val prosecutionCaseId = node.get("prosecutionCaseId").stringValue()
-    
+
     val personDefendant =
       node.optional("personDefendant").map { context.readTreeAsValue(it, PersonDefendant::class.java) }.orElse(null)
     val legalEntityDefendant =
