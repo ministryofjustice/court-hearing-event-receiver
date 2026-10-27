@@ -45,4 +45,4 @@ data class Offence(
   @JsonProperty("startDate")
   val startDate: LocalDate?,
 
-  )
+)

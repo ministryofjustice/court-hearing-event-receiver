@@ -87,7 +87,7 @@ class JacksonSerializationIntTest : IntegrationTestBase() {
 
   @Test
   fun `should handle croNumber missing in JSON`() {
-     val json = """
+    val json = """
       {
         "id": "test-id",
         "prosecutionCaseId": "case-id",

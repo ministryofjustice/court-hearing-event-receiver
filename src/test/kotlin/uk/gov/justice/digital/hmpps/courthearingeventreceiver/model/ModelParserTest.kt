@@ -1,14 +1,10 @@
 package uk.gov.justice.digital.hmpps.courthearingeventreceiver.model
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
-import tools.jackson.databind.DeserializationFeature
-import tools.jackson.databind.json.JsonMapper
 import tools.jackson.module.kotlin.jacksonObjectMapper
-import tools.jackson.module.kotlin.kotlinModule
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.Gender
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.InitiationCode
 import uk.gov.justice.digital.hmpps.courthearingeventreceiver.model.type.JurisdictionType
