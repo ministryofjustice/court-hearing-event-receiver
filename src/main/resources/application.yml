@@ -64,6 +64,12 @@ observe:
     offenceCode:
       path: "hearing.prosecutionCases[*].defendants[*].offences[*].offenceCode"
       printValue: true
+    offenceDate:
+      path: "hearing.prosecutionCases[*].defendants[*].offences[*].startDate"
+      printValue: true
+    offenceCount:
+      path: "hearing.prosecutionCases[*].defendants[*].offences[*].count"
+      printValue: true
     caseMarker:
       path: "hearing.prosecutionCases[*].caseMarkers[*].markerTypeDescription"
       printValue: true
