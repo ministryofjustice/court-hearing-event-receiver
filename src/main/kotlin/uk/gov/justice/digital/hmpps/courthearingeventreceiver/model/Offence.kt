@@ -45,4 +45,6 @@ data class Offence(
   @JsonProperty("startDate")
   val startDate: LocalDate?,
 
+  @JsonProperty("count")
+  val count: Int?,
 )
