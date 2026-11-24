@@ -16,8 +16,8 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.s3.model.CreateBucketRequest
 import software.amazon.awssdk.services.sqs.model.PurgeQueueRequest
-import uk.gov.justice.digital.hmpps.courthearingeventreceiver.JwtAuthenticationHelper
 import uk.gov.justice.hmpps.sqs.HmppsQueueService
+import uk.gov.justice.hmpps.test.kotlin.auth.JwtAuthorisationHelper
 import java.net.URI
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -31,7 +31,7 @@ abstract class IntegrationTestBase {
   lateinit var webTestClient: WebTestClient
 
   @Autowired
-  lateinit var jwtHelper: JwtAuthenticationHelper
+  lateinit var jwtHelper: JwtAuthorisationHelper
 
   @Value("\${aws.s3.bucket_name}")
   lateinit var bucketName: String

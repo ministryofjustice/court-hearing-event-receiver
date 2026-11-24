@@ -1,4 +1,3 @@
-info.productId: HMPPS518 # https://developer-portal.hmpps.service.justice.gov.uk/products/probation-integrations
 info.app:
   name: Court Hearing Event Receiver
   version: 1.0
