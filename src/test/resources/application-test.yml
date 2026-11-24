@@ -1,6 +1,8 @@
 server:
   shutdown: immediate
 
+product-id: HMPPS-TEST
+
 spring:
   autoconfigure:
     exclude:

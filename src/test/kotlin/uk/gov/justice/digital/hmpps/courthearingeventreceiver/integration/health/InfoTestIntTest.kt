@@ -17,4 +17,12 @@ class InfoTestIntTest : IntegrationTestBase() {
         assertThat(it).startsWith(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE))
       }
   }
+
+  @Test
+  fun `Info page reports the configured product ID`() {
+    webTestClient.get().uri("/info")
+      .exchange()
+      .expectStatus().isOk
+      .expectBody().jsonPath("productId").isEqualTo("HMPPS-TEST")
+  }
 }
