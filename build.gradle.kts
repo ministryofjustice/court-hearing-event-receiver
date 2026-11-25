@@ -25,8 +25,8 @@ dependencies {
 
   // Open API Documentation (swagger)
   // Must implement springdoc-openapi-starter-webmvc-api to support Kotlin https://springdoc.org/#kotlin-support
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.0")
-  testImplementation("org.springdoc:springdoc-openapi-starter-webmvc-api:3.2.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.1")
+  testImplementation("org.springdoc:springdoc-openapi-starter-webmvc-api:3.2.1")
   testImplementation("io.swagger.parser.v3:swagger-parser:2.1.49") {
     exclude(group = "io.swagger.core.v3")
   }
